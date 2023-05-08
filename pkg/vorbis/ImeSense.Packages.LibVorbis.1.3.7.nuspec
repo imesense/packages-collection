@@ -75,7 +75,7 @@
         <file src="..\..\dep\vorbis\v1.3.7\win32\VS2010\x64\Release\libvorbisfile.lib" target="native\lib\x64\Release\" />
         <file src="..\..\dep\vorbis\v1.3.7\win32\VS2010\x64\Release\libvorbisfile.exp" target="native\lib\x64\Release\" />
 
-        <file src="LibVorbis.props" target="native\" />
-        <file src="LibVorbisFile.props" target="native\" />
+        <file src="LibVorbis.targets" target="native\" />
+        <file src="LibVorbisFile.targets" target="native\" />
     </files>
 </package>

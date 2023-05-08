@@ -48,6 +48,6 @@
         <file src="..\..\dep\ogg\v1.3.5\win32\VS2015\x64\ReleaseDLL\libogg.lib" target="native\lib\x64\Release\" />
         <file src="..\..\dep\ogg\v1.3.5\win32\VS2015\x64\ReleaseDLL\libogg.exp" target="native\lib\x64\Release\" />
 
-        <file src="LibOgg.props" target="native\" />
+        <file src="LibOgg.targets" target="native\" />
     </files>
 </package>
