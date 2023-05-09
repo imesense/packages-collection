@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.LibVorbis</id>
-        <version>1.3.7</version>
+        <version>1.3.7.1</version>
         <title>LibVorbis</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
