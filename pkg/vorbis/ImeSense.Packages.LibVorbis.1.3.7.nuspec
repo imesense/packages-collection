@@ -10,7 +10,7 @@
         <icon>img\icon.png</icon>
         <readme>README.md</readme>
         <projectUrl>https://www.xiph.org/vorbis</projectUrl>
-        <description>Ogg media container reference implementation</description>
+        <description>Vorbis audio compression reference implementation</description>
         <releaseNotes>libvorbis 1.3.7 (2020-07-04) -- "Xiph.Org libVorbis I 20200704 (Reducing Environment)"
 
 * Fix CVE-2018-10393 - out-of-bounds read encoding very low sample rates.
