@@ -1,0 +1,245 @@
+From ecf674d944be64ea1176d6a8cd0eb1fc46175094 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Tue, 9 May 2023 12:23:10 +0300
+Subject: [PATCH 2/4] Add libogg reference from NuGet
+
+---
+ win32/VS2008/dump_video/dump_video_dynamic.vcxproj   | 12 ++++--------
+ win32/VS2008/dump_video/packages.config              |  4 ++++
+ .../encoder_example/encoder_example_dynamic.vcxproj  | 12 ++++--------
+ win32/VS2008/encoder_example/packages.config         |  4 ++++
+ win32/VS2008/libtheora/libtheora_dynamic.vcxproj     | 12 ++++--------
+ .../libtheora/libtheora_dynamic.vcxproj.filters      |  3 +++
+ win32/VS2008/libtheora/packages.config               |  4 ++++
+ 7 files changed, 27 insertions(+), 24 deletions(-)
+ create mode 100644 win32/VS2008/dump_video/packages.config
+ create mode 100644 win32/VS2008/encoder_example/packages.config
+ create mode 100644 win32/VS2008/libtheora/packages.config
+
+diff --git a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+index 6a9147e..a3a13f4 100644
+--- a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
++++ b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+@@ -94,35 +94,27 @@
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <PropertyGroup Label="UserMacros" />
+   <PropertyGroup>
+@@ -369,6 +361,9 @@
+     <ClInclude Include="..\..\..\examples\getopt.h" />
+     <ClInclude Include="..\..\getopt_win.h" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="packages.config" />
++  </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\libtheora\libtheora_dynamic.vcxproj">
+       <Project>{653f3841-3f26-49b9-afcf-091db4b67031}</Project>
+@@ -377,4 +372,5 @@
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
+ </Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/dump_video/packages.config b/win32/VS2008/dump_video/packages.config
+new file mode 100644
+index 0000000..5c0771d
+--- /dev/null
++++ b/win32/VS2008/dump_video/packages.config
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<packages>
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++</packages>
+diff --git a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+index 1db901e..ae57cde 100644
+--- a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
++++ b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+@@ -94,42 +94,34 @@
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+-    <Import Project="..\libogg.props" />
+     <Import Project="..\libvorbis.props" />
+   </ImportGroup>
+   <PropertyGroup Label="UserMacros" />
+@@ -391,6 +383,9 @@
+     <ClCompile Include="..\..\getopt.c" />
+     <ClCompile Include="..\..\getopt1.c" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="packages.config" />
++  </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="..\libtheora\libtheora_dynamic.vcxproj">
+       <Project>{653f3841-3f26-49b9-afcf-091db4b67031}</Project>
+@@ -399,4 +394,5 @@
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
+ </Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/encoder_example/packages.config b/win32/VS2008/encoder_example/packages.config
+new file mode 100644
+index 0000000..5c0771d
+--- /dev/null
++++ b/win32/VS2008/encoder_example/packages.config
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<packages>
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++</packages>
+diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+index 721d471..338c315 100644
+--- a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
++++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+@@ -95,42 +95,34 @@
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+-    <Import Project="..\libogg.props" />
+   </ImportGroup>
+   <PropertyGroup Label="UserMacros" />
+   <PropertyGroup>
+@@ -505,7 +497,11 @@
+     <ClCompile Include="..\..\..\lib\x86_vc\x86enc.c" />
+     <ClCompile Include="..\..\..\lib\x86_vc\x86state.c" />
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="packages.config" />
++  </ItemGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+   </ImportGroup>
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
+ </Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
+index 891f88c..d4ad9bd 100644
+--- a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
++++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
+@@ -192,4 +192,7 @@
+       <Filter>lib\dec\x86_vc</Filter>
+     </ClCompile>
+   </ItemGroup>
++  <ItemGroup>
++    <None Include="packages.config" />
++  </ItemGroup>
+ </Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libtheora/packages.config b/win32/VS2008/libtheora/packages.config
+new file mode 100644
+index 0000000..5c0771d
+--- /dev/null
++++ b/win32/VS2008/libtheora/packages.config
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<packages>
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++</packages>
+-- 
+2.40.0.windows.1
+

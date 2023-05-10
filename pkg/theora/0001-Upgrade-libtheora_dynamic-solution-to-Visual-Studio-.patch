@@ -1,0 +1,1633 @@
+From 72e0f445004e4a2951d29551f178e44f9f90f17a Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Tue, 9 May 2023 12:03:48 +0300
+Subject: [PATCH 1/4] Upgrade libtheora_dynamic solution to Visual Studio 2022
+
+---
+ .../dump_video/dump_video_dynamic.vcxproj     | 380 +++++++++++++
+ .../encoder_example_dynamic.vcxproj           | 402 ++++++++++++++
+ win32/VS2008/libogg.props                     |  24 +
+ .../libtheora/libtheora_dynamic.vcxproj       | 511 ++++++++++++++++++
+ .../libtheora_dynamic.vcxproj.filters         | 195 +++++++
+ win32/VS2008/libtheora_dynamic.sln            |  15 +-
+ win32/VS2008/libvorbis.props                  |  24 +
+ 7 files changed, 1546 insertions(+), 5 deletions(-)
+ create mode 100644 win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+ create mode 100644 win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+ create mode 100644 win32/VS2008/libogg.props
+ create mode 100644 win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+ create mode 100644 win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
+ create mode 100644 win32/VS2008/libvorbis.props
+
+diff --git a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+new file mode 100644
+index 0000000..6a9147e
+--- /dev/null
++++ b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+@@ -0,0 +1,380 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup Label="ProjectConfigurations">
++    <ProjectConfiguration Include="Debug|Win32">
++      <Configuration>Debug</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|Win32">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|x64">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|Win32">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|x64">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|Win32">
++      <Configuration>Release</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++  </ItemGroup>
++  <PropertyGroup Label="Globals">
++    <VCProjectVersion>17.0</VCProjectVersion>
++    <ProjectName>dump_video</ProjectName>
++    <ProjectGuid>{1A8CA99D-B6C7-48CB-B263-6CECDADF5FBF}</ProjectGuid>
++    <RootNamespace>dump_video</RootNamespace>
++    <Keyword>Win32Proj</Keyword>
++    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
++  <ImportGroup Label="ExtensionSettings">
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros" />
++  <PropertyGroup>
++    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>true</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>true</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <ClCompile Include="..\..\..\examples\dump_video.c" />
++    <ClCompile Include="..\..\getopt.c" />
++    <ClCompile Include="..\..\getopt1.c" />
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="..\..\..\examples\getopt.h" />
++    <ClInclude Include="..\..\getopt_win.h" />
++  </ItemGroup>
++  <ItemGroup>
++    <ProjectReference Include="..\libtheora\libtheora_dynamic.vcxproj">
++      <Project>{653f3841-3f26-49b9-afcf-091db4b67031}</Project>
++    </ProjectReference>
++  </ItemGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++  <ImportGroup Label="ExtensionTargets">
++  </ImportGroup>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+new file mode 100644
+index 0000000..1db901e
+--- /dev/null
++++ b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+@@ -0,0 +1,402 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup Label="ProjectConfigurations">
++    <ProjectConfiguration Include="Debug|Win32">
++      <Configuration>Debug</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|Win32">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|x64">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|Win32">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|x64">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|Win32">
++      <Configuration>Release</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++  </ItemGroup>
++  <PropertyGroup Label="Globals">
++    <VCProjectVersion>17.0</VCProjectVersion>
++    <ProjectName>encoder_example</ProjectName>
++    <ProjectGuid>{AD710263-EBFA-4388-BAA9-AD73C32AFF26}</ProjectGuid>
++    <RootNamespace>encoder_example</RootNamespace>
++    <Keyword>Win32Proj</Keyword>
++    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
++    <ConfigurationType>Application</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
++  <ImportGroup Label="ExtensionSettings">
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="..\libogg.props" />
++    <Import Project="..\libvorbis.props" />
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros" />
++  <PropertyGroup>
++    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>true</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>true</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <LinkIncremental>false</LinkIncremental>
++  </PropertyGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>true</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX86</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\..\libogg\include;..\..\..\..\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <GenerateDebugInformation>false</GenerateDebugInformation>
++      <SubSystem>Console</SubSystem>
++      <OptimizeReferences>true</OptimizeReferences>
++      <EnableCOMDATFolding>true</EnableCOMDATFolding>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++      <TargetMachine>MachineX64</TargetMachine>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <ClCompile Include="..\..\..\examples\encoder_example.c" />
++    <ClCompile Include="..\..\getopt.c" />
++    <ClCompile Include="..\..\getopt1.c" />
++  </ItemGroup>
++  <ItemGroup>
++    <ProjectReference Include="..\libtheora\libtheora_dynamic.vcxproj">
++      <Project>{653f3841-3f26-49b9-afcf-091db4b67031}</Project>
++    </ProjectReference>
++  </ItemGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++  <ImportGroup Label="ExtensionTargets">
++  </ImportGroup>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libogg.props b/win32/VS2008/libogg.props
+new file mode 100644
+index 0000000..5069ada
+--- /dev/null
++++ b/win32/VS2008/libogg.props
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ImportGroup Label="PropertySheets">
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros">
++    <LIBOGG_VERSION>1.1.4</LIBOGG_VERSION>
++  </PropertyGroup>
++  <PropertyGroup>
++    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++  </PropertyGroup>
++  <ItemDefinitionGroup>
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\..\libogg-$(LIBOGG_VERSION)\include;..\..\..\..\ogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ClCompile>
++    <Link>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg-$(LIBOGG_VERSION)\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\ogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\..\..\..\core\ogg\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <BuildMacro Include="LIBOGG_VERSION">
++      <Value>$(LIBOGG_VERSION)</Value>
++    </BuildMacro>
++  </ItemGroup>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+new file mode 100644
+index 0000000..721d471
+--- /dev/null
++++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+@@ -0,0 +1,511 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup Label="ProjectConfigurations">
++    <ProjectConfiguration Include="Debug|Win32">
++      <Configuration>Debug</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Debug|x64">
++      <Configuration>Debug</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|Win32">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE2|x64">
++      <Configuration>Release_SSE2</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|Win32">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release_SSE|x64">
++      <Configuration>Release_SSE</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|Win32">
++      <Configuration>Release</Configuration>
++      <Platform>Win32</Platform>
++    </ProjectConfiguration>
++    <ProjectConfiguration Include="Release|x64">
++      <Configuration>Release</Configuration>
++      <Platform>x64</Platform>
++    </ProjectConfiguration>
++  </ItemGroup>
++  <PropertyGroup Label="Globals">
++    <VCProjectVersion>17.0</VCProjectVersion>
++    <ProjectName>libtheora</ProjectName>
++    <ProjectGuid>{653F3841-3F26-49B9-AFCF-091DB4B67031}</ProjectGuid>
++    <RootNamespace>libtheora</RootNamespace>
++    <Keyword>Win32Proj</Keyword>
++    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++    <WholeProgramOptimization>true</WholeProgramOptimization>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
++    <ConfigurationType>DynamicLibrary</ConfigurationType>
++    <PlatformToolset>v143</PlatformToolset>
++    <CharacterSet>Unicode</CharacterSet>
++  </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
++  <ImportGroup Label="ExtensionSettings">
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
++    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
++    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
++    <Import Project="..\libogg.props" />
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros" />
++  <PropertyGroup>
++    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
++    <IntDir>$(Platform)\$(Configuration)\</IntDir>
++  </PropertyGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;DEBUG;OC_X86_ASM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>Disabled</Optimization>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <MinimalRebuild>true</MinimalRebuild>
++      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
++      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
++      <PrecompiledHeader />
++      <WarningLevel>Level3</WarningLevel>
++      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;OC_X86_ASM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
++    <Midl>
++      <TargetEnvironment>X64</TargetEnvironment>
++    </Midl>
++    <ClCompile>
++      <Optimization>MaxSpeed</Optimization>
++      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
++      <IntrinsicFunctions>true</IntrinsicFunctions>
++      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
++      <AdditionalIncludeDirectories>..\..\..\include;..\..\..\lib;..\..\..\..\libogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_BIND_TO_CURRENT_CRT_VERSION;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBTHEORA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <StringPooling>true</StringPooling>
++      <ExceptionHandling />
++      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
++      <BufferSecurityCheck>false</BufferSecurityCheck>
++      <PrecompiledHeader />
++      <WarningLevel>Level4</WarningLevel>
++      <DebugInformationFormat />
++      <CompileAs>CompileAsC</CompileAs>
++      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
++      <MultiProcessorCompilation>true</MultiProcessorCompilation>
++    </ClCompile>
++    <Link>
++      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
++      <RandomizedBaseAddress>false</RandomizedBaseAddress>
++      <DataExecutionPrevention />
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <ClInclude Include="..\..\..\include\theora\codec.h" />
++    <ClInclude Include="..\..\..\include\theora\theora.h" />
++    <ClInclude Include="..\..\..\include\theora\theoradec.h" />
++    <ClInclude Include="..\..\..\include\theora\theoraenc.h" />
++    <ClInclude Include="..\..\..\lib\apiwrapper.h" />
++    <ClInclude Include="..\..\..\lib\bitpack.h" />
++    <ClInclude Include="..\..\..\lib\cpu.h" />
++    <ClInclude Include="..\..\..\lib\dct.h" />
++    <ClInclude Include="..\..\..\lib\decint.h" />
++    <ClInclude Include="..\..\..\lib\dequant.h" />
++    <ClInclude Include="..\..\..\lib\encint.h" />
++    <ClInclude Include="..\..\..\lib\enquant.h" />
++    <ClInclude Include="..\..\..\lib\huffdec.h" />
++    <ClInclude Include="..\..\..\lib\huffenc.h" />
++    <ClInclude Include="..\..\..\lib\huffman.h" />
++    <ClInclude Include="..\..\..\lib\idct.h" />
++    <ClInclude Include="..\..\..\lib\internal.h" />
++    <ClInclude Include="..\..\..\lib\mathops.h" />
++    <ClInclude Include="..\..\..\lib\modedec.h" />
++    <ClInclude Include="..\..\..\lib\ocintrin.h" />
++    <ClInclude Include="..\..\..\lib\quant.h" />
++  </ItemGroup>
++  <ItemGroup>
++    <ClCompile Include="..\..\..\lib\analyze.c" />
++    <ClCompile Include="..\..\..\lib\apiwrapper.c" />
++    <ClCompile Include="..\..\..\lib\bitpack.c" />
++    <ClCompile Include="..\..\..\lib\cpu.c" />
++    <ClCompile Include="..\..\..\lib\decapiwrapper.c" />
++    <ClCompile Include="..\..\..\lib\decinfo.c" />
++    <ClCompile Include="..\..\..\lib\decode.c">
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\dequant.c" />
++    <ClCompile Include="..\..\..\lib\encapiwrapper.c" />
++    <ClCompile Include="..\..\..\lib\encfrag.c" />
++    <ClCompile Include="..\..\..\lib\encinfo.c" />
++    <ClCompile Include="..\..\..\lib\encode.c" />
++    <ClCompile Include="..\..\..\lib\encoder_disabled.c">
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
++      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\enquant.c" />
++    <ClCompile Include="..\..\..\lib\fdct.c" />
++    <ClCompile Include="..\..\..\lib\fragment.c" />
++    <ClCompile Include="..\..\..\lib\huffdec.c" />
++    <ClCompile Include="..\..\..\lib\huffenc.c" />
++    <ClCompile Include="..\..\..\lib\idct.c">
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\info.c" />
++    <ClCompile Include="..\..\..\lib\internal.c" />
++    <ClCompile Include="..\..\..\lib\mathops.c" />
++    <ClCompile Include="..\..\..\lib\mcenc.c" />
++    <ClCompile Include="..\..\..\lib\quant.c">
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
++      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\rate.c" />
++    <ClCompile Include="..\..\..\lib\state.c" />
++    <ClCompile Include="..\..\..\lib\tokenize.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxencfrag.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxfdct.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxfrag.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxidct.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxstate.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\x86enc.c" />
++    <ClCompile Include="..\..\..\lib\x86_vc\x86state.c" />
++  </ItemGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++  <ImportGroup Label="ExtensionTargets">
++  </ImportGroup>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
+new file mode 100644
+index 0000000..891f88c
+--- /dev/null
++++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
+@@ -0,0 +1,195 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ItemGroup>
++    <Filter Include="include">
++      <UniqueIdentifier>{f38cdf35-f283-4382-827a-80561298750c}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="include\theora">
++      <UniqueIdentifier>{00b55a8a-5f38-414d-a26a-a93c36c8607a}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="lib">
++      <UniqueIdentifier>{261fd833-5592-47e4-9893-71419d269a3b}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="lib\enc">
++      <UniqueIdentifier>{87fe5aee-87a4-4532-a029-cba7ca33e694}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="lib\enc\x86_vc">
++      <UniqueIdentifier>{3f38ee1c-1930-4b52-b136-e18d36c8d2a8}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="lib\dec">
++      <UniqueIdentifier>{dec5c1b5-b100-497d-bfa4-b00e8d2b974a}</UniqueIdentifier>
++    </Filter>
++    <Filter Include="lib\dec\x86_vc">
++      <UniqueIdentifier>{5300ca32-e937-4409-b596-f9e820786860}</UniqueIdentifier>
++    </Filter>
++  </ItemGroup>
++  <ItemGroup>
++    <ClInclude Include="..\..\..\include\theora\codec.h">
++      <Filter>include\theora</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\include\theora\theora.h">
++      <Filter>include\theora</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\include\theora\theoradec.h">
++      <Filter>include\theora</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\include\theora\theoraenc.h">
++      <Filter>include\theora</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\cpu.h">
++      <Filter>lib</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\internal.h">
++      <Filter>lib</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\encint.h">
++      <Filter>lib\enc</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\enquant.h">
++      <Filter>lib\enc</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\huffenc.h">
++      <Filter>lib\enc</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\mathops.h">
++      <Filter>lib\enc</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\modedec.h">
++      <Filter>lib\enc</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\apiwrapper.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\bitpack.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\dct.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\decint.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\dequant.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\huffdec.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\huffman.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\idct.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\ocintrin.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++    <ClInclude Include="..\..\..\lib\quant.h">
++      <Filter>lib\dec</Filter>
++    </ClInclude>
++  </ItemGroup>
++  <ItemGroup>
++    <ClCompile Include="..\..\..\lib\cpu.c">
++      <Filter>lib</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\analyze.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\encapiwrapper.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\encfrag.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\encinfo.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\encode.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\encoder_disabled.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\enquant.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\fdct.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\huffenc.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\mathops.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\mcenc.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\rate.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\tokenize.c">
++      <Filter>lib\enc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxencfrag.c">
++      <Filter>lib\enc\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxfdct.c">
++      <Filter>lib\enc\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\x86enc.c">
++      <Filter>lib\enc\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\apiwrapper.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\bitpack.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\decapiwrapper.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\decinfo.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\decode.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\dequant.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\fragment.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\huffdec.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\idct.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\info.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\internal.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\quant.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\state.c">
++      <Filter>lib\dec</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxfrag.c">
++      <Filter>lib\dec\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxidct.c">
++      <Filter>lib\dec\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\mmxstate.c">
++      <Filter>lib\dec\x86_vc</Filter>
++    </ClCompile>
++    <ClCompile Include="..\..\..\lib\x86_vc\x86state.c">
++      <Filter>lib\dec\x86_vc</Filter>
++    </ClCompile>
++  </ItemGroup>
++</Project>
+\ No newline at end of file
+diff --git a/win32/VS2008/libtheora_dynamic.sln b/win32/VS2008/libtheora_dynamic.sln
+index d4bde5d..64ab2f1 100644
+--- a/win32/VS2008/libtheora_dynamic.sln
++++ b/win32/VS2008/libtheora_dynamic.sln
+@@ -1,11 +1,13 @@
+ ﻿
+-Microsoft Visual Studio Solution File, Format Version 10.00
+-# Visual Studio 2008
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtheora", "libtheora\libtheora_dynamic.vcproj", "{653F3841-3F26-49B9-AFCF-091DB4B67031}"
++Microsoft Visual Studio Solution File, Format Version 12.00
++# Visual Studio Version 17
++VisualStudioVersion = 17.5.33627.172
++MinimumVisualStudioVersion = 10.0.40219.1
++Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtheora", "libtheora\libtheora_dynamic.vcxproj", "{653F3841-3F26-49B9-AFCF-091DB4B67031}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dump_video", "dump_video\dump_video_dynamic.vcproj", "{1A8CA99D-B6C7-48CB-B263-6CECDADF5FBF}"
++Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dump_video", "dump_video\dump_video_dynamic.vcxproj", "{1A8CA99D-B6C7-48CB-B263-6CECDADF5FBF}"
+ EndProject
+-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encoder_example", "encoder_example\encoder_example_dynamic.vcproj", "{AD710263-EBFA-4388-BAA9-AD73C32AFF26}"
++Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encoder_example", "encoder_example\encoder_example_dynamic.vcxproj", "{AD710263-EBFA-4388-BAA9-AD73C32AFF26}"
+ EndProject
+ Global
+ 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+@@ -143,4 +145,7 @@ Global
+ 	GlobalSection(SolutionProperties) = preSolution
+ 		HideSolutionNode = FALSE
+ 	EndGlobalSection
++	GlobalSection(ExtensibilityGlobals) = postSolution
++		SolutionGuid = {B499A21D-29EF-48F4-AB77-932A40D6C869}
++	EndGlobalSection
+ EndGlobal
+diff --git a/win32/VS2008/libvorbis.props b/win32/VS2008/libvorbis.props
+new file mode 100644
+index 0000000..135ea73
+--- /dev/null
++++ b/win32/VS2008/libvorbis.props
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="utf-8"?>
++<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
++  <ImportGroup Label="PropertySheets">
++  </ImportGroup>
++  <PropertyGroup Label="UserMacros">
++    <LIBVORBIS_VERSION>1.2.2</LIBVORBIS_VERSION>
++  </PropertyGroup>
++  <PropertyGroup>
++    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++  </PropertyGroup>
++  <ItemDefinitionGroup>
++    <ClCompile>
++      <AdditionalIncludeDirectories>..\..\..\..\libvorbis-$(LIBVORBIS_VERSION)\include;..\..\..\..\vorbis\include;..\..\..\..\..\..\vorbis\libs\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++    </ClCompile>
++    <Link>
++      <AdditionalLibraryDirectories>..\..\..\..\libvorbis-$(LIBVORBIS_VERSION)\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\vorbis\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\..\..\vorbis\libs\libvorbis\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++    </Link>
++  </ItemDefinitionGroup>
++  <ItemGroup>
++    <BuildMacro Include="LIBVORBIS_VERSION">
++      <Value>$(LIBVORBIS_VERSION)</Value>
++    </BuildMacro>
++  </ItemGroup>
++</Project>
+\ No newline at end of file
+-- 
+2.40.0.windows.1
+
