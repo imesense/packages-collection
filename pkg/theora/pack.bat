@@ -1,2 +1,3 @@
 :: Pack library
-nuget pack %~dp0\ImeSense.Packages.LibTheora.nuspec -OutputDirectory ..
+nuget pack %~dp0\ImeSense.Packages.LibTheora.nuspec ^
+    -OutputDirectory ..
