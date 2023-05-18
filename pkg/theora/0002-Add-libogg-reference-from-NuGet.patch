@@ -70,7 +70,7 @@ index 6a9147e..a3a13f4 100644
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
  </Project>
 \ No newline at end of file
 diff --git a/win32/VS2008/dump_video/packages.config b/win32/VS2008/dump_video/packages.config
@@ -81,7 +81,7 @@ index 0000000..5c0771d
 @@ -0,0 +1,4 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 diff --git a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
 index 1db901e..ae57cde 100644
@@ -144,7 +144,7 @@ index 1db901e..ae57cde 100644
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
  </Project>
 \ No newline at end of file
 diff --git a/win32/VS2008/encoder_example/packages.config b/win32/VS2008/encoder_example/packages.config
@@ -155,7 +155,7 @@ index 0000000..5c0771d
 @@ -0,0 +1,4 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
 index 721d471..338c315 100644
@@ -214,7 +214,7 @@ index 721d471..338c315 100644
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
    </ImportGroup>
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
  </Project>
 \ No newline at end of file
 diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
@@ -238,7 +238,7 @@ index 0000000..5c0771d
 @@ -0,0 +1,4 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 -- 
 2.40.0.windows.1

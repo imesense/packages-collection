@@ -59,7 +59,7 @@ index c1490b0..23b5ca0 100644
    </ImportGroup>
 -</Project>
 \ No newline at end of file
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
 +</Project>
 \ No newline at end of file
 diff --git a/win32/VS2010/libvorbis/packages.config b/win32/VS2010/libvorbis/packages.config
@@ -70,7 +70,7 @@ index 0000000..77aad17
 @@ -0,0 +1,4 @@
 +﻿<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 \ No newline at end of file
 diff --git a/win32/VS2010/libvorbisfile/libvorbisfile_dynamic.vcxproj b/win32/VS2010/libvorbisfile/libvorbisfile_dynamic.vcxproj
@@ -112,7 +112,7 @@ index 172a7a8..50df874 100644
    </ImportGroup>
 -</Project>
 \ No newline at end of file
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
 +</Project>
 \ No newline at end of file
 diff --git a/win32/VS2010/libvorbisfile/packages.config b/win32/VS2010/libvorbisfile/packages.config
@@ -123,7 +123,7 @@ index 0000000..77aad17
 @@ -0,0 +1,4 @@
 +﻿<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 \ No newline at end of file
 diff --git a/win32/VS2010/vorbisdec/packages.config b/win32/VS2010/vorbisdec/packages.config
@@ -134,7 +134,7 @@ index 0000000..77aad17
 @@ -0,0 +1,4 @@
 +﻿<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 \ No newline at end of file
 diff --git a/win32/VS2010/vorbisdec/vorbisdec_dynamic.vcxproj b/win32/VS2010/vorbisdec/vorbisdec_dynamic.vcxproj
@@ -176,7 +176,7 @@ index 441f38f..0374ddc 100644
    </ImportGroup>
 -</Project>
 \ No newline at end of file
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
 +</Project>
 \ No newline at end of file
 diff --git a/win32/VS2010/vorbisenc/packages.config b/win32/VS2010/vorbisenc/packages.config
@@ -187,7 +187,7 @@ index 0000000..77aad17
 @@ -0,0 +1,4 @@
 +﻿<?xml version="1.0" encoding="utf-8"?>
 +<packages>
-+    <package id="ImeSense.Packages.LibOgg" version="1.3.5" targetFramework="native" />
++    <package id="ImeSense.Packages.LibOgg" version="1.3.5.1" targetFramework="native" />
 +</packages>
 \ No newline at end of file
 diff --git a/win32/VS2010/vorbisenc/vorbisenc_dynamic.vcxproj b/win32/VS2010/vorbisenc/vorbisenc_dynamic.vcxproj
@@ -229,7 +229,7 @@ index e43e452..df81ba9 100644
    </ImportGroup>
 -</Project>
 \ No newline at end of file
-+  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5\native\LibOgg.targets')" />
++  <Import Project="..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets" Condition="Exists('..\packages\ImeSense.Packages.LibOgg.1.3.5.1\native\LibOgg.targets')" />
 +</Project>
 \ No newline at end of file
 -- 
