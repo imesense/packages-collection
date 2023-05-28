@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>ImeSense.Packages.LibOgg</id>
-        <version>1.3.5.2</version>
+        <version>1.3.5.3</version>
         <title>LibOgg</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -49,6 +49,6 @@
         <file src="..\..\dep\ogg\win32\VS2015\x64\ReleaseDLL\libogg.lib" target="native\lib\x64\Release\" />
         <file src="..\..\dep\ogg\win32\VS2015\x64\ReleaseDLL\libogg.exp" target="native\lib\x64\Release\" />
 
-        <file src="LibOgg.targets" target="native\" />
+        <file src="ImeSense.Packages.LibOgg.targets" target="build\native\" />
     </files>
 </package>

@@ -25,13 +25,14 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <LibOgg-BinPath>$(MSBuildThisFileDirectory)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibOgg-BinPath>
-        <LibOgg-LibPath>$(MSBuildThisFileDirectory)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibOgg-LibPath>
+        <LibOgg-RootPath>$(MSBuildThisFileDirectory)\..\..\native</LibOgg-RootPath>
+        <LibOgg-BinPath>$(LibOgg-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibOgg-BinPath>
+        <LibOgg-LibPath>$(LibOgg-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibOgg-LibPath>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(LibOgg-RootPath)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
 
         <Link>
