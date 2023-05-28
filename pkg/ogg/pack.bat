@@ -1,3 +1,2 @@
 :: Pack library
-nuget pack ImeSense.Packages.LibOgg.nuspec ^
-    -OutputDirectory ..
+nuget pack ImeSense.Packages.LibOgg.nuspec -OutputDirectory ..

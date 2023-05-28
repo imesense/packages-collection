@@ -3,7 +3,10 @@
     <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
         <NuGetConfiguration>Debug</NuGetConfiguration>
     </PropertyGroup>
-    <PropertyGroup Label="Release" Condition="'$(Configuration.ToLower())' == 'release'">
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
         <NuGetConfiguration>Release</NuGetConfiguration>
     </PropertyGroup>
 
@@ -26,9 +29,7 @@
         <ClCompile>
             <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
-    </ItemDefinitionGroup>
 
-    <ItemDefinitionGroup>
         <Link>
             <AdditionalLibraryDirectories>$(LibVorbis-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
             <AdditionalDependencies>libvorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
