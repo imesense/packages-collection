@@ -25,23 +25,25 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <LibVorbis-BinPath>$(MSBuildThisFileDirectory)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-BinPath>
-        <LibVorbis-LibPath>$(MSBuildThisFileDirectory)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-LibPath>
+        <LibVorbis-RootPath>$(MSBuildThisFileDirectory)\..\..\native</LibVorbis-RootPath>
+        <LibVorbis-BinPath>$(LibVorbis-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-BinPath>
+        <LibVorbis-LibPath>$(LibVorbis-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-LibPath>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(LibVorbis-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
 
         <Link>
             <AdditionalLibraryDirectories>$(LibVorbis-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-            <AdditionalDependencies>libvorbis.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalDependencies>libvorbis.lib;libvorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
 
     <ItemGroup>
         <ReferenceCopyLocalPaths Include="$(LibVorbis-BinPath)\libvorbis.dll" />
+        <ReferenceCopyLocalPaths Include="$(LibVorbis-BinPath)\libvorbisfile.dll" />
     </ItemGroup>
 
     <ItemGroup>

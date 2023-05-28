@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>ImeSense.Packages.LibVorbis</id>
-        <version>1.3.7.3</version>
+        <version>1.3.7.4</version>
         <title>LibVorbis</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -34,7 +34,7 @@
         <tags>Native native nativepackage</tags>
         
         <dependencies>
-            <dependency id="ImeSense.Packages.LibOgg" version="1.3.5.2" />
+            <dependency id="ImeSense.Packages.LibOgg" version="1.3.5.4" />
         </dependencies>
     </metadata>
 
@@ -76,7 +76,6 @@
         <file src="..\..\dep\vorbis\win32\VS2010\x64\Release\libvorbisfile.lib" target="native\lib\x64\Release\" />
         <file src="..\..\dep\vorbis\win32\VS2010\x64\Release\libvorbisfile.exp" target="native\lib\x64\Release\" />
 
-        <file src="LibVorbis.targets" target="native\" />
-        <file src="LibVorbisFile.targets" target="native\" />
+        <file src="ImeSense.Packages.LibVorbis.targets" target="build\native\" />
     </files>
 </package>

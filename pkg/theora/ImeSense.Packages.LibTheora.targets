@@ -20,23 +20,34 @@
         <NuGetPlatform>x64</NuGetPlatform>
     </PropertyGroup>
 
+    <PropertyGroup Label="UserMacros">
+        <LIBTHEORA_VERSION>1.1.1</LIBTHEORA_VERSION>
+    </PropertyGroup>
+
     <PropertyGroup>
-        <LibVorbis-BinPath>$(MSBuildThisFileDirectory)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-BinPath>
-        <LibVorbis-LibPath>$(MSBuildThisFileDirectory)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibVorbis-LibPath>
+        <LibTheora-RootPath>$(MSBuildThisFileDirectory)\..\..\native</LibTheora-RootPath>
+        <LibTheora-BinPath>$(LibTheora-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibTheora-BinPath>
+        <LibTheora-LibPath>$(LibTheora-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibTheora-LibPath>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(LibTheora-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
 
         <Link>
-            <AdditionalLibraryDirectories>$(LibVorbis-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-            <AdditionalDependencies>libvorbisfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalLibraryDirectories>$(LibTheora-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <ReferenceCopyLocalPaths Include="$(LibVorbis-BinPath)\libvorbisfile.dll" />
+        <ReferenceCopyLocalPaths Include="$(LibTheora-BinPath)\libtheora.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <BuildMacro Include="LIBTHEORA_VERSION">
+            <Value>$(LIBTHEORA_VERSION)</Value>
+        </BuildMacro>
     </ItemGroup>
 </Project>

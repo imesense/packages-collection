@@ -1,2 +1,2 @@
 :: Pack library
-nuget pack %~dp0\ImeSense.Packages.LibVorbis.nuspec -OutputDirectory ..
+nuget pack ImeSense.Packages.LibVorbis.nuspec -OutputDirectory ..
