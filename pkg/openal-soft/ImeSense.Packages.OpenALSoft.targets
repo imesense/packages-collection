@@ -3,7 +3,10 @@
     <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
         <NuGetConfiguration>Debug</NuGetConfiguration>
     </PropertyGroup>
-    <PropertyGroup Label="Release" Condition="'$(Configuration.ToLower())' == 'release'">
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
         <NuGetConfiguration>Release</NuGetConfiguration>
     </PropertyGroup>
 
@@ -18,25 +21,24 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <SoftOal-BinPath>$(MSBuildThisFileDirectory)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</SoftOal-BinPath>
-        <SoftOal-LibPath>$(MSBuildThisFileDirectory)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</SoftOal-LibPath>
+        <OpenAL32-RootPath>$(MSBuildThisFileDirectory)\..\..\native</OpenAL32-RootPath>
+        <OpenAL32-BinPath>$(OpenAL32-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</OpenAL32-BinPath>
+        <OpenAL32-LibPath>$(OpenAL32-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</OpenAL32-LibPath>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(OpenAL32-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
             <PreprocessorDefinitions>HAS_OPENAL_SOFT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
         </ClCompile>
-    </ItemDefinitionGroup>
 
-    <ItemDefinitionGroup>
         <Link>
-            <AdditionalLibraryDirectories>$(SoftOal-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-            <AdditionalDependencies>soft_oal.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalLibraryDirectories>$(OpenAL32-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
 
     <ItemGroup>
-        <ReferenceCopyLocalPaths Include="$(SoftOal-BinPath)\soft_oal.dll" />
+        <ReferenceCopyLocalPaths Include="$(OpenAL32-BinPath)\OpenAL32.dll" />
     </ItemGroup>
 </Project>

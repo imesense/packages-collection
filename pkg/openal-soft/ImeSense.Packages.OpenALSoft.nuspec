@@ -2,13 +2,14 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.OpenALSoft</id>
-        <version>1.23.1</version>
+        <version>1.23.1.1</version>
         <title>OpenAL Soft</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="file">COPYING</license>
         <readme>README.md</readme>
         <projectUrl>https://openal-soft.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
         <description>OpenAL is a cross-platform 3D audio API</description>
         <releaseNotes>openal-soft-1.23.1:
 
@@ -52,35 +53,20 @@
 
         <file src="..\..\dep\openal-soft\build\Win32\Debug\OpenAL32.dll" target="native\bin\Win32\Debug\" />
         <file src="..\..\dep\openal-soft\build\Win32\Debug\OpenAL32.pdb" target="native\bin\Win32\Debug\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Debug\soft_oal.dll" target="native\bin\Win32\Debug\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Debug\soft_oal.pdb" target="native\bin\Win32\Debug\" />
         <file src="..\..\dep\openal-soft\build\Win32\Release\OpenAL32.dll" target="native\bin\Win32\Release\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Release\soft_oal.dll" target="native\bin\Win32\Release\" />
         <file src="..\..\dep\openal-soft\build\x64\Debug\OpenAL32.dll" target="native\bin\x64\Debug\" />
         <file src="..\..\dep\openal-soft\build\x64\Debug\OpenAL32.pdb" target="native\bin\x64\Debug\" />
-        <file src="..\..\dep\openal-soft\build\x64\Debug\soft_oal.dll" target="native\bin\x64\Debug\" />
-        <file src="..\..\dep\openal-soft\build\x64\Debug\soft_oal.pdb" target="native\bin\x64\Debug\" />
         <file src="..\..\dep\openal-soft\build\x64\Release\OpenAL32.dll" target="native\bin\x64\Release\" />
-        <file src="..\..\dep\openal-soft\build\x64\Release\soft_oal.dll" target="native\bin\x64\Release\" />
 
         <file src="..\..\dep\openal-soft\build\Win32\Debug\OpenAL32.lib" target="native\lib\Win32\Debug\" />
         <file src="..\..\dep\openal-soft\build\Win32\Debug\OpenAL32.exp" target="native\lib\Win32\Debug\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Debug\soft_oal.lib" target="native\lib\Win32\Debug\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Debug\soft_oal.exp" target="native\lib\Win32\Debug\" />
         <file src="..\..\dep\openal-soft\build\Win32\Release\OpenAL32.lib" target="native\lib\Win32\Release\" />
         <file src="..\..\dep\openal-soft\build\Win32\Release\OpenAL32.exp" target="native\lib\Win32\Release\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Release\soft_oal.lib" target="native\lib\Win32\Release\" />
-        <file src="..\..\dep\openal-soft\build\Win32\Release\soft_oal.exp" target="native\lib\Win32\Release\" />
         <file src="..\..\dep\openal-soft\build\x64\Debug\OpenAL32.lib" target="native\lib\x64\Debug\" />
         <file src="..\..\dep\openal-soft\build\x64\Debug\OpenAL32.exp" target="native\lib\x64\Debug\" />
-        <file src="..\..\dep\openal-soft\build\x64\Debug\soft_oal.lib" target="native\lib\x64\Debug\" />
-        <file src="..\..\dep\openal-soft\build\x64\Debug\soft_oal.exp" target="native\lib\x64\Debug\" />
         <file src="..\..\dep\openal-soft\build\x64\Release\OpenAL32.lib" target="native\lib\x64\Release\" />
         <file src="..\..\dep\openal-soft\build\x64\Release\OpenAL32.exp" target="native\lib\x64\Release\" />
-        <file src="..\..\dep\openal-soft\build\x64\Release\soft_oal.lib" target="native\lib\x64\Release\" />
-        <file src="..\..\dep\openal-soft\build\x64\Release\soft_oal.exp" target="native\lib\x64\Release\" />
 
-        <file src="OpenAL32.targets" target="native\" />
-        <file src="SoftOal.targets" target="native\" />
+        <file src="ImeSense.Packages.OpenALSoft.targets" target="build\native\" />
     </files>
 </package>
