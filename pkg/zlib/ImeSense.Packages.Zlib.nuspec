@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ImeSense.Packages.Zlib</id>
+        <version>1.2.13</version>
+        <title>zlib</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.zlib.net</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>A massively spiffy yet delicately unobtrusive compression library</description>
+        <releaseNotes>Changes in 1.2.13 (13 Oct 2022)
+            - Fix configure issue that discarded provided CC definition
+            - Correct incorrect inputs provided to the CRC functions
+            - Repair prototypes and exporting of new CRC functions
+            - Fix inflateBack to detect invalid input with distances too far
+            - Have infback() deliver all of the available output up to any error
+            - Fix a bug when getting a gzip header extra field with inflate()
+            - Fix bug in block type selection when Z_FIXED used
+            - Tighten deflateBound bounds
+            - Remove deleted assembler code references
+            - Various portability and appearance improvements</releaseNotes>
+        <copyright>&#169; 1995-2022 Jean-loup Gailly and Mark Adler</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\dep\zlib\README.md" target="README.md" />
+        <file src="..\..\dep\zlib\LICENSE" target="LICENSE" />
+
+        <file src="..\..\dep\zlib\*.h" target="native\include\" />
+        <file src="..\..\dep\zlib\build\x64\zconf.h" target="native\include\" />
+
+        <file src="..\..\dep\zlib\build\Win32\Debug\zlibd.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Debug\zlibd.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Debug\minigzip.exe" target="native\bin\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Debug\minigzip.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Release\zlib.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\dep\zlib\build\Win32\Release\minigzip.exe" target="native\bin\Win32\Release\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\zlibd.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\zlibd.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\minigzip.exe" target="native\bin\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\minigzip.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Release\zlib.dll" target="native\bin\x64\Release\" />
+        <file src="..\..\dep\zlib\build\x64\Release\minigzip.exe" target="native\bin\x64\Release\" />
+
+        <file src="..\..\dep\zlib\build\Win32\Debug\zlibd.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Debug\zlibd.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\dep\zlib\build\Win32\Release\zlib.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\dep\zlib\build\Win32\Release\zlib.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\zlibd.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Debug\zlibd.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\dep\zlib\build\x64\Release\zlib.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\dep\zlib\build\x64\Release\zlib.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.Zlib.targets" target="build\native\" />
+    </files>
+</package>
