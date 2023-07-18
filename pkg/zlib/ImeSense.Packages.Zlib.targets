@@ -48,9 +48,9 @@
     </ItemDefinitionGroup>
 
     <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
-        <ReferenceCopyLocalPaths Include="$(HbaoPlus-BinPath)\zlibd.dll" />
+        <ReferenceCopyLocalPaths Include="$(Zlib-BinPath)\zlibd.dll" />
     </ItemGroup>
     <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
-        <ReferenceCopyLocalPaths Include="$(HbaoPlus-BinPath)\zlib.dll" />
+        <ReferenceCopyLocalPaths Include="$(Zlib-BinPath)\zlib.dll" />
     </ItemGroup>
 </Project>
