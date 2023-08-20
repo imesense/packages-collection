@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.DiligentEngine</id>
-        <version>2.5.3</version>
+        <version>2.5.3.1</version>
         <title>Diligent Engine</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -42,21 +42,20 @@
         <file src="..\..\dep\DiligentEngine\build\Win32\install\Licenses\ThirdParty\DiligentCore\*.txt" target="license\" />
         <file src="..\..\dep\DiligentEngine\build\Win32\install\Licenses\ThirdParty\DiligentCore\*.md" target="license\" />
 
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Common\interface\*.hpp" target="native\include\DiligentCore\Common\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\Archiver\interface\*.hpp" target="native\include\DiligentCore\Graphics\Archiver\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsAccessories\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsAccessories\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngine\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngine\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngineD3D11\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3D11\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngineD3D12\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3D12\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngineD3DBase\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3DBase\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngineOpenGL\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineOpenGL\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsEngineVulkan\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineVulkan\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\GraphicsTools\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsTools\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Graphics\HLSL2GLSLConverterLib\interface\*.hpp" target="native\include\DiligentCore\Graphics\HLSL2GLSLConverterLib\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Platforms\interface\*.hpp" target="native\include\DiligentCore\Platforms\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Platforms\Basic\interface\*.hpp" target="native\include\DiligentCore\Platforms\Basic\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Platforms\Win32\interface\*.hpp" target="native\include\DiligentCore\Platforms\Win32\interface\" />
-        <file src="..\..\dep\DiligentEngine\build\Win32\install\include\DiligentCore\Primitives\interface\*.hpp" target="native\include\DiligentCore\Primitives\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Common\interface\*.hpp" target="native\include\DiligentCore\Common\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\Archiver\interface\*.hpp" target="native\include\DiligentCore\Graphics\Archiver\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsAccessories\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsAccessories\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngine\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngine\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngineD3D11\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3D11\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngineD3D12\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3D12\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngineD3DBase\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineD3DBase\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngineOpenGL\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineOpenGL\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsEngineVulkan\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsEngineVulkan\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Graphics\GraphicsTools\interface\*.hpp" target="native\include\DiligentCore\Graphics\GraphicsTools\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Platforms\interface\*.hpp" target="native\include\DiligentCore\Platforms\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Platforms\Basic\interface\*.hpp" target="native\include\DiligentCore\Platforms\Basic\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Platforms\Win32\interface\*.hpp" target="native\include\DiligentCore\Platforms\Win32\interface\" />
+        <file src="..\..\dep\DiligentEngine\DiligentCore\Primitives\interface\*.hpp" target="native\include\DiligentCore\Primitives\interface\" />
 
         <file src="..\..\dep\DiligentEngine\build\Win32\install\bin\DiligentCore\Debug\Archiver_32d.dll" target="native\bin\DiligentCore\Win32\Debug\" />
         <file src="..\..\dep\DiligentEngine\build\Win32\install\bin\DiligentCore\Debug\GraphicsEngineD3D11_32d.dll" target="native\bin\DiligentCore\Win32\Debug\" />
