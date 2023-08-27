@@ -1,0 +1,9 @@
+# Global attributes for forcing line endings normalization of specific files
+
+* text=auto
+
+# Package manifests and build scripts
+*.nuspec linguist-detectable
+*.targets linguist-detectable
+*.nuspec linguist-language=XML
+*.targets linguist-language=XML
