@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.OpenALSoft</id>
+        <version>1.23.1.2</version>
+        <title>OpenAL Soft</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">COPYING</license>
+        <readme>README.md</readme>
+        <projectUrl>https://openal-soft.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>OpenAL is a cross-platform 3D audio API</description>
+        <releaseNotes>openal-soft-1.23.1:
+
+    Implemented the AL_SOFT_UHJ_ex extension.
+
+    Implemented the AL_SOFT_buffer_length_query extension.
+
+    Implemented the AL_SOFT_source_start_delay extension.
+
+    Implemented the AL_EXT_STATIC_BUFFER extension.
+
+    Fixed compiling with certain older versions of GCC.
+
+    Fixed compiling as a submodule.
+
+    Fixed compiling with newer versions of Oboe.
+
+    Improved EAX effect version switching.
+
+    Improved the quality of the reverb modulator.
+
+    Improved performance of the cubic resampler.
+
+    Added a compatibility option to restore AL_SOFT_buffer_sub_data. The option
+    disables AL_EXT_SOURCE_RADIUS due to incompatibility.
+
+    Reduced CPU usage when EAX is initialized and FXSlot0 or FXSlot1 are not
+    used.
+
+    Reduced memory usage for ADPCM buffer formats. They're no longer converted
+    to 16-bit samples on load.</releaseNotes>
+        <copyright>&#169; 2007-2023 Christopher Robinson and OpenAL Soft contributors</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\COPYING" target="COPYING" />
+
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\include\AL\*.h" target="native\include\AL\" />
+
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Debug\OpenAL32.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Debug\OpenAL32.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Release\OpenAL32.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Debug\OpenAL32.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Debug\OpenAL32.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Release\OpenAL32.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Debug\OpenAL32.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Debug\OpenAL32.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Release\OpenAL32.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\Win32\Release\OpenAL32.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Debug\OpenAL32.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Debug\OpenAL32.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Release\OpenAL32.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Release\OpenAL32.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.OpenALSoft.targets" target="build\native\" />
+    </files>
+</package>
