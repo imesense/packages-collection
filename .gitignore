@@ -3,5 +3,5 @@
 # Dependencies
 dep/
 
-# Packages
-*.nupkg
+# Build results
+out/
