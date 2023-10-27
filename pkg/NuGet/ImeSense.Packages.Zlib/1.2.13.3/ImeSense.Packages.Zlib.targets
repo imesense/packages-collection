@@ -10,10 +10,7 @@
         <NuGetConfiguration>Release</NuGetConfiguration>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Platform)' == 'Win32'">
-        <NuGetPlatform>Win32</NuGetPlatform>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
         <NuGetPlatform>Win32</NuGetPlatform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Platform)' == 'x64'">
