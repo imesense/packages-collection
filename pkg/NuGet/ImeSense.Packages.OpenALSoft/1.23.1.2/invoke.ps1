@@ -2,7 +2,6 @@ $Source      = "https://github.com/kcat/openal-soft.git"
 $Branch      = "1.23.1"
 $Destination = "dep/kcat/openal-soft/$Branch"
 
-$Root   = "../../../.."
 $Output = "out"
 
 function Invoke-Get {

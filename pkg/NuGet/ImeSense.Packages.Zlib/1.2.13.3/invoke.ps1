@@ -17,9 +17,7 @@ function Invoke-Patch {
     git reset --hard $Commit
     Set-Location $Root
 
-    if (!(Test-Path -Path "$Destination/README" -ErrorAction SilentlyContinue)) {
-        Copy-Item -Path $Destination/README -Destination $Destination/README.md
-    }
+    Copy-Item -Path $Destination/README -Destination $Destination/README.md
 }
 
 function Invoke-Build {
