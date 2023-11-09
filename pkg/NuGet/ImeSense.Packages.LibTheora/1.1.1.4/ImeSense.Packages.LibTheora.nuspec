@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ImeSense.Packages.LibTheora</id>
+        <version>1.1.1.4</version>
+        <title>LibTheora</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">COPYING</license>
+        <icon>img\icon.png</icon>
+        <readme>README.md</readme>
+        <projectUrl>https://www.xiph.org/theora</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Theora video codec reference implementation</description>
+        <releaseNotes>libtheora 1.1.1 (2009 October 1)
+
+ - Fix problems with MSVC inline assembly
+ - Add the missing encoder_disabled.c to the distribution
+ - build updates: autogen.sh should work better after switching systems
+   and the MSVC project now defaults to the dynamic runtime library
+ - Namespace some variables to avoid conflicts on wince.</releaseNotes>
+        <copyright>&#169; 2002-2009 Xiph.Org Foundation</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <dependency id="ImeSense.Packages.LibOgg" version="1.3.5.5" />
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\COPYING" target="COPYING" />
+
+        <file src="..\..\..\..\dep\xiph\ogg\v1.3.5\doc\white-xifish.png" target="img\icon.png" />
+
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\include\theora\*.h" target="native\include\theora\" />
+
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Debug\theora.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Debug\theora.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Debug\theora.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Debug\theora.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Release_SSE2\theora.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Release_SSE2\theora.pdb" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Release_SSE2\theora.dll" target="native\bin\x64\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Release_SSE2\theora.pdb" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Debug\theora.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Debug\theora.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Debug\theora.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Debug\theora.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Release_SSE2\theora.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\Win32\Release_SSE2\theora.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Release_SSE2\theora.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\..\..\dep\xiph\theora\v1.1.1\win32\VS2008\x64\Release_SSE2\theora.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.LibTheora.targets" target="build\native\" />
+    </files>
+</package>

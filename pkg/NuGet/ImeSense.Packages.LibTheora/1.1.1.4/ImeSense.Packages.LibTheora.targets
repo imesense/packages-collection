@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>Win32</NuGetPlatform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'x64'">
+        <NuGetPlatform>x64</NuGetPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup Label="UserMacros">
+        <LIBTHEORA_VERSION>1.1.1</LIBTHEORA_VERSION>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <LibTheora-RootPath>$(MSBuildThisFileDirectory)\..\..\native</LibTheora-RootPath>
+        <LibTheora-BinPath>$(LibTheora-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LibTheora-BinPath>
+        <LibTheora-LibPath>$(LibTheora-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LibTheora-LibPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(LibTheora-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(LibTheora-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(LibTheora-BinPath)\theora.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <BuildMacro Include="LIBTHEORA_VERSION">
+            <Value>$(LIBTHEORA_VERSION)</Value>
+        </BuildMacro>
+    </ItemGroup>
+</Project>

@@ -1,0 +1,399 @@
+From 94d52ac5e6f47b8538bc892c411c32799fd9b335 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Thu, 9 Nov 2023 21:34:24 +0300
+Subject: [PATCH 2/2] Fix building issues
+
+---
+ examples/encoder_example.c                    |  8 ------
+ lib/theora.def                                |  2 +-
+ win32/VS2008/.gitignore                       |  3 +++
+ .../dump_video/dump_video_dynamic.vcxproj     | 16 ++++++------
+ .../encoder_example_dynamic.vcxproj           | 16 ++++++------
+ win32/VS2008/libogg.props                     | 12 ++++++---
+ .../libtheora/libtheora_dynamic.vcxproj       | 25 +++++++++++++------
+ win32/VS2008/libvorbis.props                  | 12 ++++++---
+ 8 files changed, 55 insertions(+), 39 deletions(-)
+ create mode 100644 win32/VS2008/.gitignore
+
+diff --git a/examples/encoder_example.c b/examples/encoder_example.c
+index 94fc050..8962079 100644
+--- a/examples/encoder_example.c
++++ b/examples/encoder_example.c
+@@ -51,14 +51,6 @@
+ /*supply missing headers and functions to Win32. going to hell, I know*/
+ #include <fcntl.h>
+ #include <io.h>
+-
+-static double rint(double x)
+-{
+-  if (x < 0.0)
+-    return (double)(int)(x - 0.5);
+-  else
+-    return (double)(int)(x + 0.5);
+-}
+ #endif
+ 
+ const char *optstring = "b:e:o:a:A:v:V:s:S:f:F:ck:d:z:\1\2\3\4";
+diff --git a/lib/theora.def b/lib/theora.def
+index 22e4d65..48c1c07 100644
+--- a/lib/theora.def
++++ b/lib/theora.def
+@@ -1,4 +1,4 @@
+-LIBRARY	libtheora
++LIBRARY theora
+ EXPORTS
+ 	theora_version_string
+ 	theora_version_number
+diff --git a/win32/VS2008/.gitignore b/win32/VS2008/.gitignore
+new file mode 100644
+index 0000000..de36036
+--- /dev/null
++++ b/win32/VS2008/.gitignore
+@@ -0,0 +1,3 @@
++.vs/
++Win32/
++x64/
+diff --git a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+index 605e55c..774c758 100644
+--- a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
++++ b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
+@@ -180,7 +180,7 @@
+       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -205,7 +205,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -224,7 +224,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -248,7 +248,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -270,7 +270,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -294,7 +294,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -316,7 +316,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -340,7 +340,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+diff --git a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+index 500b68e..0c67aa3 100644
+--- a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
++++ b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
+@@ -188,7 +188,7 @@
+       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -213,7 +213,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>true</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -235,7 +235,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -262,7 +262,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -287,7 +287,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -314,7 +314,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -339,7 +339,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+@@ -366,7 +366,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;vorbis.lib;theora.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\libvorbis\win32\VS2008\$(Platform)\$(Configuration);..\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <GenerateDebugInformation>false</GenerateDebugInformation>
+       <SubSystem>Console</SubSystem>
+diff --git a/win32/VS2008/libogg.props b/win32/VS2008/libogg.props
+index 467a216..77730cc 100644
+--- a/win32/VS2008/libogg.props
++++ b/win32/VS2008/libogg.props
+@@ -3,17 +3,23 @@
+   <ImportGroup Label="PropertySheets">
+   </ImportGroup>
+   <PropertyGroup Label="UserMacros">
+-    <LIBOGG_VERSION>1.1.4</LIBOGG_VERSION>
++    <LIBOGG_VERSION>1.3.5</LIBOGG_VERSION>
+   </PropertyGroup>
+   <PropertyGroup>
+     <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
+   </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration.ToLower())' == 'debug'">
++    <LibOgg_Configuration>Debug</LibOgg_Configuration>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration.ToLower())' != 'debug'">
++    <LibOgg_Configuration>Release</LibOgg_Configuration>
++  </PropertyGroup>
+   <ItemDefinitionGroup>
+     <ClCompile>
+-      <AdditionalIncludeDirectories>..\..\..\..\libogg-$(LIBOGG_VERSION)\include;..\..\..\..\ogg\include;..\..\..\..\..\..\..\core\ogg\libogg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\..\..\ogg\v$(LIBOGG_VERSION)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ClCompile>
+     <Link>
+-      <AdditionalLibraryDirectories>..\..\..\..\libogg-$(LIBOGG_VERSION)\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\ogg\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\..\..\..\core\ogg\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)..\..\..\..\ogg\v$(LIBOGG_VERSION)\build\$(Platform)\$(LibOgg_Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+index b4b6849..701e7f3 100644
+--- a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
++++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
+@@ -40,6 +40,7 @@
+     <ProjectGuid>{653F3841-3F26-49B9-AFCF-091DB4B67031}</ProjectGuid>
+     <RootNamespace>libtheora</RootNamespace>
+     <Keyword>Win32Proj</Keyword>
++    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+   </PropertyGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
+@@ -138,34 +139,42 @@
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|Win32'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE|x64'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|x64'">
+     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+     <IntDir>$(Platform)\$(Configuration)\</IntDir>
++    <TargetName>theora</TargetName>
+   </PropertyGroup>
+   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+     <ClCompile>
+@@ -180,7 +189,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -203,7 +212,7 @@
+       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -229,7 +238,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -258,7 +267,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -285,7 +294,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -314,7 +323,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -341,7 +350,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+@@ -370,7 +379,7 @@
+       <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <AdditionalLibraryDirectories>..\..\..\..\libogg\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+       <ModuleDefinitionFile>..\..\..\lib\theora.def </ModuleDefinitionFile>
+       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+diff --git a/win32/VS2008/libvorbis.props b/win32/VS2008/libvorbis.props
+index 0d7ba73..9e70450 100644
+--- a/win32/VS2008/libvorbis.props
++++ b/win32/VS2008/libvorbis.props
+@@ -3,17 +3,23 @@
+   <ImportGroup Label="PropertySheets">
+   </ImportGroup>
+   <PropertyGroup Label="UserMacros">
+-    <LIBVORBIS_VERSION>1.2.2</LIBVORBIS_VERSION>
++    <LIBVORBIS_VERSION>1.3.7</LIBVORBIS_VERSION>
+   </PropertyGroup>
+   <PropertyGroup>
+     <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
+   </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration.ToLower())' == 'debug'">
++    <LibVorbis_Configuration>Debug</LibVorbis_Configuration>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration.ToLower())' != 'debug'">
++    <LibVorbis_Configuration>Release</LibVorbis_Configuration>
++  </PropertyGroup>
+   <ItemDefinitionGroup>
+     <ClCompile>
+-      <AdditionalIncludeDirectories>..\..\..\..\libvorbis-$(LIBVORBIS_VERSION)\include;..\..\..\..\vorbis\include;..\..\..\..\..\..\vorbis\libs\libvorbis\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\..\..\..\vorbis\v$(LIBVORBIS_VERSION)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ClCompile>
+     <Link>
+-      <AdditionalLibraryDirectories>..\..\..\..\libvorbis-$(LIBVORBIS_VERSION)\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\vorbis\win32\VS2008\$(Platform)\$(Configuration);..\..\..\..\..\..\vorbis\libs\libvorbis\win32\VS2008\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)..\..\..\..\vorbis\v$(LIBVORBIS_VERSION)\build\$(Platform)\lib\$(LibVorbis_Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+-- 
+2.42.0.windows.2
+

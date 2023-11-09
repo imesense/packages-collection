@@ -1,17 +1,17 @@
-From 72e0f445004e4a2951d29551f178e44f9f90f17a Mon Sep 17 00:00:00 2001
+From 3ae1a8c0afb5e766094d8a9a52b344c3ef588d41 Mon Sep 17 00:00:00 2001
 From: acidicMercury8 <acidicmercury8@outlook.com>
-Date: Tue, 9 May 2023 12:03:48 +0300
-Subject: [PATCH 1/4] Upgrade libtheora_dynamic solution to Visual Studio 2022
+Date: Thu, 9 Nov 2023 17:57:57 +0300
+Subject: [PATCH 1/2] Migrate libtheora_dynamic solution to Visual Studio 2022
 
 ---
- .../dump_video/dump_video_dynamic.vcxproj     | 380 +++++++++++++
- .../encoder_example_dynamic.vcxproj           | 402 ++++++++++++++
+ .../dump_video/dump_video_dynamic.vcxproj     | 371 +++++++++++++
+ .../encoder_example_dynamic.vcxproj           | 393 ++++++++++++++
  win32/VS2008/libogg.props                     |  24 +
- .../libtheora/libtheora_dynamic.vcxproj       | 511 ++++++++++++++++++
+ .../libtheora/libtheora_dynamic.vcxproj       | 502 ++++++++++++++++++
  .../libtheora_dynamic.vcxproj.filters         | 195 +++++++
  win32/VS2008/libtheora_dynamic.sln            |  15 +-
  win32/VS2008/libvorbis.props                  |  24 +
- 7 files changed, 1546 insertions(+), 5 deletions(-)
+ 7 files changed, 1519 insertions(+), 5 deletions(-)
  create mode 100644 win32/VS2008/dump_video/dump_video_dynamic.vcxproj
  create mode 100644 win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
  create mode 100644 win32/VS2008/libogg.props
@@ -21,10 +21,10 @@ Subject: [PATCH 1/4] Upgrade libtheora_dynamic solution to Visual Studio 2022
 
 diff --git a/win32/VS2008/dump_video/dump_video_dynamic.vcxproj b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
 new file mode 100644
-index 0000000..6a9147e
+index 0000000..605e55c
 --- /dev/null
 +++ b/win32/VS2008/dump_video/dump_video_dynamic.vcxproj
-@@ -0,0 +1,380 @@
+@@ -0,0 +1,371 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 +  <ItemGroup Label="ProjectConfigurations">
@@ -67,7 +67,6 @@ index 0000000..6a9147e
 +    <ProjectGuid>{1A8CA99D-B6C7-48CB-B263-6CECDADF5FBF}</ProjectGuid>
 +    <RootNamespace>dump_video</RootNamespace>
 +    <Keyword>Win32Proj</Keyword>
-+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
 +  </PropertyGroup>
 +  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
@@ -153,7 +152,7 @@ index 0000000..6a9147e
 +  </ImportGroup>
 +  <PropertyGroup Label="UserMacros" />
 +  <PropertyGroup>
-+    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++    <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 +    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -206,7 +205,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -232,7 +230,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -252,7 +249,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -277,7 +273,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -300,7 +295,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -325,7 +319,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -348,7 +341,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -373,7 +365,6 @@ index 0000000..6a9147e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -408,10 +399,10 @@ index 0000000..6a9147e
 \ No newline at end of file
 diff --git a/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
 new file mode 100644
-index 0000000..1db901e
+index 0000000..500b68e
 --- /dev/null
 +++ b/win32/VS2008/encoder_example/encoder_example_dynamic.vcxproj
-@@ -0,0 +1,402 @@
+@@ -0,0 +1,393 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 +  <ItemGroup Label="ProjectConfigurations">
@@ -454,7 +445,6 @@ index 0000000..1db901e
 +    <ProjectGuid>{AD710263-EBFA-4388-BAA9-AD73C32AFF26}</ProjectGuid>
 +    <RootNamespace>encoder_example</RootNamespace>
 +    <Keyword>Win32Proj</Keyword>
-+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
 +  </PropertyGroup>
 +  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
@@ -548,7 +538,7 @@ index 0000000..1db901e
 +  </ImportGroup>
 +  <PropertyGroup Label="UserMacros" />
 +  <PropertyGroup>
-+    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++    <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 +    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -601,7 +591,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -627,7 +616,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -650,7 +638,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -678,7 +665,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -704,7 +690,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -732,7 +717,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -758,7 +742,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -786,7 +769,6 @@ index 0000000..1db901e
 +      <PrecompiledHeader />
 +      <WarningLevel>Level4</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;libvorbis.lib;libtheora.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -817,7 +799,7 @@ index 0000000..1db901e
 \ No newline at end of file
 diff --git a/win32/VS2008/libogg.props b/win32/VS2008/libogg.props
 new file mode 100644
-index 0000000..5069ada
+index 0000000..467a216
 --- /dev/null
 +++ b/win32/VS2008/libogg.props
 @@ -0,0 +1,24 @@
@@ -829,7 +811,7 @@ index 0000000..5069ada
 +    <LIBOGG_VERSION>1.1.4</LIBOGG_VERSION>
 +  </PropertyGroup>
 +  <PropertyGroup>
-+    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++    <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
 +  </PropertyGroup>
 +  <ItemDefinitionGroup>
 +    <ClCompile>
@@ -848,10 +830,10 @@ index 0000000..5069ada
 \ No newline at end of file
 diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
 new file mode 100644
-index 0000000..721d471
+index 0000000..b4b6849
 --- /dev/null
 +++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj
-@@ -0,0 +1,511 @@
+@@ -0,0 +1,502 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 +  <ItemGroup Label="ProjectConfigurations">
@@ -894,7 +876,6 @@ index 0000000..721d471
 +    <ProjectGuid>{653F3841-3F26-49B9-AFCF-091DB4B67031}</ProjectGuid>
 +    <RootNamespace>libtheora</RootNamespace>
 +    <Keyword>Win32Proj</Keyword>
-+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
 +  </PropertyGroup>
 +  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_SSE2|Win32'" Label="Configuration">
@@ -988,7 +969,7 @@ index 0000000..721d471
 +  </ImportGroup>
 +  <PropertyGroup Label="UserMacros" />
 +  <PropertyGroup>
-+    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++    <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
 +  </PropertyGroup>
 +  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 +    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -1033,7 +1014,6 @@ index 0000000..721d471
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1057,7 +1037,6 @@ index 0000000..721d471
 +      <PrecompiledHeader />
 +      <WarningLevel>Level3</WarningLevel>
 +      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1084,7 +1063,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1114,7 +1092,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1142,7 +1119,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1172,7 +1148,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1200,7 +1175,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1230,7 +1204,6 @@ index 0000000..721d471
 +      <DebugInformationFormat />
 +      <CompileAs>CompileAsC</CompileAs>
 +      <DisableSpecificWarnings>4244;4267;4057;4100;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
 +    </ClCompile>
 +    <Link>
 +      <AdditionalDependencies>libogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -1366,7 +1339,7 @@ index 0000000..721d471
 \ No newline at end of file
 diff --git a/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
 new file mode 100644
-index 0000000..891f88c
+index 0000000..bf301fe
 --- /dev/null
 +++ b/win32/VS2008/libtheora/libtheora_dynamic.vcxproj.filters
 @@ -0,0 +1,195 @@
@@ -1374,25 +1347,25 @@ index 0000000..891f88c
 +<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 +  <ItemGroup>
 +    <Filter Include="include">
-+      <UniqueIdentifier>{f38cdf35-f283-4382-827a-80561298750c}</UniqueIdentifier>
++      <UniqueIdentifier>{df6f8240-9410-4fc6-8feb-ce3dbcec37b5}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="include\theora">
-+      <UniqueIdentifier>{00b55a8a-5f38-414d-a26a-a93c36c8607a}</UniqueIdentifier>
++      <UniqueIdentifier>{c14a0b08-dcbc-48e1-b230-dd41e352de13}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="lib">
-+      <UniqueIdentifier>{261fd833-5592-47e4-9893-71419d269a3b}</UniqueIdentifier>
++      <UniqueIdentifier>{8ea2a886-c208-4510-b500-250763ea6566}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="lib\enc">
-+      <UniqueIdentifier>{87fe5aee-87a4-4532-a029-cba7ca33e694}</UniqueIdentifier>
++      <UniqueIdentifier>{95f8a29a-ad26-4041-810f-45c85b7e611f}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="lib\enc\x86_vc">
-+      <UniqueIdentifier>{3f38ee1c-1930-4b52-b136-e18d36c8d2a8}</UniqueIdentifier>
++      <UniqueIdentifier>{81fd4ef7-dbda-4c4c-9cd0-abbb4fe556d7}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="lib\dec">
-+      <UniqueIdentifier>{dec5c1b5-b100-497d-bfa4-b00e8d2b974a}</UniqueIdentifier>
++      <UniqueIdentifier>{585fce28-e661-406e-a9f4-434daa566f31}</UniqueIdentifier>
 +    </Filter>
 +    <Filter Include="lib\dec\x86_vc">
-+      <UniqueIdentifier>{5300ca32-e937-4409-b596-f9e820786860}</UniqueIdentifier>
++      <UniqueIdentifier>{4d899403-f4f3-4aa5-883a-115594981948}</UniqueIdentifier>
 +    </Filter>
 +  </ItemGroup>
 +  <ItemGroup>
@@ -1567,7 +1540,7 @@ index 0000000..891f88c
 +</Project>
 \ No newline at end of file
 diff --git a/win32/VS2008/libtheora_dynamic.sln b/win32/VS2008/libtheora_dynamic.sln
-index d4bde5d..64ab2f1 100644
+index d4bde5d..e4611bd 100644
 --- a/win32/VS2008/libtheora_dynamic.sln
 +++ b/win32/VS2008/libtheora_dynamic.sln
 @@ -1,11 +1,13 @@
@@ -1577,7 +1550,7 @@ index d4bde5d..64ab2f1 100644
 -Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtheora", "libtheora\libtheora_dynamic.vcproj", "{653F3841-3F26-49B9-AFCF-091DB4B67031}"
 +Microsoft Visual Studio Solution File, Format Version 12.00
 +# Visual Studio Version 17
-+VisualStudioVersion = 17.5.33627.172
++VisualStudioVersion = 17.7.34221.43
 +MinimumVisualStudioVersion = 10.0.40219.1
 +Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtheora", "libtheora\libtheora_dynamic.vcxproj", "{653F3841-3F26-49B9-AFCF-091DB4B67031}"
  EndProject
@@ -1594,12 +1567,12 @@ index d4bde5d..64ab2f1 100644
  		HideSolutionNode = FALSE
  	EndGlobalSection
 +	GlobalSection(ExtensibilityGlobals) = postSolution
-+		SolutionGuid = {B499A21D-29EF-48F4-AB77-932A40D6C869}
++		SolutionGuid = {C5BAB385-5ED9-43A4-A44E-685B31F33AE7}
 +	EndGlobalSection
  EndGlobal
 diff --git a/win32/VS2008/libvorbis.props b/win32/VS2008/libvorbis.props
 new file mode 100644
-index 0000000..135ea73
+index 0000000..0d7ba73
 --- /dev/null
 +++ b/win32/VS2008/libvorbis.props
 @@ -0,0 +1,24 @@
@@ -1611,7 +1584,7 @@ index 0000000..135ea73
 +    <LIBVORBIS_VERSION>1.2.2</LIBVORBIS_VERSION>
 +  </PropertyGroup>
 +  <PropertyGroup>
-+    <_ProjectFileVersion>17.0.33516.290</_ProjectFileVersion>
++    <_ProjectFileVersion>17.0.34221.43</_ProjectFileVersion>
 +  </PropertyGroup>
 +  <ItemDefinitionGroup>
 +    <ClCompile>
@@ -1629,5 +1602,5 @@ index 0000000..135ea73
 +</Project>
 \ No newline at end of file
 -- 
-2.40.0.windows.1
+2.42.0.windows.2
 
