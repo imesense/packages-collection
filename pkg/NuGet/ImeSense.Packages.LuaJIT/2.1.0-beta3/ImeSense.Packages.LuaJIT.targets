@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>x86</NuGetPlatform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'x64'">
+        <NuGetPlatform>x64</NuGetPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <LuaJIT-RootPath>$(MSBuildThisFileDirectory)\..\..\native</LuaJIT-RootPath>
+        <LuaJIT-BinPath>$(LuaJIT-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</LuaJIT-BinPath>
+        <LuaJIT-LibPath>$(LuaJIT-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</LuaJIT-LibPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(LuaJIT-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(LuaJIT-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(LuaJIT-BinPath)\lua51.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration.ToLower())' == 'debug'">
+        <ReferenceCopyLocalPaths Include="$(LuaJIT-BinPath)\lua51.pdb" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ImeSense.Packages.LuaJIT</id>
+        <version>2.1.0-beta3</version>
+        <title>LuaJIT</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">COPYRIGHT</license>
+        <readme>README.md</readme>
+        <projectUrl>http://luajit.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>LuaJIT is a Just-In-Time (JIT) compiler for the Lua programming language</description>
+        <releaseNotes>LuaJIT 2.1.0-beta3 — 2017-05-01
+
+- Rewrite memory block allocator.
+- Add various extension from Lua 5.2/5.3.
+- Remove old Lua 5.0 compatibility defines.
+- Set arg table before evaluating LUA_INIT and -e chunks.
+- Fix FOLD rules for math.abs() and FP negation.
+- Fix soft-float math.abs() and negation.
+- Fix formatting of some small denormals at low precision.
+- LJ_GC64: Add JIT compiler support.
+- x64/LJ_GC64: Add JIT compiler backend.
+- x86/x64: Generate BMI2 shifts and rotates, if available.
+- Windows/x86: Add full exception interoperability.
+- ARM64: Add big-endian support.
+- ARM64: Add JIT compiler backend.
+- MIPS: Fix TSETR barrier.
+- MIPS: Support MIPS16 interlinking.
+- MIPS soft-float: Fix code generation for HREF.
+- MIPS64: Add MIPS64 hard-float JIT compiler backend.
+- MIPS64: Add MIPS64 hard-float/soft-float support to interpreter.
+- FFI: Compile bitfield loads/stores.
+- Various fixes common with the 2.0 branch.</releaseNotes>
+        <copyright>&#169; 2005-2017 Mike Pall, &#169; 1994-2012 Lua.org, PUC-Rio</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\COPYRIGHT" target="COPYRIGHT" />
+
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\src\*.h" target="native\include\" />
+
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x86\lua51.dll" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x86\lua51.pdb" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x64\lua51.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x64\lua51.pdb" target="native\bin\x64\Debug\" />
+
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x86\lua51.dll" target="native\bin\x86\Release\" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x64\lua51.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x86\lua51.lib" target="native\lib\x86\Debug" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x86\lua51.exp" target="native\lib\x86\Debug" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x64\lua51.lib" target="native\lib\x64\Debug" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\debug\x64\lua51.exp" target="native\lib\x64\Debug" />
+
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x86\lua51.lib" target="native\lib\x86\Release" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x86\lua51.exp" target="native\lib\x86\Release" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x64\lua51.lib" target="native\lib\x64\Release" />
+        <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x64\lua51.exp" target="native\lib\x64\Release" />
+
+        <file src="ImeSense.Packages.LuaJIT.targets" target="build\native\" />
+    </files>
+</package>
