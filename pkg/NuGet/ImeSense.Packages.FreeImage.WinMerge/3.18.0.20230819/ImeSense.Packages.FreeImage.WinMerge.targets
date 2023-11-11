@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>x86</NuGetPlatform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'x64'">
+        <NuGetPlatform>x64</NuGetPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <FreeImage-RootPath>$(MSBuildThisFileDirectory)\..\..\native</FreeImage-RootPath>
+        <FreeImage-BinPath>$(FreeImage-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</FreeImage-BinPath>
+        <FreeImage-LibPath>$(FreeImage-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</FreeImage-LibPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(FreeImage-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(FreeImage-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <Link>
+            <AdditionalDependencies>FreeImaged.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <Link>
+            <AdditionalDependencies>FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(FreeImage-BinPath)\FreeImaged.dll" />
+        <ReferenceCopyLocalPaths Include="$(FreeImage-BinPath)\FreeImaged.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(FreeImage-BinPath)\FreeImage.dll" />
+    </ItemGroup>
+</Project>
