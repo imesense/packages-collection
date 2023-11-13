@@ -1,0 +1,55 @@
+name: Package request
+description: Suggest a component for packaging
+title: "[Package]: "
+labels: "enhancement"
+
+body:
+  # Package information
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: >
+        Name of requested package
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: >
+        Version of requested package
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: >
+        Link to sources or binaries of requested package
+    validations:
+      required: true
+
+  # Options
+  - type: dropdown
+    id: package-type
+    attributes:
+      label: Package type
+      options:
+        - NuGet (Native)
+    validations:
+      required: true
+  - type: textarea
+    id: build-options
+    attributes:
+      label: Build options
+      description: >
+        List of build options in free form if needed
+
+  # Descriptions
+  - type: textarea
+    id: formulation
+    attributes:
+      label: Formulation
+      description: >
+        Description of why a component is need to package
