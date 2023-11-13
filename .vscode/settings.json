@@ -1,3 +1,7 @@
 {
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "dotnet.defaultSolution": "disable",
+    "markdownlint.ignore": [
+        ".github/**.md"
+    ]
 }

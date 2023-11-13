@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "Custom Build Recipes"
+        }
+    ],
+    "settings": {
+        "cmake.configureOnOpen": false,
+        "dotnet.defaultSolution": "disable",
+        "markdownlint.ignore": [
+            ".github/**.md"
+        ]
+    }
+}
