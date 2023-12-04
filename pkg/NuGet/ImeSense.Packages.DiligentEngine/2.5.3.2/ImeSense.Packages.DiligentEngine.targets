@@ -10,11 +10,8 @@
         <NuGetConfiguration>Release</NuGetConfiguration>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Platform)' == 'Win32'">
-        <NuGetPlatform>Win32</NuGetPlatform>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Platform)' == 'x86'">
-        <NuGetPlatform>Win32</NuGetPlatform>
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>x86</NuGetPlatform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Platform)' == 'x64'">
         <NuGetPlatform>x64</NuGetPlatform>
@@ -36,22 +33,12 @@
         </Link>
     </ItemDefinitionGroup>
 
-    <ItemDefinitionGroup Condition="'$(Platform)' == 'Win32' And '$(Configuration.ToLower())' == 'debug'">
+    <ItemDefinitionGroup Condition="('$(Platform)' == 'Win32' Or '$(Platform)' == 'x86') And '$(Configuration.ToLower())' == 'debug'">
         <Link>
             <AdditionalDependencies>Archiver_32d.lib;GraphicsEngineD3D11_32d.lib;GraphicsEngineD3D12_32d.lib;GraphicsEngineOpenGL_32d.lib;GraphicsEngineVk_32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
-    <ItemDefinitionGroup Condition="'$(Platform)' == 'x86' And '$(Configuration.ToLower())' == 'debug'">
-        <Link>
-            <AdditionalDependencies>Archiver_32d.lib;GraphicsEngineD3D11_32d.lib;GraphicsEngineD3D12_32d.lib;GraphicsEngineOpenGL_32d.lib;GraphicsEngineVk_32d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-        </Link>
-    </ItemDefinitionGroup>
-    <ItemDefinitionGroup Condition="'$(Platform)' == 'Win32' And '$(Configuration.ToLower())' == 'release'">
-        <Link>
-            <AdditionalDependencies>Archiver_32r.lib;GraphicsEngineD3D11_32r.lib;GraphicsEngineD3D12_32r.lib;GraphicsEngineOpenGL_32r.lib;GraphicsEngineVk_32r.lib;%(AdditionalDependencies)</AdditionalDependencies>
-        </Link>
-    </ItemDefinitionGroup>
-    <ItemDefinitionGroup Condition="'$(Platform)' == 'x86' And '$(Configuration.ToLower())' == 'release'">
+    <ItemDefinitionGroup Condition="('$(Platform)' == 'Win32' Or '$(Platform)' == 'x86') And '$(Configuration.ToLower())' == 'release'">
         <Link>
             <AdditionalDependencies>Archiver_32r.lib;GraphicsEngineD3D11_32r.lib;GraphicsEngineD3D12_32r.lib;GraphicsEngineOpenGL_32r.lib;GraphicsEngineVk_32r.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
@@ -67,28 +54,14 @@
         </Link>
     </ItemDefinitionGroup>
 
-    <ItemGroup Condition="'$(Platform)' == 'Win32' And '$(Configuration.ToLower())' == 'debug'">
+    <ItemGroup Condition="('$(Platform)' == 'Win32' Or '$(Platform)' == 'x86') And '$(Configuration.ToLower())' == 'debug'">
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\Archiver_32d.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D11_32d.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D12_32d.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineOpenGL_32d.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineVk_32d.dll" />
     </ItemGroup>
-    <ItemGroup Condition="'$(Platform)' == 'x86' And '$(Configuration.ToLower())' == 'debug'">
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\Archiver_32d.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D11_32d.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D12_32d.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineOpenGL_32d.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineVk_32d.dll" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)' == 'Win32' And '$(Configuration.ToLower())' == 'release'">
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\Archiver_32r.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D11_32r.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D12_32r.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineOpenGL_32r.dll" />
-        <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineVk_32r.dll" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Platform)' == 'x86' And '$(Configuration.ToLower())' == 'release'">
+    <ItemGroup Condition="('$(Platform)' == 'Win32' Or '$(Platform)' == 'x86') And '$(Configuration.ToLower())' == 'release'">
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\Archiver_32r.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D11_32r.dll" />
         <ReferenceCopyLocalPaths Include="$(Diligent-BinPath)\GraphicsEngineD3D12_32r.dll" />
