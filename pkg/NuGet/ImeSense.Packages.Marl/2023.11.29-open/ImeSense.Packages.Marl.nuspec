@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Marl</id>
+        <version>2023.11.29-open</version>
+        <title>Marl</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/google/marl</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>A hybrid thread/fiber task scheduler written in C++ 11</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2019-2023 The Marl Authors</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\LICENSE" target="LICENSE" />
+
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\include\marl\*.h" target="native\include\marl\" />
+
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Debug\marl.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Debug\marl.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Release\marl.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Debug\marl.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Debug\marl.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Release\marl.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Debug\marl.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Debug\marl.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Release\marl.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\Win32\Release\marl.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Debug\marl.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Debug\marl.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Release\marl.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Release\marl.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.Marl.targets" target="build\native\" />
+    </files>
+</package>
