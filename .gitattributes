@@ -3,7 +3,7 @@
 * text=auto
 
 # Package manifests and build scripts
-*.nuspec linguist-detectable
+*.nuspec  linguist-detectable
 *.targets linguist-detectable
-*.nuspec linguist-language=XML
+*.nuspec  linguist-language=XML
 *.targets linguist-language=XML
