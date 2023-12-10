@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.FreeType</id>
+        <version>2023.12.7-open</version>
+        <title>FreeType</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.TXT</license>
+        <readme>README.md</readme>
+        <projectUrl>https://gitlab.freedesktop.org/freetype/freetype</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>FreeType is a freely available software library to render fonts</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2006-2023 David Turner, Robert Wilhelm and Werner Lemberg</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\LICENSE.TXT" target="LICENSE.TXT" />
+
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\include\*.h" target="native\include\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\include\freetype\*.h" target="native\include\freetype\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\include\freetype\config\*.h" target="native\include\freetype\config\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\include\freetype\internal\*.h" target="native\include\freetype\internal\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\include\freetype\internal\services\*.h" target="native\include\freetype\internal\services\" />
+
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Debug\freetyped.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Debug\freetyped.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Release\freetype.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Debug\freetyped.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Debug\freetyped.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Release\freetype.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Debug\freetyped.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Debug\freetyped.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Release\freetype.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\Win32\Release\freetype.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Debug\freetyped.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Debug\freetyped.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Release\freetype.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\..\..\dep\freetype\freetype\50740b37ba5f468316edf6cf6ee97b61f2c7addd\build\x64\Release\freetype.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.FreeType.targets" target="build\native\" />
+    </files>
+</package>
