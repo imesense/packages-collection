@@ -1,0 +1,26 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "wxwidgets-empty-project",
+    "version": "3.2.4",
+    "dependencies": [
+        {
+            "name": "wxwidgets",
+            "default-features": false,
+            "version>=": "3.2.4",
+            "platform": "(windows & x86) | (windows & x64)",
+            "features": [
+                "debug-support",
+                "fonts",
+                "media",
+                "sound"
+            ]
+        }
+    ],
+    "builtin-baseline": "2f8fe8d3e9c66be1476d595c8092cdc93c816377",
+    "overrides": [
+        {
+            "name": "wxwidgets",
+            "version": "3.2.4"
+        }
+    ]
+}

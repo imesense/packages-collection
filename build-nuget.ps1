@@ -7,6 +7,7 @@
 . .\build.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft         -Version 1.23.1.2
 . .\build.ps1 -Type NuGet -Name ImeSense.Packages.Optick             -Version 1.4.0
 . .\build.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2.28.5
+. .\build.ps1 -Type NuGet -Name ImeSense.Packages.WxWidgets.Vcpkg    -Version 3.2.4
 . .\build.ps1 -Type NuGet -Name ImeSense.Packages.Zlib               -Version 1.2.13.3
 
 # Build pre-release packages

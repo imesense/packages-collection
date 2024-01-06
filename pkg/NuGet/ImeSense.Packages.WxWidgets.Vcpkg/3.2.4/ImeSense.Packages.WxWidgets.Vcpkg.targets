@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>x86</NuGetPlatform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'x64'">
+        <NuGetPlatform>x64</NuGetPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <WxWidgets-RootPath>$(MSBuildThisFileDirectory)\..\..\native</WxWidgets-RootPath>
+        <WxWidgets-BinPath>$(Zlib-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</WxWidgets-BinPath>
+        <WxWidgets-LibPath>$(Zlib-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</WxWidgets-LibPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(WxWidgets-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(WxWidgets-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <Link>
+            <AdditionalDependencies>GlU32.Lib;jpeg.lib;libexpatd.lib;libpng16d.lib;lzma.lib;nanosvg.lib;nanosvgrast.lib;OpenGL32.Lib;pcre2-16d.lib;pcre2-32d.lib;pcre2-8d.lib;pcre2-posixd.lib;tiffd.lib;turbojpeg.lib;wxbase32ud.lib;wxbase32ud_net.lib;wxbase32ud_xml.lib;wxmsw32ud_adv.lib;wxmsw32ud_aui.lib;wxmsw32ud_core.lib;wxmsw32ud_gl.lib;wxmsw32ud_html.lib;wxmsw32ud_media.lib;wxmsw32ud_propgrid.lib;wxmsw32ud_qa.lib;wxmsw32ud_ribbon.lib;wxmsw32ud_richtext.lib;wxmsw32ud_stc.lib;wxmsw32ud_xrc.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <Link>
+            <AdditionalDependencies>GlU32.Lib;jpeg.lib;libexpat.lib;libpng16.lib;lzma.lib;nanosvg.lib;nanosvgrast.lib;OpenGL32.Lib;pcre2-16.lib;pcre2-32.lib;pcre2-8.lib;pcre2-posix.lib;tiff.lib;turbojpeg.lib;wxbase32u.lib;wxbase32u_net.lib;wxbase32u_xml.lib;wxmsw32u_adv.lib;wxmsw32u_aui.lib;wxmsw32u_core.lib;wxmsw32u_gl.lib;wxmsw32u_html.lib;wxmsw32u_media.lib;wxmsw32u_propgrid.lib;wxmsw32u_qa.lib;wxmsw32u_ribbon.lib;wxmsw32u_richtext.lib;wxmsw32u_stc.lib;wxmsw32u_xrc.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\jpeg62.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\jpeg62.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libexpatd.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libexpatd.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\liblzma.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\liblzma.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libpng16d.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libpng16d.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-16d.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-16d.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-32d.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-32d.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-8d.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-8d.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-config" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-posixd.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-posixd.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\tiffd.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\tiffd.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\turbojpeg.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\turbojpeg.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_net_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_net_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_xml_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32ud_xml_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_adv_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_adv_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_aui_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_aui_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_core_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_core_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_gl_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_gl_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_html_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_html_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_media_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_media_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_propgrid_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_propgrid_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_qa_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_qa_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_ribbon_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_ribbon_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_richtext_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_richtext_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_stc_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_stc_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_xrc_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32ud_xrc_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\zlibd.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\zlibd1.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\jpeg62.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\jpeg62.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libexpat.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libexpat.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\liblzma.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\liblzma.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libpng16.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\libpng16.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-16.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-16.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-32.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-32.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-8.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-8.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-config" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-posix.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\pcre2-posix.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\tiff.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\tiff.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\turbojpeg.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\turbojpeg.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_net_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_net_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_xml_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxbase32u_xml_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_adv_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_adv_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_aui_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_aui_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_core_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_core_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_gl_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_gl_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_html_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_html_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_media_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_media_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_propgrid_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_propgrid_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_qa_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_qa_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_ribbon_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_ribbon_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_richtext_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_richtext_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_stc_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_stc_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_xrc_vc_custom.dll" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\wxmsw32u_xrc_vc_custom.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\zlib.pdb" />
+        <ReferenceCopyLocalPaths Include="$(WxWidgets-BinPath)\zlib1.dll" />
+    </ItemGroup>
+</Project>

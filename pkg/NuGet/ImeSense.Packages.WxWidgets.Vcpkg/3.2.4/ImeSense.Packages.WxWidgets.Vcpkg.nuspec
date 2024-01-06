@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.WxWidgets.Vcpkg</id>
+        <version>3.2.4</version>
+        <title>WxWidgets</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">licence.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.wxwidgets.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Widget toolkit and tools library for creating graphical user interfaces (GUIs) for cross-platform applications</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1998-2005 Julian Smart, Robert Roebling et al; &#169; 2005-2023 wxWidgets Team</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\wxWidgets\wxWidgets\v3.2.4\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\wxWidgets\wxWidgets\v3.2.4\docs\licence.txt" target="licence.txt" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\*.h" target="native\include\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\EGL\*.h" target="native\include\EGL\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GL\*.h" target="native\include\GL\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLES\*.h" target="native\include\GLES\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLES\1.0\*.h" target="native\include\GLES\1.0\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLES2\*.h" target="native\include\GLES2\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLES3\*.h" target="native\include\GLES3\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLSC\1.0\*.h" target="native\include\GLSC\1.0\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLSC\1.0.1\*.h" target="native\include\GLSC\1.0.1\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\GLSC2\*.h" target="native\include\GLSC2\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\KHR\*.h" target="native\include\KHR\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\libpng16\*.h" target="native\include\libpng16\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\lzma\*.h" target="native\include\lzma\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\nanosvg\*.h" target="native\include\nanosvg\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\*.h" target="native\include\wx\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\*.cpp" target="native\include\wx\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\android\*.h" target="native\include\wx\android\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\aui\*.h" target="native\include\wx\aui\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\dfb\*.h" target="native\include\wx\dfb\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\dfb\private\*.h" target="native\include\wx\dfb\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\generic\*.h" target="native\include\wx\generic\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\generic\private\*.h" target="native\include\wx\generic\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\gtk\*.h" target="native\include\wx\gtk\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\gtk\gnome\*.h" target="native\include\wx\gtk\gnome\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\gtk\private\*.h" target="native\include\wx\gtk\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\gtk1\*.h" target="native\include\wx\gtk1\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\gtk1\private\*.h" target="native\include\wx\gtk1\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\html\*.h" target="native\include\wx\html\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\meta\*.h" target="native\include\wx\meta\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\motif\*.h" target="native\include\wx\motif\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\motif\private\*.h" target="native\include\wx\motif\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.h" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.cur" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.ico" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.bmp" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.manifest" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\*.rc" target="native\include\wx\msw\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\ole\*.h" target="native\include\wx\msw\ole\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\private\*.h" target="native\include\wx\msw\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\rt\*.h" target="native\include\wx\msw\rt\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\rt\private\*.h" target="native\include\wx\msw\rt\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\msw\wrl\*.h" target="native\include\wx\msw\wrl\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\*.h" target="native\include\wx\osx\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\carbon\*.h" target="native\include\wx\osx\carbon\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\carbon\private\*.h" target="native\include\wx\osx\carbon\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\cocoa\*.h" target="native\include\wx\osx\cocoa\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\cocoa\private\*.h" target="native\include\wx\osx\cocoa\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\core\*.h" target="native\include\wx\osx\core\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\core\private\*.h" target="native\include\wx\osx\core\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\iphone\*.h" target="native\include\wx\osx\iphone\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\iphone\private\*.h" target="native\include\wx\osx\iphone\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\osx\private\*.h" target="native\include\wx\osx\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\persist\*.h" target="native\include\wx\persist\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\private\*.h" target="native\include\wx\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\propgrid\*.h" target="native\include\wx\propgrid\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\protocol\*.h" target="native\include\wx\protocol\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\qt\*.h" target="native\include\wx\qt\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\qt\private\*.h" target="native\include\wx\qt\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\ribbon\*.h" target="native\include\wx\ribbon\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\richtext\*.h" target="native\include\wx\richtext\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\richtext\bitmaps\*.xpm" target="native\include\wx\richtext\bitmaps\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\stc\*.h" target="native\include\wx\stc\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\univ\*.h" target="native\include\wx\univ\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\unix\*.h" target="native\include\wx\unix\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\unix\private\*.h" target="native\include\wx\unix\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\x11\*.h" target="native\include\wx\x11\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\x11\nanox\X11\*.h" target="native\include\wx\x11\nanox\X11\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\x11\private\*.h" target="native\include\wx\x11\private\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\xml\*.h" target="native\include\wx\xml\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\include\wx\xrc\*.h" target="native\include\wx\xrc\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\lib\mswu\*.cfg" target="native\include\mswu\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\lib\mswu\wx\*.h" target="native\include\mswu\wx\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\lib\mswud\wx\*.h" target="native\include\mswud\wx\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\tools\wxwidgets\*.exe" target="native\bin\x86\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\tools\wxwidgets\*.dll" target="native\bin\x86\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\tools\wxwidgets\*.exe" target="native\bin\x64\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\tools\wxwidgets\*.dll" target="native\bin\x64\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\debug\bin\*.dll" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\bin\*.dll" target="native\bin\x86\Release\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\debug\bin\*.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\bin\*.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\debug\lib\*.lib" target="native\lib\x86\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\lib\*.lib" target="native\lib\x86\Release\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\debug\lib\*.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\lib\*.lib" target="native\lib\x64\Release\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\egl-registry\copyright*" target="doc\egl-registry\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\expat\copyright*" target="doc\expat\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\libjpeg-turbo\copyright*" target="doc\libjpeg-turbo\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\liblzma\copyright*" target="doc\liblzma\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\libpng\copyright*" target="doc\libpng\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\NanoSVG\copyright*" target="doc\NanoSVG\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\opengl\copyright*" target="doc\opengl\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\opengl-registry\copyright*" target="doc\opengl-registry\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\pcre2\copyright*" target="doc\pcre2\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\tiff\copyright*" target="doc\tiff\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\zlib\copyright*" target="doc\zlib\" />
+
+        <file src="ImeSense.Packages.WxWidgets.Vcpkg.targets" target="build\native\" />
+    </files>
+</package>

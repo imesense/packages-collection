@@ -4,4 +4,5 @@
 dep/
 
 # Build results
+obj/
 out/
