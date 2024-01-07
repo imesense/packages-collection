@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.WxWidgets.Vcpkg.symbols</id>
+        <version>3.2.4.1</version>
+        <title>WxWidgets</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">licence.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.wxwidgets.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Widget toolkit and tools library for creating graphical user interfaces (GUIs) for cross-platform applications</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1998-2005 Julian Smart, Robert Roebling et al; &#169; 2005-2023 wxWidgets Team</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <packageTypes>
+            <packageType name="GenericSymbolsPackage" />
+        </packageTypes>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\wxWidgets\wxWidgets\v3.2.4\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\wxWidgets\wxWidgets\v3.2.4\docs\licence.txt" target="licence.txt" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\egl-registry\copyright*" target="doc\egl-registry\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\expat\copyright*" target="doc\expat\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\libjpeg-turbo\copyright*" target="doc\libjpeg-turbo\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\liblzma\copyright*" target="doc\liblzma\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\libpng\copyright*" target="doc\libpng\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\NanoSVG\copyright*" target="doc\NanoSVG\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\opengl\copyright*" target="doc\opengl\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\opengl-registry\copyright*" target="doc\opengl-registry\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\pcre2\copyright*" target="doc\pcre2\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\tiff\copyright*" target="doc\tiff\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\share\zlib\copyright*" target="doc\zlib\" />
+
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\debug\bin\*.pdb" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86\vcpkg_installed\x86-windows\bin\*.pdb" target="native\bin\x86\Release\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\debug\bin\*.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\obj\wxwidgets\3.2.4\x86-64\vcpkg_installed\x64-windows\bin\*.pdb" target="native\bin\x64\Release\" />
+    </files>
+</package>
