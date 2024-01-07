@@ -36,7 +36,7 @@ Function Invoke-Build {
 
 Function Invoke-Pack {
     nuget pack $PSScriptRoot\ImeSense.Packages.WxWidgets.Vcpkg.symbols.nuspec -OutputDirectory $Output
-    Move-Item -Path "$Output/ImeSense.Packages.WxWidgets.Vcpkg.3.2.4.nupkg" -Destination "$Output/ImeSense.Packages.WxWidgets.Vcpkg.symbols.3.2.4.nupkg"
+    Move-Item -Path "$Output/ImeSense.Packages.WxWidgets.Vcpkg.3.2.4.nupkg" -Destination "$Output/ImeSense.Packages.WxWidgets.Vcpkg.3.2.4.symbols.nupkg"
     nuget pack $PSScriptRoot\ImeSense.Packages.WxWidgets.Vcpkg.nuspec -OutputDirectory $Output
 }
 
