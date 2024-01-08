@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "glew-empty-project",
+    "version": "2.2.0",
+    "dependencies": [
+        {
+            "name": "glew",
+            "default-features": false,
+            "version>=": "2.2.0#3",
+            "platform": "(windows & x86) | (windows & x64)"
+        }
+    ],
+    "builtin-baseline": "a92f44a98c706d088d5edea2ff0b3fd8732fed6d",
+    "overrides": [
+        {
+            "name": "glew",
+            "version": "2.2.0#3"
+        }
+    ]
+}

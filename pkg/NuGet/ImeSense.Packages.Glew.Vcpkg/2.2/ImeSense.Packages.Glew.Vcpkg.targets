@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
+        <NuGetPlatform>x86</NuGetPlatform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'x64'">
+        <NuGetPlatform>x64</NuGetPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Glew-RootPath>$(MSBuildThisFileDirectory)\..\..\native</Glew-RootPath>
+        <Glew-BinPath>$(Glew-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</Glew-BinPath>
+        <Glew-LibPath>$(Glew-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</Glew-LibPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(Glew-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(Glew-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <Link>
+            <AdditionalDependencies>glew32d.lib;GlU32.Lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <Link>
+            <AdditionalDependencies>glew32.lib;GlU32.Lib;OpenGL32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(Glew-BinPath)\glew32d.dll" />
+        <ReferenceCopyLocalPaths Include="$(Glew-BinPath)\glew32d.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(Glew-BinPath)\glew32.dll" />
+        <ReferenceCopyLocalPaths Include="$(Glew-BinPath)\glew32.pdb" />
+    </ItemGroup>
+</Project>

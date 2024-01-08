@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Glew.Vcpkg</id>
+        <version>2.2</version>
+        <title>GLEW</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://glew.sourceforge.net</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>The OpenGL Extension Wrangler Library</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2002, Lev Povalahev; &#169; 2002-2007, Milan Ikits, Marcelo E. Magallon; &#169; 1999-2007  Brian Paul; &#169; 2007 The Khronos Group Inc.</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\nigels-com\glew\glew-2.2.0\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\nigels-com\glew\glew-2.2.0\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\EGL\*.h" target="native\include\EGL\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GL\*.h" target="native\include\GL\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLES\*.h" target="native\include\GLES\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLES\1.0\*.h" target="native\include\GLES\1.0\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLES2\*.h" target="native\include\GLES2\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLES3\*.h" target="native\include\GLES3\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLSC\1.0\*.h" target="native\include\GLSC\1.0\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLSC\1.0.1\*.h" target="native\include\GLSC\1.0.1\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\GLSC2\*.h" target="native\include\GLSC2\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\include\KHR\*.h" target="native\include\KHR\" />
+
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\debug\bin\glew32d.dll" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\debug\bin\glew32d.pdb" target="native\bin\x86\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\bin\glew32.dll" target="native\bin\x86\Release\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\bin\glew32.pdb" target="native\bin\x86\Release\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\debug\bin\glew32d.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\debug\bin\glew32d.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\bin\glew32.dll" target="native\bin\x64\Release\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\bin\glew32.pdb" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\debug\lib\*.lib" target="native\lib\x86\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\lib\*.lib" target="native\lib\x86\Release\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\debug\lib\*.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86-64\vcpkg_installed\x64-windows\lib\*.lib" target="native\lib\x64\Release\" />
+
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\share\egl-registry\copyright*" target="doc\egl-registry\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\share\opengl\copyright*" target="doc\opengl\" />
+        <file src="..\..\..\..\obj\glew\2.2\x86\vcpkg_installed\x86-windows\share\opengl-registry\copyright*" target="doc\opengl-registry\" />
+
+        <file src="ImeSense.Packages.Glew.Vcpkg.targets" target="build\native\" />
+    </files>
+</package>
