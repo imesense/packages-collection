@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Glfw</id>
+        <version>3.3.9</version>
+        <title>GLFW</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.md</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.glfw.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2002-2006 Marcus Geelnard; &#169; 2006-2019 Camilla Löwy</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\LICENSE.md" target="LICENSE.md" />
+
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\include\GLFW\*.h" target="native\include\GLFW\" />
+
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Debug\glfw3.dll" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Debug\glfw3.pdb" target="native\bin\Win32\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Release\glfw3.dll" target="native\bin\Win32\Release\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Debug\glfw3.dll" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Debug\glfw3.pdb" target="native\bin\x64\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Release\glfw3.dll" target="native\bin\x64\Release\" />
+
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Debug\glfw3dll.lib" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Debug\glfw3dll.exp" target="native\lib\Win32\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Release\glfw3dll.lib" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\Win32\src\Release\glfw3dll.exp" target="native\lib\Win32\Release\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Debug\glfw3dll.lib" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Debug\glfw3dll.exp" target="native\lib\x64\Debug\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Release\glfw3dll.lib" target="native\lib\x64\Release\" />
+        <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Release\glfw3dll.exp" target="native\lib\x64\Release\" />
+
+        <file src="ImeSense.Packages.Glfw.targets" target="build\native\" />
+    </files>
+</package>
