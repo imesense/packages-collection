@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>ImeSense.Packages.FreeImage.WinMerge</id>
-        <version>3.18.0.20230819</version>
+        <version>2023.8.19-open</version>
         <title>FreeImage (WinMerge)</title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
