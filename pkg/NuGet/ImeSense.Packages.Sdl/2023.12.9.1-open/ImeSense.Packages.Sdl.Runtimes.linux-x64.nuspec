@@ -24,11 +24,7 @@
         <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/include/build_config/*.h" target="build\native\include\build_config\" />
         <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/include/SDL3/*.h" target="build\native\include\SDL3\" exclude="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/include/SDL3/SDL_revision.h" />
 
-        <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Debug/libSDL3.so" target="runtimes\linux-x64\native\Debug\" />
-        <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Debug/libSDL3.so.0" target="runtimes\linux-x64\native\Debug\" />
         <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Debug/libSDL3.so.0.0.0" target="runtimes\linux-x64\native\Debug\" />
-        <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Release/libSDL3.so" target="runtimes\linux-x64\native\Release\" />
-        <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Release/libSDL3.so.0" target="runtimes\linux-x64\native\Release\" />
         <file src="../../../../dep/libsdl-org/SDL/f3d8a2def5e2214290bbbc075a6381fa9b753acf/build/Release/libSDL3.so.0.0.0" target="runtimes\linux-x64\native\Release\" />
 
         <file src="ImeSense.Packages.Sdl.Runtimes.linux-x64.targets" target="build\native\" />

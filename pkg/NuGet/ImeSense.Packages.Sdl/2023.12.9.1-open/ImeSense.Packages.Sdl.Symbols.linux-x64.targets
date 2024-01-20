@@ -12,7 +12,7 @@
 
     <PropertyGroup>
         <Sdl-RootPath>$(MSBuildThisFileDirectory)\..\..</Sdl-RootPath>
-        <Sdl-BinPath>$(Sdl-RootPath)\runtimes\win-x64\native\$(NuGetConfiguration)\</Sdl-BinPath>
+        <Sdl-BinPath>$(Sdl-RootPath)\runtimes\linux-x64\native\$(NuGetConfiguration)\</Sdl-BinPath>
     </PropertyGroup>
 
     <ItemGroup>

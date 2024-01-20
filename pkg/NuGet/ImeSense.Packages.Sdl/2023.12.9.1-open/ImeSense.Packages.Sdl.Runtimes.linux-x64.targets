@@ -15,20 +15,13 @@
         <Sdl-BinPath>$(Sdl-RootPath)\runtimes\linux-x64\native\$(NuGetConfiguration)\</Sdl-BinPath>
     </PropertyGroup>
 
-    <ItemDefinitionGroup>
-        <ClCompile>
-            <AdditionalIncludeDirectories>$(Sdl-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-        </ClCompile>
-
-        <Link>
-            <AdditionalLibraryDirectories>$(Sdl-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-            <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-        </Link>
-    </ItemDefinitionGroup>
-
     <ItemGroup>
-        <ReferenceCopyLocalPaths Include="$(Sdl-BinPath)\libSDL3.so" />
-        <ReferenceCopyLocalPaths Include="$(Sdl-BinPath)\libSDL3.so.0" />
         <ReferenceCopyLocalPaths Include="$(Sdl-BinPath)\libSDL3.so.0.0.0" />
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libSDL3.so.0.0.0 libSDL3.so" />
+        <Exec Command="ln -s libSDL3.so.0.0.0 libSDL3.so.0" />
+    </Target>
 </Project>
