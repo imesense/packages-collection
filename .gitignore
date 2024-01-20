@@ -6,3 +6,6 @@ dep/
 # Build results
 obj/
 out/
+
+# macOS cache
+.DS_Store
