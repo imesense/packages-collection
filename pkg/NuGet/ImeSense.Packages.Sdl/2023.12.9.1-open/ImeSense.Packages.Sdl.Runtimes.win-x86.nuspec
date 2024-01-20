@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Sdl.Runtimes.win-x86</id>
+        <version>2023.12.9.1-open</version>
+        <title>Simple DirectMedia Layer </title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.libsdl.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1997-2023 Sam Lantinga</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\include\SDL3\SDL_revision.h" target="build\native\include\SDL3\SDL_revision.h" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\include\build_config\*.h" target="build\native\include\build_config\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\include\SDL3\*.h" target="build\native\include\SDL3\" exclude="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\include\SDL3\SDL_revision.h" />
+
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\Debug\SDL3.dll" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\RelWithDebInfo\SDL3.dll" target="runtimes\win-x86\native\Release\" />
+
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\Debug\SDL3.lib" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\Debug\SDL3.exp" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\RelWithDebInfo\SDL3.lib" target="runtimes\win-x86\native\Release\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\f3d8a2def5e2214290bbbc075a6381fa9b753acf\build\Win32\RelWithDebInfo\SDL3.exp" target="runtimes\win-x86\native\Release\" />
+
+        <file src="ImeSense.Packages.Sdl.Runtimes.win-x86.targets" target="build\native\" />
+    </files>
+</package>
