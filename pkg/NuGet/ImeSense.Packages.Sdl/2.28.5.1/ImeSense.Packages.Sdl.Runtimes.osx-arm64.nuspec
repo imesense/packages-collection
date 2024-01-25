@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Sdl.Runtimes.osx-arm64</id>
+        <version>2.28.5.1</version>
+        <title>Simple DirectMedia Layer </title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://www.libsdl.org</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Simple DirectMedia Layer is a cross-platform development library designed to provide low level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1997-2023 Sam Lantinga</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/README.md" target="README.md" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/include/SDL2/*.h" target="build\native\include\SDL2\" />
+
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/Debug/libSDL2-2.0d.0.dylib" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/Debug/libSDL2d.a" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/Debug/libSDL2maind.a" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/RelWithDebInfo/libSDL2-2.0.0.dylib" target="runtimes\osx-arm64\native\Release\" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/RelWithDebInfo/libSDL2.a" target="runtimes\osx-arm64\native\Release\" />
+        <file src="../../../../dep/libsdl-org/SDL/release-2.28.5/build/arm64/RelWithDebInfo/libSDL2main.a" target="runtimes\osx-arm64\native\Release\" />
+
+        <file src="ImeSense.Packages.Sdl.Runtimes.osx-arm64.targets" target="build\native\" />
+        <file src="ImeSense.Packages.Sdl.Runtimes.osx-arm64.cmake" target="build\native\" />
+    </files>
+</package>
