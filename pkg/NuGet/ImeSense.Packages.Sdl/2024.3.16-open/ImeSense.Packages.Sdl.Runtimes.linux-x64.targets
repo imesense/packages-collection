@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Sdl-RootPath>$(MSBuildThisFileDirectory)\..\..</Sdl-RootPath>
+        <Sdl-BinPath>$(Sdl-RootPath)\runtimes\linux-x64\native\$(NuGetConfiguration)\</Sdl-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Sdl-BinPath)\libSDL3.so.0.0.0" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libSDL3.so.0.0.0 libSDL3.so" />
+        <Exec Command="ln -s libSDL3.so.0.0.0 libSDL3.so.0" />
+    </Target>
+</Project>

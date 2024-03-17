@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Sdl-RootPath>$(MSBuildThisFileDirectory)\..\..</Sdl-RootPath>
+        <Sdl-BinPath>$(Sdl-RootPath)\runtimes\win-arm\native\$(NuGetConfiguration)\</Sdl-BinPath>
+        <Sdl-IncPath>$(Sdl-RootPath)\build\native\include</Sdl-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(Sdl-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(Sdl-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Sdl-BinPath)\SDL3.dll" />
+    </ItemGroup>
+</Project>
