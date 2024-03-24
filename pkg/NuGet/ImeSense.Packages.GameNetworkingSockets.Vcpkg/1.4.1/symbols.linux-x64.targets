@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GameNetworkingSockets-RootPath>$(MSBuildThisFileDirectory)\..\..</GameNetworkingSockets-RootPath>
+        <GameNetworkingSockets-BinPath>$(GameNetworkingSockets-RootPath)\runtimes\linux-x64\native\$(NuGetConfiguration)\</GameNetworkingSockets-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libGameNetworkingSockets.so.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libcrypto.so.3.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libssl.so.3.debug" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobufd.so.3.21.8.0.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lited.so.3.21.8.0.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotocd.so.3.21.8.0.debug" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf.so.3.21.8.0.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lite.so.3.21.8.0.debug" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotoc.so.3.21.8.0.debug" />
+    </ItemGroup>
+</Project>

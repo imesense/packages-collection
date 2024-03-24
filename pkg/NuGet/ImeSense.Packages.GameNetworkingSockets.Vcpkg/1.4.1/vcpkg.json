@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "gamenetworkingsockets-empty-project",
+    "version": "1.4.1",
+    "dependencies": [
+        {
+            "name": "gamenetworkingsockets",
+            "version>=": "1.4.1",
+            "platform": "(windows & x86) | (windows & x64) | (osx & x64) | (osx & arm64) | (linux & x64)"
+        }
+    ],
+    "builtin-baseline": "cc35818bd4055de93eaf6f93fcaf1bcee9eff6a5",
+    "overrides": [
+        {
+            "name": "gamenetworkingsockets",
+            "version": "1.4.1"
+        }
+    ]
+}

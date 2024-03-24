@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GameNetworkingSockets-RootPath>$(MSBuildThisFileDirectory)\..\..</GameNetworkingSockets-RootPath>
+        <GameNetworkingSockets-BinPath>$(GameNetworkingSockets-RootPath)\runtimes\win-x86\native\$(NuGetConfiguration)\</GameNetworkingSockets-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\GameNetworkingSockets.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\legacy.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libcrypto-3.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libssl-3.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lited.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobufd.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotocd.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lite.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf.pdb" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotoc.pdb" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GameNetworkingSockets-RootPath>$(MSBuildThisFileDirectory)\..\..</GameNetworkingSockets-RootPath>
+        <GameNetworkingSockets-BinPath>$(GameNetworkingSockets-RootPath)\runtimes\win-x86\native\$(NuGetConfiguration)\</GameNetworkingSockets-BinPath>
+        <GameNetworkingSockets-IncPath>$(GameNetworkingSockets-RootPath)\build\native\include</GameNetworkingSockets-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(GameNetworkingSockets-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(GameNetworkingSockets-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>GameNetworkingSockets.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <Link>
+            <AdditionalDependencies>libprotobuf-lited.lib;libprotobufd.lib;libprotocd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <Link>
+            <AdditionalDependencies>libprotobuf-lite.lib;libprotobuf.lib;libprotoc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\GameNetworkingSockets.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\legacy.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libcrypto-3.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libssl-3.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lited.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobufd.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotocd.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lite.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf.dll" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotoc.dll" />
+    </ItemGroup>
+</Project>

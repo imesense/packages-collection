@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GameNetworkingSockets-RootPath>$(MSBuildThisFileDirectory)\..\..</GameNetworkingSockets-RootPath>
+        <GameNetworkingSockets-BinPath>$(GameNetworkingSockets-RootPath)\runtimes\osx-arm64\native\$(NuGetConfiguration)\</GameNetworkingSockets-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libcrypto.3.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libGameNetworkingSockets.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libssl.3.dylib" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobufd.3.21.8.0.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lited.3.21.8.0.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotocd.3.21.8.0.dylib" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf.3.21.8.0.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotobuf-lite.3.21.8.0.dylib" />
+        <ReferenceCopyLocalPaths Include="$(GameNetworkingSockets-BinPath)\libprotoc.3.21.8.0.dylib" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libcrypto.3.dylib libcrypto.dylib" />
+        <Exec Command="ln -s libssl.3.dylib libssl.dylib" />
+    </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libprotobufd.3.21.8.0.dylib libprotobufd.32.dylib" />
+        <Exec Command="ln -s libprotobufd.32.dylib libprotobufd.dylib" />
+        <Exec Command="ln -s libprotobuf-lited.3.21.8.0.dylib libprotobuf-lited.32.dylib" />
+        <Exec Command="ln -s libprotobuf-lited.32.dylib libprotobuf-lited.dylib" />
+        <Exec Command="ln -s libprotocd.3.21.8.0.dylib libprotocd.32.dylib" />
+        <Exec Command="ln -s libprotocd.32.dylib libprotocd.dylib" />
+    </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' != 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libprotobuf.3.21.8.0.dylib libprotobuf.32.dylib" />
+        <Exec Command="ln -s libprotobuf.32.dylib libprotobuf.dylib" />
+        <Exec Command="ln -s libprotobuf-lite.3.21.8.0.dylib libprotobuf-lite.32.dylib" />
+        <Exec Command="ln -s libprotobuf-lite.32.dylib libprotobuf-lite.dylib" />
+        <Exec Command="ln -s libprotoc.3.21.8.0.dylib libprotoc.32.dylib" />
+        <Exec Command="ln -s libprotoc.32.dylib libprotoc.dylib" />
+    </Target>
+</Project>

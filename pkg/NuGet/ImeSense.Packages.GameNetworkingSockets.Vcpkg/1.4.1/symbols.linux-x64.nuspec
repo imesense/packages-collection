@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.linux-x64</id>
+        <version>1.4.1</version>
+        <title>Game Networking Sockets</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/ValveSoftware/GameNetworkingSockets</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>GameNetworkingSockets is a basic transport layer for games</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2018-2022 Valve Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\ValveSoftware\GameNetworkingSockets\v1.4.1\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\ValveSoftware\GameNetworkingSockets\v1.4.1\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\obj\gamenetworkingsockets\1.4.1\x86-64\vcpkg_installed\x64-linux-dynamic\share\gamenetworkingsockets\copyright*" target="doc\gamenetworkingsockets\" />
+        <file src="..\..\..\..\obj\gamenetworkingsockets\1.4.1\x86-64\vcpkg_installed\x64-linux-dynamic\share\openssl\copyright*" target="doc\openssl\" />
+        <file src="..\..\..\..\obj\gamenetworkingsockets\1.4.1\x86-64\vcpkg_installed\x64-linux-dynamic\share\protobuf\copyright*" target="doc\protobuf\" />
+
+        <file src="..\..\..\..\obj\gamenetworkingsockets\1.4.1\x86-64\vcpkg_installed\x64-linux-dynamic\debug\lib\*.debug" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\obj\gamenetworkingsockets\1.4.1\x86-64\vcpkg_installed\x64-linux-dynamic\lib\*.debug" target="runtimes\linux-x64\native\Release\" />
+
+        <file src="symbols.linux-x64.targets" target="build\native\ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.linux-x64.targets" />
+        <file src="symbols.linux-x64.cmake" target="build\native\ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.linux-x64.cmake" />
+    </files>
+</package>

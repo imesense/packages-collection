@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols</id>
+        <version>1.4.1</version>
+        <title>Game Networking Sockets</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/ValveSoftware/GameNetworkingSockets</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>GameNetworkingSockets is a basic transport layer for games</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2018-2022 Valve Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.win-x86" version="1.4.1" />
+                <dependency id="ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.win-x64" version="1.4.1" />
+
+                <dependency id="ImeSense.Packages.GameNetworkingSockets.Vcpkg.Symbols.linux-x64" version="1.4.1" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\ValveSoftware\GameNetworkingSockets\v1.4.1\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\ValveSoftware\GameNetworkingSockets\v1.4.1\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>
