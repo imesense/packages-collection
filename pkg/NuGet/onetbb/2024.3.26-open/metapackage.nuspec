@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.OneTbb</id>
-        <version>2024.3.26-open</version>
+        <version>2024.3.26.1-open</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,8 +18,8 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.OneTbb.Runtimes" version="1.4.1" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols" version="1.4.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes" version="2024.3.26-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols" version="2024.3.26-open" />
             </group>
         </dependencies>
     </metadata>
