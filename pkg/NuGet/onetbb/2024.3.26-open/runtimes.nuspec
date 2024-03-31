@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.OneTbb.Runtimes</id>
+        <version>2024.3.26-open</version>
+        <title>oneAPI oneTBB</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/oneapi-src/oneTBB</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>oneAPI Threading Building Blocks (oneTBB)</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2021-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x86" version="2024.3.26-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x64" version="2024.3.26-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x86" version="2024.3.26-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x64" version="2024.3.26-open" />
+
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.linux-x64" version="2024.3.26-open" />
+
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-x64" version="2024.3.26-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-arm64" version="2024.3.26-open" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>

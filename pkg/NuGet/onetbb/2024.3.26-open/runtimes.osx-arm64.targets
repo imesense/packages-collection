@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OneTbb-RootPath>$(MSBuildThisFileDirectory)\..\..</OneTbb-RootPath>
+        <OneTbb-BinPath>$(OneTbb-RootPath)\runtimes\osx-arm64\native\$(NuGetConfiguration)\</OneTbb-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbb_debug.12.13.dylib" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbbmalloc_debug.2.13.dylib" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbbmalloc_proxy_debug.2.13.dylib" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbb.12.13.dylib" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbbmalloc.2.13.dylib" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\libtbbmalloc_proxy.2.13.dylib" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libtbb_debug.12.13.dylib libtbb_debug.12.dylib" />
+        <Exec Command="ln -s libtbb_debug.12.dylib libtbb_debug.dylib" />
+        <Exec Command="ln -s libtbbmalloc_debug.2.13.dylib libtbbmalloc_debug.2.dylib" />
+        <Exec Command="ln -s libtbbmalloc_debug.2.dylib libtbbmalloc_debug.dylib" />
+        <Exec Command="ln -s libtbbmalloc_proxy_debug.2.13.dylib libtbbmalloc_proxy_debug.2.dylib" />
+        <Exec Command="ln -s libtbbmalloc_proxy_debug.2.dylib libtbbmalloc_proxy_debug.dylib" />
+    </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' != 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libtbb.12.13.dylib libtbb.12.dylib" />
+        <Exec Command="ln -s libtbb.12.dylib libtbb.dylib" />
+        <Exec Command="ln -s libtbbmalloc.2.13.dylib libtbbmalloc.2.dylib" />
+        <Exec Command="ln -s libtbbmalloc.2.dylib libtbbmalloc.dylib" />
+        <Exec Command="ln -s libtbbmalloc_proxy.2.13.dylib libtbbmalloc_proxy.2.dylib" />
+        <Exec Command="ln -s libtbbmalloc_proxy.2.dylib libtbbmalloc_proxy.dylib" />
+    </Target>
+</Project>
