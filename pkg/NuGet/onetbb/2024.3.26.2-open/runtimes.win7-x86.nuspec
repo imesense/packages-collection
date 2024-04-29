@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.OneTbb.Runtimes.win7-x86</id>
+        <version>2024.3.26.2-open</version>
+        <title>oneAPI oneTBB</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/oneapi-src/oneTBB</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>oneAPI Threading Building Blocks (oneTBB)</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2021-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\include\**" target="build\native\include\" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbb12_debug.dll" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbbmalloc_debug.dll" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbbmalloc_proxy_debug.dll" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbb12.dll" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbbmalloc.dll" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\bin\tbbmalloc_proxy.dll" target="runtimes\win7-x86\native\Release\" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbb_debug.lib" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbb12_debug.lib" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbbmalloc_debug.lib" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbbmalloc_proxy_debug.lib" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\cmake\**" target="runtimes\win7-x86\native\Debug\cmake\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\pkgconfig\**" target="runtimes\win7-x86\native\Debug\pkgconfig\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbb.lib" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbb12.lib" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbbmalloc.lib" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\tbbmalloc_proxy.lib" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\cmake\**" target="runtimes\win7-x86\native\Release\cmake\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\install\lib\pkgconfig\**" target="runtimes\win7-x86\native\Release\pkgconfig\" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_debug\tbb12_debug.exp" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_debug\tbbmalloc_debug.exp" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_debug\tbbmalloc_proxy_debug.exp" target="runtimes\win7-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_relwithdebinfo\tbb12.exp" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_relwithdebinfo\tbbmalloc.exp" target="runtimes\win7-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\Win32-w7\msvc_19.39_cxx_32_md_relwithdebinfo\tbbmalloc_proxy.exp" target="runtimes\win7-x86\native\Release\" />
+
+        <file src="runtimes.win7-x86.targets" target="build\native\ImeSense.Packages.OneTbb.Runtimes.win7-x86.targets" />
+        <file src="runtimes.win7-x86.cmake" target="build\native\ImeSense.Packages.OneTbb.Runtimes.win7-x86.cmake" />
+    </files>
+</package>

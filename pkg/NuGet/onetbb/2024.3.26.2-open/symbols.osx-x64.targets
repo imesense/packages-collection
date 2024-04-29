@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OneTbb-RootPath>$(MSBuildThisFileDirectory)\..\..</OneTbb-RootPath>
+        <OneTbb-BinPath>$(OneTbb-RootPath)\runtimes\osx-x64\native\$(NuGetConfiguration)\</OneTbb-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <OneTbb-Symbols1 Include="$(OneTbb-BinPath)\libtbb_debug.12.13.dylib.dSYM\**" />
+        <OneTbb-Symbols2 Include="$(OneTbb-BinPath)\libtbbmalloc_debug.2.13.dylib.dSYM\**" />
+        <OneTbb-Symbols3 Include="$(OneTbb-BinPath)\libtbbmalloc_proxy_debug.2.13.dylib.dSYM\**" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <OneTbb-Symbols1 Include="$(OneTbb-BinPath)\libtbb.12.13.dylib.dSYM\**" />
+        <OneTbb-Symbols2 Include="$(OneTbb-BinPath)\libtbbmalloc.2.13.dylib.dSYM\**" />
+        <OneTbb-Symbols3 Include="$(OneTbb-BinPath)\libtbbmalloc_proxy.2.13.dylib.dSYM\**" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(OneTbb-Symbols1)" DestinationFolder="$(OutDir)\libtbb_debug.12.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Debug'" />
+    <Copy SourceFiles="@(OneTbb-Symbols2)" DestinationFolder="$(OutDir)\libtbbmalloc_debug.2.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Debug'" />
+    <Copy SourceFiles="@(OneTbb-Symbols3)" DestinationFolder="$(OutDir)\libtbbmalloc_proxy_debug.2.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Debug'" />
+
+    <Copy SourceFiles="@(OneTbb-Symbols1)" DestinationFolder="$(OutDir)\libtbb.12.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Release'" />
+    <Copy SourceFiles="@(OneTbb-Symbols2)" DestinationFolder="$(OutDir)\libtbbmalloc.2.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Release'" />
+    <Copy SourceFiles="@(OneTbb-Symbols3)" DestinationFolder="$(OutDir)\libtbbmalloc_proxy.2.13.dylib.dSYM\%(RecursiveDir)" Condition="'$(NuGetConfiguration)' == 'Release'" />
+</Project>

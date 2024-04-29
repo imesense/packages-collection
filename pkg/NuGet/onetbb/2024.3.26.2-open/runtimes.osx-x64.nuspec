@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.OneTbb.Runtimes.osx-x64</id>
+        <version>2024.3.26.2-open</version>
+        <title>oneAPI oneTBB</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/oneapi-src/oneTBB</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>oneAPI Threading Building Blocks (oneTBB)</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2021-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\include\**" target="build\native\include\" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbb_debug.12.13.dylib" target="runtimes\osx-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbbmalloc_debug.2.13.dylib" target="runtimes\osx-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbbmalloc_proxy_debug.2.13.dylib" target="runtimes\osx-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbb.12.13.dylib" target="runtimes\osx-x64\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbbmalloc.2.13.dylib" target="runtimes\osx-x64\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\libtbbmalloc_proxy.2.13.dylib" target="runtimes\osx-x64\native\Release\" />
+
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\cmake\**" target="runtimes\osx-x64\native\Debug\cmake\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\pkgconfig\**" target="runtimes\osx-x64\native\Debug\pkgconfig\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\cmake\**" target="runtimes\osx-x64\native\Release\cmake\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\3210a79406d55e73dafe307e7a3fa14c6c1a9ebd\build\x86_64\install\lib\pkgconfig\**" target="runtimes\osx-x64\native\Release\pkgconfig\" />
+
+        <file src="runtimes.osx-x64.targets" target="build\native\ImeSense.Packages.OneTbb.Runtimes.osx-x64.targets" />
+        <file src="runtimes.osx-x64.cmake" target="build\native\ImeSense.Packages.OneTbb.Runtimes.osx-x64.cmake" />
+    </files>
+</package>
