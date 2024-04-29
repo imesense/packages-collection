@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OneTbb-RootPath>$(MSBuildThisFileDirectory)\..\..</OneTbb-RootPath>
+        <OneTbb-BinPath>$(OneTbb-RootPath)\runtimes\win7-x86\native\$(NuGetConfiguration)\</OneTbb-BinPath>
+        <OneTbb-IncPath>$(OneTbb-RootPath)\build\native\include</OneTbb-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(OneTbb-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <Link>
+            <AdditionalDependencies>tbb_debug.lib;tbb12_debug.lib;tbbmalloc_debug.lib;tbbmalloc_proxy_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <Link>
+            <AdditionalDependencies>tbb.lib;tbb12.lib;tbbmalloc.lib;tbbmalloc_proxy.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbb12_debug.dll" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbbmalloc_debug.dll" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbbmalloc_proxy_debug.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbb12.dll" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbbmalloc.dll" />
+        <ReferenceCopyLocalPaths Include="$(OneTbb-BinPath)\tbbmalloc_proxy.dll" />
+    </ItemGroup>
+</Project>
