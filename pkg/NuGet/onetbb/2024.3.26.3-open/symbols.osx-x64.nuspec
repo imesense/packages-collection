@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.OneTbb.Symbols.osx-x64</id>
-        <version>2024.3.26.2-open</version>
+        <version>2024.3.26.3-open</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>

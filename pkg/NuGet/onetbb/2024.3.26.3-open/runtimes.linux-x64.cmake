@@ -34,15 +34,15 @@ if(ONETBB_CONFIG STREQUAL "Debug")
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
 elseif(ONETBB_CONFIG STREQUAL "Release")
-    target_link_libraries(${PROJECT_NAME} PRIVATE tbb.lib)
-    target_link_libraries(${PROJECT_NAME} PRIVATE tbb12.lib)
-    target_link_libraries(${PROJECT_NAME} PRIVATE tbbmalloc.lib)
+    target_link_libraries(${PROJECT_NAME} PRIVATE libtbb.so.12.13)
+    target_link_libraries(${PROJECT_NAME} PRIVATE libtbbmalloc.so.2.13)
+    target_link_libraries(${PROJECT_NAME} PRIVATE libtbbmalloc_proxy.so.2.13)
 
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/tbb12.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/tbbmalloc.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/tbbmalloc_proxy.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/libtbb.so.12.13 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/libtbbmalloc.so.2.13 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ONETBB_RUNTIME_PATH}/libtbbmalloc_proxy.so.2.13 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
     )
 
     execute_process(

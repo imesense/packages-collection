@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.OneTbb.Symbols</id>
-        <version>2024.3.26.2-open</version>
+        <id>ImeSense.Packages.OneTbb.Runtimes</id>
+        <version>2024.3.26.3-open</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,15 +18,15 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x86" version="2024.3.26.2-open" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x64" version="2024.3.26.2-open" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x86" version="2024.3.26.2-open" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x64" version="2024.3.26.2-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x86" version="2024.3.26.3-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x64" version="2024.3.26.3-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x86" version="2024.3.26.3-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x64" version="2024.3.26.3-open" />
 
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.linux-x64" version="2024.3.26.2-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.linux-x64" version="2024.3.26.3-open" />
 
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-x64" version="2024.3.26.2-open" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-arm64" version="2024.3.26.2-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-x64" version="2024.3.26.3-open" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-arm64" version="2024.3.26.3-open" />
             </group>
         </dependencies>
     </metadata>
