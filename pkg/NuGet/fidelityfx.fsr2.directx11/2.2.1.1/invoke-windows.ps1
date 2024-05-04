@@ -56,6 +56,38 @@ Function Invoke-Build {
         -maxCpuCount `
         -nologo `
         -v:minimal
+    Set-Location ..
+
+    If (!(Test-Path -Path "DX11_x86" -ErrorAction SilentlyContinue)) {
+        New-Item -Name DX11_x86 -ItemType Directory
+    }
+
+    Set-Location DX11_x86
+    cmake -A Win32 ..\.. -DGFX_API_DX11=ON -DGFX_API_DX12=OFF -DGFX_API_VK=OFF -DFSR2_BUILD_AS_DLL=1
+    msbuild src\ffx-fsr2-api\ffx_fsr2_api_x86.vcxproj `
+        -p:Configuration=Debug `
+        -p:Platform=Win32 `
+        -maxCpuCount `
+        -nologo `
+        -v:minimal
+    msbuild src\ffx-fsr2-api\dx11\ffx_fsr2_api_dx11_x86.vcxproj `
+        -p:Configuration=Debug `
+        -p:Platform=Win32 `
+        -maxCpuCount `
+        -nologo `
+        -v:minimal
+    msbuild src\ffx-fsr2-api\ffx_fsr2_api_x86.vcxproj `
+        -p:Configuration=RelWithDebInfo `
+        -p:Platform=Win32 `
+        -maxCpuCount `
+        -nologo `
+        -v:minimal
+    msbuild src\ffx-fsr2-api\dx11\ffx_fsr2_api_dx11_x86.vcxproj `
+        -p:Configuration=RelWithDebInfo `
+        -p:Platform=Win32 `
+        -maxCpuCount `
+        -nologo `
+        -v:minimal
     Set-Location ..\..
     Set-Location $Root
 }
@@ -65,9 +97,11 @@ Function Invoke-Pack {
 
     nuget pack $PSScriptRoot\runtimes.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\runtimes.win-x64.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\runtimes.win-x86.nuspec -OutputDirectory $Output
 
     nuget pack $PSScriptRoot\symbols.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\symbols.win-x64.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\symbols.win-x86.nuspec -OutputDirectory $Output
 }
 
 Function Invoke-Actions {

@@ -1,5 +1,5 @@
 # Build release packages
-. .\build-windows.ps1 -Type NuGet -Name fidelityfx.fsr2.directx11 -Version 2.2.1
+. .\build-windows.ps1 -Type NuGet -Name fidelityfx.fsr2.directx11 -Version 2.2.1.1
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.FreeType        -Version 2.13.2
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibOgg          -Version 1.3.5.5
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibTheora       -Version 1.1.1.4
