@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.FidelityFX.FSR2.DirectX11</id>
+        <version>2.2.1</version>
+        <title>FidelityFX Super Resolution 2 DirectX 11</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/GPUOpen-Effects/FidelityFX-FSR2</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>FidelityFX Super Resolution 2 for DirectX 11</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2023 Advanced Micro Devices, Inc</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.FidelityFX.FSR2.DirectX11.Runtimes" version="2.2.1" />
+                <dependency id="ImeSense.Packages.FidelityFX.FSR2.DirectX11.Symbols" version="2.2.1" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\GPUOpen-Effects\FidelityFX-FSR2\v2.2.1\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\GPUOpen-Effects\FidelityFX-FSR2\v2.2.1\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Fsr2-RootPath>$(MSBuildThisFileDirectory)\..\..</Fsr2-RootPath>
+        <Fsr2-BinPath>$(Fsr2-RootPath)\runtimes\win-x64\native\$(NuGetConfiguration)\</Fsr2-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(Fsr2-BinPath)\ffx_fsr2_api_x64d.pdb" />
+        <ReferenceCopyLocalPaths Include="$(Fsr2-BinPath)\ffx_fsr2_api_dx11_x64d.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(Fsr2-BinPath)\ffx_fsr2_api_x64.pdb" />
+        <ReferenceCopyLocalPaths Include="$(Fsr2-BinPath)\ffx_fsr2_api_dx11_x64.pdb" />
+    </ItemGroup>
+</Project>
