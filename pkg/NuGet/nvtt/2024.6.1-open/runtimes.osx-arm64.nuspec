@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Nvtt.Runtimes.osx-arm64</id>
+        <version>2024.6.1-open</version>
+        <title>Nvidia Texture Tools</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/imesense/nvidia-texture-tools</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>The NVIDIA Texture Tools is a collection of image processing and texture manipulation tools, designed to be integrated in game tools and asset processing pipelines</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2020 Ignacio Castaño, &#169; 2007-2009 NVIDIA Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\src\nvtt\nvtt.h" target="build\native\include\nvtt\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\src\nvtt\nvtt_wrapper.h" target="build\native\include\nvtt\" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvcore\Debug\libnvcore.dylib" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvimage\Debug\libnvimage.dylib" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvmath\Debug\libnvmath.dylib" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvthread\Debug\libnvthread.dylib" target="runtimes\osx-arm64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvtt\Debug\libnvtt.dylib" target="runtimes\osx-arm64\native\Debug\" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvcore\RelWithDebInfo\libnvcore.dylib" target="runtimes\osx-arm64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvimage\RelWithDebInfo\libnvimage.dylib" target="runtimes\osx-arm64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvmath\RelWithDebInfo\libnvmath.dylib" target="runtimes\osx-arm64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvthread\RelWithDebInfo\libnvthread.dylib" target="runtimes\osx-arm64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\arm64\src\nvtt\RelWithDebInfo\libnvtt.dylib" target="runtimes\osx-arm64\native\Release\" />
+
+        <file src="runtimes.osx-arm64.targets" target="build\native\ImeSense.Packages.Nvtt.Runtimes.osx-arm64.targets" />
+        <file src="runtimes.osx-arm64.cmake" target="build\native\ImeSense.Packages.Nvtt.Runtimes.osx-arm64.cmake" />
+    </files>
+</package>

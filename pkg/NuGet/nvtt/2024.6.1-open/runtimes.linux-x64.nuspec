@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Nvtt.Runtimes.linux-x64</id>
+        <version>2024.6.1-open</version>
+        <title>Nvidia Texture Tools</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/imesense/nvidia-texture-tools</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>The NVIDIA Texture Tools is a collection of image processing and texture manipulation tools, designed to be integrated in game tools and asset processing pipelines</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2020 Ignacio Castaño, &#169; 2007-2009 NVIDIA Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\include\nvtt\*.h" target="build\native\include\nvtt\" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libnvcore.so" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libnvimage.so" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libnvmath.so" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libnvthread.so" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libnvtt.so" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Debug\install\lib\libsquishd.so.0.0" target="runtimes\linux-x64\native\Debug\" />
+
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libnvcore.so" target="runtimes\linux-x64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libnvimage.so" target="runtimes\linux-x64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libnvmath.so" target="runtimes\linux-x64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libnvthread.so" target="runtimes\linux-x64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libnvtt.so" target="runtimes\linux-x64\native\Release\" />
+        <file src="..\..\..\..\dep\imesense\nvidia-texture-tools\64930f757db91c1208dbb2d29ca454096889dac0\build\Release\install\lib\libsquish.so.0.0" target="runtimes\linux-x64\native\Release\" />
+
+        <file src="runtimes.linux-x64.targets" target="build\native\ImeSense.Packages.Nvtt.Runtimes.linux-x64.targets" />
+        <file src="runtimes.linux-x64.cmake" target="build\native\ImeSense.Packages.Nvtt.Runtimes.linux-x64.cmake" />
+    </files>
+</package>

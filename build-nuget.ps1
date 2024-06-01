@@ -18,6 +18,7 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.FreeType           -Version 2023.12.7-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LuaJIT             -Version 2.1.0-beta3
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Marl               -Version 2023.11.29-open
+. .\build-windows.ps1 -Type NuGet -Name nvtt -Version 2024.6.1-open
 . .\build-windows.ps1 -Type NuGet -Name onetbb -Version 2024.3.26.3-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft         -Version 2023.11.8-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick             -Version 2022.7.8-open

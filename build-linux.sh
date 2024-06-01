@@ -7,6 +7,7 @@ source ./pkg/NuGet/mimalloc/2.1.7.1/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2.28.5.1/invoke-linux.sh
 
 # Build release packages
+source ./pkg/NuGet/nvtt/2024.6.1-open/invoke-linux.sh
 source ./pkg/NuGet/onetbb/2024.3.26.3-open/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2023.12.9.1-open/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2023.12.9.2-open/invoke-linux.sh
