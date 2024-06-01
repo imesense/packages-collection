@@ -3,6 +3,7 @@
 # Build release packages
 source ./pkg/NuGet/ImeSense.Packages.GameNetworkingSockets.Vcpkg/1.4.1/invoke-linux.sh
 source ./pkg/NuGet/onetbb/2021.11.0/invoke-linux.sh
+source ./pkg/NuGet/mimalloc/2.1.7/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2.28.5.1/invoke-linux.sh
 
 # Build release packages

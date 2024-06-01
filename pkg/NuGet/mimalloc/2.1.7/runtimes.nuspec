@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Mimalloc.Runtimes</id>
+        <version>2.1.7</version>
+        <title>Mimalloc</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <icon>img\icon.png</icon>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/microsoft/mimalloc</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>mimalloc is a compact general purpose allocator with excellent performance</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2018-2021 Microsoft Corporation, Daan Leijen</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.win-x86" version="2.1.7" />
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.win-x64" version="2.1.7" />
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.win-arm" version="2.1.7" />
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.win-arm64" version="2.1.7" />
+
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.linux-x64" version="2.1.7" />
+
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.osx-x64" version="2.1.7" />
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes.osx-arm64" version="2.1.7" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\LICENSE.txt" target="LICENSE.txt" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\doc\mimalloc-logo.png" target="img\icon.png" />
+    </files>
+</package>

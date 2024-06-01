@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Mimalloc-RuntimeId>win-arm64</Mimalloc-RuntimeId>
+        <Mimalloc-RootPath>$(MSBuildThisFileDirectory)\..\..</Mimalloc-RootPath>
+        <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</Mimalloc-BinPath>
+        <Mimalloc-IncPath>$(Mimalloc-RootPath)\build\native\include</Mimalloc-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(Mimalloc-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalDependencies>mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Mimalloc-BinPath)\mimalloc.dll" />
+    </ItemGroup>
+</Project>

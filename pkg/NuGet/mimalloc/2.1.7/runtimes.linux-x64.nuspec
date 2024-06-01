@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Mimalloc.Runtimes.linux-x64</id>
+        <version>2.1.7</version>
+        <title>Mimalloc</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <icon>img\icon.png</icon>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/microsoft/mimalloc</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>mimalloc is a compact general purpose allocator with excellent performance</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2018-2021 Microsoft Corporation, Daan Leijen</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\LICENSE.txt" target="LICENSE.txt" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\doc\mimalloc-logo.png" target="img\icon.png" />
+
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\install\include\mimalloc-2.1\**" target="build\native\include\mimalloc-2.1\" />
+
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\Debug\libmimalloc.so.2.1" target="runtimes\linux-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\RelWithDebInfo\libmimalloc.so.2.1" target="runtimes\linux-x64\native\Release\" />
+
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\install\lib\cmake\mimalloc-2.1\**" target="runtimes\linux-x64\native\Debug\cmake\mimalloc-2.1\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\install\lib\pkgconfig\**" target="runtimes\linux-x64\native\Debug\pkgconfig\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\install\lib\cmake\mimalloc-2.1\**" target="runtimes\linux-x64\native\Release\cmake\mimalloc-2.1\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\install\lib\pkgconfig\**" target="runtimes\linux-x64\native\Release\pkgconfig\" />
+
+        <file src="runtimes.linux-x64.targets" target="build\native\ImeSense.Packages.Mimalloc.Runtimes.linux-x64.targets" />
+        <file src="runtimes.linux-x64.cmake" target="build\native\ImeSense.Packages.Mimalloc.Runtimes.linux-x64.cmake" />
+    </files>
+</package>
