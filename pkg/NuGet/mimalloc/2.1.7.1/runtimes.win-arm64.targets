@@ -23,6 +23,7 @@
         </ClCompile>
 
         <Link>
+            <AdditionalLibraryDirectories>$(Mimalloc-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
             <AdditionalDependencies>mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>

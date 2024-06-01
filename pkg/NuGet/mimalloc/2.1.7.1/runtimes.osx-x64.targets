@@ -13,7 +13,7 @@
     <PropertyGroup>
         <Mimalloc-RuntimeId>osx-x64</Mimalloc-RuntimeId>
         <Mimalloc-RootPath>$(MSBuildThisFileDirectory)\..\..</Mimalloc-RootPath>
-        <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</OneTbb-BinPath>
+        <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</Mimalloc-BinPath>
     </PropertyGroup>
 
     <ItemGroup>

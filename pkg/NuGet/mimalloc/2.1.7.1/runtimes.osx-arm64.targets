@@ -11,12 +11,18 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Mimalloc-RuntimeId>linux-x64</Mimalloc-RuntimeId>
+        <Mimalloc-RuntimeId>osx-arm64</Mimalloc-RuntimeId>
         <Mimalloc-RootPath>$(MSBuildThisFileDirectory)\..\..</Mimalloc-RootPath>
-        <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</OneTbb-BinPath>
+        <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</Mimalloc-BinPath>
     </PropertyGroup>
 
     <ItemGroup>
-        <ReferenceCopyLocalPaths Include="$(Mimalloc-BinPath)\libmimalloc.so.2.1.debug" />
+        <ReferenceCopyLocalPaths Include="$(Mimalloc-BinPath)\libmimalloc.2.1.dylib" />
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libmimalloc.2.1.dylib libmimalloc.2.dylib" />
+        <Exec Command="ln -s libmimalloc.2.dylib libmimalloc.dylib" />
+    </Target>
 </Project>

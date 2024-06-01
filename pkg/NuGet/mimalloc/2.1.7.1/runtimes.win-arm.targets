@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <Mimalloc-RuntimeId>win-x64</Mimalloc-RuntimeId>
+        <Mimalloc-RuntimeId>win-arm</Mimalloc-RuntimeId>
         <Mimalloc-RootPath>$(MSBuildThisFileDirectory)\..\..</Mimalloc-RootPath>
         <Mimalloc-BinPath>$(Mimalloc-RootPath)\runtimes\$(Mimalloc-RuntimeId)\native\$(NuGetConfiguration)\</Mimalloc-BinPath>
         <Mimalloc-IncPath>$(Mimalloc-RootPath)\build\native\include</Mimalloc-IncPath>
@@ -23,6 +23,7 @@
         </ClCompile>
 
         <Link>
+            <AdditionalLibraryDirectories>$(Mimalloc-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
             <AdditionalDependencies>mimalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
