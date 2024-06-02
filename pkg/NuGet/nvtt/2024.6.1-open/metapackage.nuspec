@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>ImeSense.Packages.Nvtt</id>
-        <version>2024.6.1-open</version>
+        <version>2024.6.1.1-open</version>
         <title>Nvidia Texture Tools</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,8 +18,8 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.Nvtt.Runtimes" version="2024.6.1-open" />
-                <dependency id="ImeSense.Packages.Nvtt.Symbols" version="2024.6.1-open" />
+                <dependency id="ImeSense.Packages.Nvtt.Runtimes" version="2024.6.1.1-open" />
+                <dependency id="ImeSense.Packages.Nvtt.Symbols" version="2024.6.1.1-open" />
             </group>
         </dependencies>
     </metadata>

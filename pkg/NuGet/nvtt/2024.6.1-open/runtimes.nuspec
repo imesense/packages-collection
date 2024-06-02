@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.Nvtt.Runtimes</id>
-        <version>2024.6.1-open</version>
+        <version>2024.6.1.1-open</version>
         <title>Nvidia Texture Tools</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -23,7 +23,6 @@
 
                 <dependency id="ImeSense.Packages.Nvtt.Runtimes.linux-x64" version="2024.6.1-open" />
 
-                <dependency id="ImeSense.Packages.Nvtt.Runtimes.osx-x64" version="2024.6.1-open" />
                 <dependency id="ImeSense.Packages.Nvtt.Runtimes.osx-arm64" version="2024.6.1-open" />
             </group>
         </dependencies>
