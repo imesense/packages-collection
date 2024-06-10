@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Lzo.Runtimes</id>
+        <version>2.10</version>
+        <title>LZO</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>http://www.oberhumer.com/opensource/lzo</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>LZO is a portable lossless data compression library written in ANSI C</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1996-2017 Markus F.X.J. Oberhumer</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.win-x86" version="2.10" />
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.win-x64" version="2.10" />
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.win-arm" version="2.10" />
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.win-arm64" version="2.10" />
+
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.linux-x64" version="2.10" />
+
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.osx-x64" version="2.10" />
+                <dependency id="ImeSense.Packages.Lzo.Runtimes.osx-arm64" version="2.10" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>

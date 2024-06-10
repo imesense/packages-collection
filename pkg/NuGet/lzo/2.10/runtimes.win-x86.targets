@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Lzo-RuntimeId>win-x86</Lzo-RuntimeId>
+        <Lzo-RootPath>$(MSBuildThisFileDirectory)\..\..</Lzo-RootPath>
+        <Lzo-BinPath>$(Lzo-RootPath)\runtimes\$(Lzo-RuntimeId)\native\$(NuGetConfiguration)\</Lzo-BinPath>
+        <Lzo-IncPath>$(Lzo-RootPath)\build\native\include</Lzo-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(Lzo-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(Lzo-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>lzo2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Lzo-BinPath)\lzo2.dll" />
+    </ItemGroup>
+</Project>

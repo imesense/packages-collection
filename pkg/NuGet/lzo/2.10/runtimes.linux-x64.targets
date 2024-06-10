@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Lzo-RuntimeId>linux-x64</Lzo-RuntimeId>
+        <Lzo-RootPath>$(MSBuildThisFileDirectory)\..\..</Lzo-RootPath>
+        <Lzo-BinPath>$(Lzo-RootPath)\runtimes\$(Lzo-RuntimeId)\native\$(NuGetConfiguration)\</Lzo-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Lzo-BinPath)\liblzo2.so.2.0.0" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s liblzo2.so.2.0.0 liblzo2.so.2" />
+        <Exec Command="ln -s liblzo2.so.2 liblzo2.so" />
+    </Target>
+</Project>

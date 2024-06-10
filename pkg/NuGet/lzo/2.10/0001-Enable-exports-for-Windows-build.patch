@@ -1,0 +1,25 @@
+From e8912dd10f4c48246160d405e2d1d89e48793c4c Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Mon, 10 Jun 2024 21:54:40 +0300
+Subject: [PATCH] Enable exports for Windows build
+
+---
+ include/lzo/lzoconf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/lzo/lzoconf.h b/include/lzo/lzoconf.h
+index f9a8bdb..36af238 100644
+--- a/include/lzo/lzoconf.h
++++ b/include/lzo/lzoconf.h
+@@ -218,7 +218,7 @@ LZO_COMPILE_TIME_ASSERT_HEADER(sizeof(char *)   == sizeof(lzo_bytep))
+ 
+ /* DLL export information */
+ #if !defined(__LZO_EXPORT1)
+-#  define __LZO_EXPORT1         /*empty*/
++#  define __LZO_EXPORT1         __declspec(dllexport)
+ #endif
+ #if !defined(__LZO_EXPORT2)
+ #  define __LZO_EXPORT2         /*empty*/
+-- 
+2.45.0.windows.1
+

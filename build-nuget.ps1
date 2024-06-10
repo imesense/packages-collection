@@ -4,6 +4,7 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibOgg          -Version 1.3.5.5
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibTheora       -Version 1.1.1.4
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibVorbis       -Version 1.3.7.5
+. .\build-windows.ps1 -Type NuGet -Name lzo -Version 2.10
 . .\build-windows.ps1 -Type NuGet -Name mimalloc -Version 2.1.7.1
 . .\build-windows.ps1 -Type NuGet -Name onetbb -Version 2021.11.0
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft      -Version 1.23.1.2

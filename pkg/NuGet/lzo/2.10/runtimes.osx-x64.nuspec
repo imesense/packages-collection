@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Lzo.Runtimes.osx-x64</id>
+        <version>2.10</version>
+        <title>LZO</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>http://www.oberhumer.com/opensource/lzo</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>LZO is a portable lossless data compression library written in ANSI C</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1996-2017 Markus F.X.J. Oberhumer</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\build\x86_64\install\include\lzo\**" target="build\native\include\lzo\" />
+
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\build\x86_64\Debug\liblzo2.2.0.0.dylib" target="runtimes\osx-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\lzo\lzo\lzo-2.10\build\x86_64\RelWithDebInfo\liblzo2.2.0.0.dylib" target="runtimes\osx-x64\native\Release\" />
+
+        <file src="runtimes.osx-x64.targets" target="build\native\ImeSense.Packages.Lzo.Runtimes.osx-x64.targets" />
+        <file src="runtimes.osx-x64.cmake" target="build\native\ImeSense.Packages.Lzo.Runtimes.osx-x64.cmake" />
+    </files>
+</package>
