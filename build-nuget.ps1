@@ -23,6 +23,7 @@
 . .\build-windows.ps1 -Type NuGet -Name onetbb -Version 2024.3.26.3-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft         -Version 2023.11.8-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick             -Version 2022.7.8-open
+. .\build-windows.ps1 -Type NuGet -Name opus -Version 2024.5.22-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.1-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.2-open

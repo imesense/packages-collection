@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Opus-RuntimeId>linux-x64</Opus-RuntimeId>
+        <Opus-RootPath>$(MSBuildThisFileDirectory)\..\..</Opus-RootPath>
+        <Opus-BinPath>$(Opus-RootPath)\runtimes\$(Opus-RuntimeId)\native\$(NuGetConfiguration)\</Opus-BinPath>
+        <Opus-IncPath>$(Opus-RootPath)\build\native\include</Opus-IncPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Opus-BinPath)\libopus.so.0.10.1" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libopus.so.0.10.1 libopus.so.0" />
+        <Exec Command="ln -s libopus.so.0 libopus.so" />
+    </Target>
+</Project>

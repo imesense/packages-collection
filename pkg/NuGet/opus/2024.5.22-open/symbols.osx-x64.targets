@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Opus-RuntimeId>osx-x64</Opus-RuntimeId>
+        <Opus-RootPath>$(MSBuildThisFileDirectory)\..\..</Opus-RootPath>
+        <Opus-BinPath>$(Opus-RootPath)\runtimes\$(Opus-RuntimeId)\native\$(NuGetConfiguration)\</Opus-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Opus-Symbols Include="$(Opus-BinPath)\libopus.0.10.1.dylib.dSYM\**" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(Opus-Symbols)" DestinationFolder="$(OutDir)\libopus.0.10.1.dylib.dSYM\%(RecursiveDir)" />
+</Project>

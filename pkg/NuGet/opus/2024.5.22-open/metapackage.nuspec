@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Opus</id>
+        <version>2024.5.22-open</version>
+        <title>Opus</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://gitlab.xiph.org/xiph/opus</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Opus is a codec for interactive speech and audio transmission over the Internet</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2001-2023 Xiph.Org, Skype Limited, Octasic, Jean-Marc Valin, Timothy B. Terriberry, CSIRO, Gregory Maxwell, Mark Borgerding, Erik de Castro Lopo, Mozilla, Amazon</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.Opus.Runtimes" version="2024.5.22-open" />
+                <dependency id="ImeSense.Packages.Opus.Symbols" version="2024.5.22-open" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\xiph\opus\2554a89e02c7fc30a980b4f7e635ceae1ecba5d6\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\xiph\opus\2554a89e02c7fc30a980b4f7e635ceae1ecba5d6\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>
