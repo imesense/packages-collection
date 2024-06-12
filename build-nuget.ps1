@@ -28,3 +28,4 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.1-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.2-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2024.3.16-open
+. .\build-windows.ps1 -Type NuGet -Name speexdsp -Version 2024.6.4-open

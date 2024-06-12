@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.SpeexDsp.Runtimes</id>
+        <version>2024.6.4-open</version>
+        <title>SpeexDsp</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://gitlab.xiph.org/xiph/speexdsp</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>SpeexDSP is a patent-free, Open Source/Free Software DSP library</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 1992-1994	Jutta Degener, Carsten Bormann, &#169; 2003 EpicGames, &#169; 1993, 2002, 2006 David Rowe, &#169; 2005-2008	Commonwealth Scientific and Industrial Research Organisation (CSIRO) &#169; 2005-2007 Analog Devices Inc., &#169; 2002-2008 Jean-Marc Valin, &#169; 2002-2008 Xiph.org Foundation</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.win-x86" version="2024.6.4-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.win-x64" version="2024.6.4-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.win-arm" version="2024.6.4-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.win-arm64" version="2024.6.4-open" />
+
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.linux-x64" version="2024.6.4-open" />
+
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.osx-x64" version="2024.6.4-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes.osx-arm64" version="2024.6.4-open" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>

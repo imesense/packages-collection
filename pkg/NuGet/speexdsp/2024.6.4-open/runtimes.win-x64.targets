@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SpeexDsp-RuntimeId>win-x64</SpeexDsp-RuntimeId>
+        <SpeexDsp-RootPath>$(MSBuildThisFileDirectory)\..\..</SpeexDsp-RootPath>
+        <SpeexDsp-BinPath>$(SpeexDsp-RootPath)\runtimes\$(SpeexDsp-RuntimeId)\native\$(NuGetConfiguration)\</SpeexDsp-BinPath>
+        <SpeexDsp-IncPath>$(SpeexDsp-RootPath)\build\native\include</SpeexDsp-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(SpeexDsp-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(SpeexDsp-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>speexdsp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(SpeexDsp-BinPath)\speexdsp.dll" />
+    </ItemGroup>
+</Project>

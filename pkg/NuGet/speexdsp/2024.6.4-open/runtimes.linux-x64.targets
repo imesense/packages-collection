@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SpeexDsp-RuntimeId>linux-x64</SpeexDsp-RuntimeId>
+        <SpeexDsp-RootPath>$(MSBuildThisFileDirectory)\..\..</SpeexDsp-RootPath>
+        <SpeexDsp-BinPath>$(SpeexDsp-RootPath)\runtimes\$(SpeexDsp-RuntimeId)\native\$(NuGetConfiguration)\</SpeexDsp-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(SpeexDsp-BinPath)\libspeexdsp.so.1.2.0" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libspeexdsp.so.1.2.0 libspeexdsp.so.1" />
+        <Exec Command="ln -s libspeexdsp.so.1 libspeexdsp.so" />
+    </Target>
+</Project>
