@@ -14,4 +14,4 @@ source ./pkg/NuGet/opus/2024.5.22-open/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2023.12.9.1-open/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2023.12.9.2-open/invoke-linux.sh
 source ./pkg/NuGet/ImeSense.Packages.Sdl/2024.3.16-open/invoke-linux.sh
-source ./pkg/NuGet/speexdsp/2024.6.4-open/invoke-linux.sh
+source ./pkg/NuGet/speexdsp/2024.6.4.1-open/invoke-linux.sh

@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.SpeexDsp</id>
-        <version>2024.6.4-open</version>
+        <version>2024.6.4.1-open</version>
         <title>SpeexDsp</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,8 +18,8 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes" version="2024.6.4-open" />
-                <dependency id="ImeSense.Packages.SpeexDsp.Symbols" version="2024.6.4-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Runtimes" version="2024.6.4.1-open" />
+                <dependency id="ImeSense.Packages.SpeexDsp.Symbols" version="2024.6.4.1-open" />
             </group>
         </dependencies>
     </metadata>

@@ -1,0 +1,22 @@
+From 88623b96c9536428845cbbc3b8e95046d76ff287 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Mon, 17 Jun 2024 23:36:37 +0300
+Subject: [PATCH] Fix library exports on Windows
+
+---
+ win32/libspeexdsp.def | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/win32/libspeexdsp.def b/win32/libspeexdsp.def
+index cfd94b9..a4c1ba6 100755
+--- a/win32/libspeexdsp.def
++++ b/win32/libspeexdsp.def
+@@ -1,4 +1,4 @@
+-LIBRARY libspeexdsp.dll
++LIBRARY speexdsp.dll
+ EXPORTS
+ 
+ 
+-- 
+2.45.0.windows.1
+

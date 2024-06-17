@@ -15,6 +15,7 @@ Function Invoke-Patch {
     Set-Location $Destination
     git reset --hard $Commit
     git am --3way --ignore-space-change --keep-cr  $PSScriptRoot\0001-Add-CMake-project.patch
+    git am --3way --ignore-space-change --keep-cr  $PSScriptRoot\0002-Fix-library-exports-on-Windows.patch
     Copy-Item -Path README -Destination README.md
     Copy-Item -Path COPYING -Destination LICENSE.txt
     Set-Location $Root

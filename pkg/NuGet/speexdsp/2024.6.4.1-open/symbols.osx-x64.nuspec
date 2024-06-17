@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.SpeexDsp.Symbols.win-arm</id>
-        <version>2024.6.4-open</version>
+        <id>ImeSense.Packages.SpeexDsp.Symbols.osx-x64</id>
+        <version>2024.6.4.1-open</version>
         <title>SpeexDsp</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -21,10 +21,10 @@
         <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\README.md" target="README.md" />
         <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\LICENSE.txt" target="LICENSE.txt" />
 
-        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\build\ARM\Debug\speexdsp.pdb" target="runtimes\win-arm\native\Debug\" />
-        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\build\ARM\RelWithDebInfo\speexdsp.pdb" target="runtimes\win-arm\native\Release\" />
+        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\build\x86_64\Debug\libspeexdsp.1.2.0.dylib.dSYM\**" target="runtimes\osx-x64\native\Debug\libspeexdsp.1.2.0.dylib.dSYM\" />
+        <file src="..\..\..\..\dep\xiph\speexdsp\dbd421d149a9c362ea16150694b75b63d757a521\build\x86_64\RelWithDebInfo\libspeexdsp.1.2.0.dylib.dSYM\**" target="runtimes\osx-x64\native\Release\libspeexdsp.1.2.0.dylib.dSYM\" />
 
-        <file src="symbols.win-arm.targets" target="build\native\ImeSense.Packages.SpeexDsp.Symbols.win-arm.targets" />
-        <file src="symbols.win-arm.cmake" target="build\native\ImeSense.Packages.SpeexDsp.Symbols.win-arm.cmake" />
+        <file src="symbols.osx-x64.targets" target="build\native\ImeSense.Packages.SpeexDsp.Symbols.osx-x64.targets" />
+        <file src="symbols.osx-x64.cmake" target="build\native\ImeSense.Packages.SpeexDsp.Symbols.osx-x64.cmake" />
     </files>
 </package>
