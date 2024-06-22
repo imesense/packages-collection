@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.RedImageTool.Symbols.win-x86</id>
+        <version>0.1</version>
+        <title>RedImageTool</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/BearIvan</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>Tool for working with textures and compression blocks</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2004 BearIvan</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="README.md" target="README.md" />
+        <file src="LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\BearIvan\RedImage\0.1\libraries\Win32\Debug\RedImageTool.pdb" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\BearIvan\RedImage\0.1\libraries\Win32\Release\RedImageTool.pdb" target="runtimes\win-x86\native\Release\" />
+
+        <file src="symbols.win-x86.targets" target="build\native\ImeSense.Packages.RedImageTool.Symbols.win-x86.targets" />
+        <file src="symbols.win-x86.cmake" target="build\native\ImeSense.Packages.RedImageTool.Symbols.win-x86.cmake" />
+    </files>
+</package>
