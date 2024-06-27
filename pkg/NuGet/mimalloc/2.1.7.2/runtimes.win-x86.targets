@@ -30,5 +30,6 @@
 
     <ItemGroup>
         <ReferenceCopyLocalPaths Include="$(Mimalloc-BinPath)\mimalloc.dll" />
+        <ReferenceCopyLocalPaths Include="$(Mimalloc-BinPath)\mimalloc-redirect.dll" />
     </ItemGroup>
 </Project>

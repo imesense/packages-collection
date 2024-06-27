@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.Mimalloc.Runtimes.linux-x64</id>
-        <version>2.1.7.1</version>
+        <version>2.1.7.2</version>
         <title>Mimalloc</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>

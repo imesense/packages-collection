@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.Mimalloc.Runtimes.win-x64</id>
-        <version>2.1.7.1</version>
+        <version>2.1.7.2</version>
         <title>Mimalloc</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -26,7 +26,9 @@
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\install\include\mimalloc-2.1\**" target="build\native\include\mimalloc-2.1\" />
 
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\Debug\mimalloc.dll" target="runtimes\win-x64\native\Debug\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\Debug\mimalloc-redirect.dll" target="runtimes\win-x64\native\Debug\" />
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\RelWithDebInfo\mimalloc.dll" target="runtimes\win-x64\native\Release\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\RelWithDebInfo\mimalloc-redirect.dll" target="runtimes\win-x64\native\Release\" />
 
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\Debug\mimalloc.lib" target="runtimes\win-x64\native\Debug\" />
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\x64\Debug\mimalloc.exp" target="runtimes\win-x64\native\Debug\" />

@@ -17,4 +17,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE mimalloc.lib)
 add_custom_command(TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MIMALLOC_RUNTIME_PATH}/mimalloc.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MIMALLOC_RUNTIME_PATH}/mimalloc-redirect.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
 )
