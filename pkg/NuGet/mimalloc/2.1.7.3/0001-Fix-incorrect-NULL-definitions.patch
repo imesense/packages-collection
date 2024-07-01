@@ -1,0 +1,27 @@
+From 1c00f92784b5adc9e4402741bf5809e7cf84fa34 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Mon, 1 Jul 2024 21:58:17 +0300
+Subject: [PATCH] Fix incorrect `NULL` definitions
+
+---
+ include/mimalloc.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/mimalloc.h b/include/mimalloc.h
+index c41bcc8..93f138e 100644
+--- a/include/mimalloc.h
++++ b/include/mimalloc.h
+@@ -526,8 +526,8 @@ protected:
+   template<class U> _mi_heap_stl_allocator_common(const _mi_heap_stl_allocator_common<U, _mi_destroy>& x) mi_attr_noexcept : heap(x.heap) { }
+ 
+ private:
+-  static void heap_delete(mi_heap_t* hp)  { if (hp != NULL) { mi_heap_delete(hp); } }
+-  static void heap_destroy(mi_heap_t* hp) { if (hp != NULL) { mi_heap_destroy(hp); } }
++  static void heap_delete(mi_heap_t* hp)  { if (hp != nullptr) { mi_heap_delete(hp); } }
++  static void heap_destroy(mi_heap_t* hp) { if (hp != nullptr) { mi_heap_destroy(hp); } }
+ };
+ 
+ // STL allocator allocation in a specific heap
+-- 
+2.45.0.windows.1
+

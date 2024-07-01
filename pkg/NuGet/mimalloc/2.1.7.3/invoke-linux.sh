@@ -14,8 +14,11 @@ invoke_get() {
 }
 
 invoke_patch() {
+    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
     cd $destination
     git reset --hard $commit
+    git am --3way --ignore-space-change --keep-cr $script_root/0001-Fix-incorrect-NULL-definitions.patch
     cp LICENSE LICENSE.txt
     cd $root
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.Mimalloc.Symbols.win-arm64</id>
-        <version>2.1.7.2</version>
+        <id>ImeSense.Packages.Mimalloc.Symbols.win-x86</id>
+        <version>2.1.7.3</version>
         <title>Mimalloc</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -23,10 +23,10 @@
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\LICENSE.txt" target="LICENSE.txt" />
         <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\doc\mimalloc-logo.png" target="img\icon.png" />
 
-        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\ARM64\Debug\mimalloc.pdb" target="runtimes\win-arm64\native\Debug\" />
-        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\ARM64\RelWithDebInfo\mimalloc.pdb" target="runtimes\win-arm64\native\Release\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\Win32\Debug\mimalloc.pdb" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\microsoft\mimalloc\v2.1.7\build\Win32\RelWithDebInfo\mimalloc.pdb" target="runtimes\win-x86\native\Release\" />
 
-        <file src="symbols.win-arm64.targets" target="build\native\ImeSense.Packages.Mimalloc.Symbols.win-arm64.targets" />
-        <file src="symbols.win-arm64.cmake" target="build\native\ImeSense.Packages.Mimalloc.Symbols.win-arm64.cmake" />
+        <file src="symbols.win-x86.targets" target="build\native\ImeSense.Packages.Mimalloc.Symbols.win-x86.targets" />
+        <file src="symbols.win-x86.cmake" target="build\native\ImeSense.Packages.Mimalloc.Symbols.win-x86.cmake" />
     </files>
 </package>

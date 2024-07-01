@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.Mimalloc</id>
-        <version>2.1.7.2</version>
+        <version>2.1.7.3</version>
         <title>Mimalloc</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -19,8 +19,8 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.Mimalloc.Runtimes" version="2.1.7.2" />
-                <dependency id="ImeSense.Packages.Mimalloc.Symbols" version="2.1.7.2" />
+                <dependency id="ImeSense.Packages.Mimalloc.Runtimes" version="2.1.7.3" />
+                <dependency id="ImeSense.Packages.Mimalloc.Symbols" version="2.1.7.3" />
             </group>
         </dependencies>
     </metadata>

@@ -15,6 +15,7 @@ Function Invoke-Get {
 Function Invoke-Patch {
     Set-Location $Destination
     git reset --hard $Commit
+    git am --3way --ignore-space-change --keep-cr $PSScriptRoot\0001-Fix-incorrect-NULL-definitions.patch
     Copy-Item -Path LICENSE -Destination LICENSE.txt
     Set-Location $Root
 }
