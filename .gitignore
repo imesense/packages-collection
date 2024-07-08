@@ -2,6 +2,7 @@
 
 # Dependencies
 dep/
+*.tar.bz2
 
 # Build results
 obj/
