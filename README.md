@@ -1,4 +1,4 @@
-# Custom build recipes
+# Packages Collection
 
 Monorepository for cusom build recipes and manifests of various provided packages
 
