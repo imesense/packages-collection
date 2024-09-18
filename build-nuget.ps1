@@ -10,8 +10,7 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft      -Version 1.23.1.2
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick          -Version 1.4.0
 . .\build-windows.ps1 -Type NuGet -Name redimagetool -Version 0.1
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl             -Version 2.28.5
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl             -Version 2.28.5.1
+. .\build-windows.ps1 -Type NuGet -Name sdl -Version 2.28.5.1
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.WxWidgets.Vcpkg -Version 3.2.4
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Zlib            -Version 1.2.13.3
 
@@ -25,8 +24,6 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft         -Version 2023.11.8-open
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick             -Version 2022.7.8-open
 . .\build-windows.ps1 -Type NuGet -Name opus -Version 2024.5.22-open
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9-open
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.1-open
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2023.12.9.2-open
-. .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Sdl                -Version 2024.3.16-open
+. .\build-windows.ps1 -Type NuGet -Name sdl -Version 2023.12.9.2-open
+. .\build-windows.ps1 -Type NuGet -Name sdl -Version 2024.3.16-open
 . .\build-windows.ps1 -Type NuGet -Name speexdsp -Version 2024.6.4.1-open
