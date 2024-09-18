@@ -1,7 +1,7 @@
 name: Package request
 description: Suggest a component for packaging
 title: "[Package]: "
-labels: "enhancement"
+labels: ["enhancement"]
 
 body:
   # Package information

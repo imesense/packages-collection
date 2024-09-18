@@ -1,7 +1,7 @@
 name: Feature request
 description: Suggest a feature for integration
 title: "[Feature]: "
-labels: "enhancement"
+labels: ["enhancement"]
 
 body:
   # Feature information
