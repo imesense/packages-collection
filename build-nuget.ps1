@@ -10,7 +10,7 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft      -Version 1.23.1.2
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick          -Version 1.4.0
 . .\build-windows.ps1 -Type NuGet -Name redimagetool -Version 0.1
-. .\build-windows.ps1 -Type NuGet -Name sdl -Version 2.28.5.1
+. .\build-windows.ps1 -Type NuGet -Name sdl -Version 2.28.5.2
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.WxWidgets.Vcpkg -Version 3.2.4
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Zlib            -Version 1.2.13.3
 

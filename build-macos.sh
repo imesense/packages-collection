@@ -5,7 +5,7 @@ source ./pkg/NuGet/ImeSense.Packages.GameNetworkingSockets.Vcpkg/1.4.1/invoke-ma
 source ./pkg/NuGet/onetbb/2021.11.0/invoke-macos.sh
 source ./pkg/NuGet/lzo/2.10/invoke-macos.sh
 source ./pkg/NuGet/mimalloc/2.1.7.3/invoke-macos.sh
-source ./pkg/NuGet/sdl/2.28.5.1/invoke-macos.sh
+source ./pkg/NuGet/sdl/2.28.5.2/invoke-macos.sh
 
 # Build pre-release packages
 source ./pkg/NuGet/nvtt/2024.6.1-open/invoke-macos.sh

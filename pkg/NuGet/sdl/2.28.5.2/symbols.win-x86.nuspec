@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.Sdl.Symbols.win-x64</id>
-        <version>2.28.5.1</version>
+        <id>ImeSense.Packages.Sdl.Symbols.win-x86</id>
+        <version>2.28.5.2</version>
         <title>Simple DirectMedia Layer </title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -20,10 +20,10 @@
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\README.md" target="README.md" />
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\LICENSE.txt" target="LICENSE.txt" />
 
-        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\x64\Debug\SDL2d.pdb" target="runtimes\win-x64\native\Debug\" />
-        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\x64\RelWithDebInfo\SDL2.pdb" target="runtimes\win-x64\native\Release\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\Win32\Debug\SDL2d.pdb" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\Win32\RelWithDebInfo\SDL2.pdb" target="runtimes\win-x86\native\Release\" />
 
-        <file src="symbols.win-x64.targets" target="build\native\ImeSense.Packages.Sdl.Symbols.win-x64.targets" />
-        <file src="symbols.win-x64.cmake" target="build\native\ImeSense.Packages.Sdl.Symbols.win-x64.cmake" />
+        <file src="symbols.win-x86.targets" target="build\native\ImeSense.Packages.Sdl.Symbols.win-x86.targets" />
+        <file src="symbols.win-x86.cmake" target="build\native\ImeSense.Packages.Sdl.Symbols.win-x86.cmake" />
     </files>
 </package>
