@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/libsdl-org/SDL.git"
 branch="release-2.28.5"
 destination="dep/libsdl-org/SDL/$branch"

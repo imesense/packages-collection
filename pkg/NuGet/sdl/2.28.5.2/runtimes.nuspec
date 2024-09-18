@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.Sdl.Symbols.win-arm</id>
-        <version>2.28.5.1</version>
+        <id>ImeSense.Packages.Sdl.Runtimes</id>
+        <version>2.28.5.2</version>
         <title>Simple DirectMedia Layer </title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -14,16 +14,24 @@
         <releaseNotes></releaseNotes>
         <copyright>&#169; 1997-2023 Sam Lantinga</copyright>
         <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.win-x86" version="2.28.5.2" />
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.win-x64" version="2.28.5.2" />
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.win-arm" version="2.28.5.2" />
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.win-arm64" version="2.28.5.2" />
+
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.osx-x64" version="2.28.5.2" />
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.osx-arm64" version="2.28.5.2" />
+
+                <dependency id="ImeSense.Packages.Sdl.Runtimes.linux-x64" version="2.28.5.2" />
+            </group>
+        </dependencies>
     </metadata>
 
     <files>
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\README.md" target="README.md" />
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\LICENSE.txt" target="LICENSE.txt" />
-
-        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\Debug\SDL2d.pdb" target="runtimes\win-arm\native\Debug\" />
-        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\RelWithDebInfo\SDL2.pdb" target="runtimes\win-arm\native\Release\" />
-
-        <file src="symbols.win-arm.targets" target="build\native\ImeSense.Packages.Sdl.Symbols.win-arm.targets" />
-        <file src="symbols.win-arm.cmake" target="build\native\ImeSense.Packages.Sdl.Symbols.win-arm.cmake" />
     </files>
 </package>

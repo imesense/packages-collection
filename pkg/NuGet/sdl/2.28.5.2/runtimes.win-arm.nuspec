@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.Sdl.Runtimes.win-arm</id>
-        <version>2.28.5.1</version>
+        <version>2.28.5.2</version>
         <title>Simple DirectMedia Layer </title>
         <authors>acidicMercury8</authors>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -20,7 +20,8 @@
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\README.md" target="README.md" />
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\LICENSE.txt" target="LICENSE.txt" />
 
-        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\include\SDL2\*.h" target="build\native\include\SDL2\" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\include\SDL2\SDL_revision.h" target="build\native\include\SDL2\SDL_revision.h" />
+        <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\include\*.h" target="build\native\include\SDL2\" exclude="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\include\SDL_revision.h" />
 
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\Debug\SDL2d.dll" target="runtimes\win-arm\native\Debug\" />
         <file src="..\..\..\..\dep\libsdl-org\SDL\release-2.28.5\build\ARM\RelWithDebInfo\SDL2.dll" target="runtimes\win-arm\native\Release\" />
