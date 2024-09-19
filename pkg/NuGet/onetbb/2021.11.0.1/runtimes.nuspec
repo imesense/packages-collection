@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>ImeSense.Packages.OneTbb</id>
-        <version>2021.11.0</version>
+        <id>ImeSense.Packages.OneTbb.Runtimes</id>
+        <version>2021.11.0.1</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,8 +18,15 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.OneTbb.Runtimes" version="2021.11.0" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols" version="2021.11.0" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x86" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win-x64" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x86" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.win7-x64" version="2021.11.0.1" />
+
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.linux-x64" version="2021.11.0.1" />
+
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-x64" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Runtimes.osx-arm64" version="2021.11.0.1" />
             </group>
         </dependencies>
     </metadata>

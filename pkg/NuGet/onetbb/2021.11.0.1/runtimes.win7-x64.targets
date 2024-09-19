@@ -20,15 +20,19 @@
         <ClCompile>
             <AdditionalIncludeDirectories>$(OneTbb-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(OneTbb-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
     </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
         <Link>
-            <AdditionalDependencies>tbb_debug.lib;tbb12_debug.lib;tbbmalloc_debug.lib;tbbmalloc_proxy_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalDependencies>tbb12_debug.lib;tbbmalloc_debug.lib;tbbmalloc_proxy_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Release'">
         <Link>
-            <AdditionalDependencies>tbb.lib;tbb12.lib;tbbmalloc.lib;tbbmalloc_proxy.lib;%(AdditionalDependencies)</AdditionalDependencies>
+            <AdditionalDependencies>tbb12.lib;tbbmalloc.lib;tbbmalloc_proxy.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
 

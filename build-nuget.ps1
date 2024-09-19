@@ -6,7 +6,7 @@
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.LibVorbis       -Version 1.3.7.5
 . .\build-windows.ps1 -Type NuGet -Name lzo -Version 2.10
 . .\build-windows.ps1 -Type NuGet -Name mimalloc -Version 2.1.7.3
-. .\build-windows.ps1 -Type NuGet -Name onetbb -Version 2021.11.0
+. .\build-windows.ps1 -Type NuGet -Name onetbb -Version 2021.11.0.1
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.OpenALSoft      -Version 1.23.1.2
 . .\build-windows.ps1 -Type NuGet -Name ImeSense.Packages.Optick          -Version 1.4.0
 . .\build-windows.ps1 -Type NuGet -Name redimagetool -Version 0.1

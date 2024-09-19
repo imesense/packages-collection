@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.OneTbb.Runtimes.win-x86</id>
-        <version>2021.11.0</version>
+        <version>2021.11.0.1</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -43,12 +43,12 @@
         <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\install\lib\cmake\**" target="runtimes\win-x86\native\Release\cmake\" />
         <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\install\lib\pkgconfig\**" target="runtimes\win-x86\native\Release\pkgconfig\" />
 
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_debug\tbb12_debug.exp" target="runtimes\win-x86\native\Debug\" />
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_debug\tbbmalloc_debug.exp" target="runtimes\win-x86\native\Debug\" />
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_debug\tbbmalloc_proxy_debug.exp" target="runtimes\win-x86\native\Debug\" />
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_relwithdebinfo\tbb12.exp" target="runtimes\win-x86\native\Release\" />
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_relwithdebinfo\tbbmalloc.exp" target="runtimes\win-x86\native\Release\" />
-        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.39_cxx_32_md_relwithdebinfo\tbbmalloc_proxy.exp" target="runtimes\win-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_debug\tbb12_debug.exp" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_debug\tbbmalloc_debug.exp" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_debug\tbbmalloc_proxy_debug.exp" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_relwithdebinfo\tbb12.exp" target="runtimes\win-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_relwithdebinfo\tbbmalloc.exp" target="runtimes\win-x86\native\Release\" />
+        <file src="..\..\..\..\dep\oneapi-src\oneTBB\v2021.11.0\build\Win32\msvc_19.41_cxx_32_md_relwithdebinfo\tbbmalloc_proxy.exp" target="runtimes\win-x86\native\Release\" />
 
         <file src="runtimes.win-x86.targets" target="build\native\ImeSense.Packages.OneTbb.Runtimes.win-x86.targets" />
         <file src="runtimes.win-x86.cmake" target="build\native\ImeSense.Packages.OneTbb.Runtimes.win-x86.cmake" />

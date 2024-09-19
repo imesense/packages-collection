@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/oneapi-src/oneTBB.git"
 commit="8b829acc65569019edb896c5150d427f288e8aba"
 branch="v2021.11.0"
