@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>ImeSense.Packages.OneTbb.Symbols</id>
-        <version>2021.11.0</version>
+        <version>2021.11.0.1</version>
         <title>oneAPI oneTBB</title>
         <authors>acidicMercury8</authors>
         <owners>acidicMercury8,ImeSense</owners>
@@ -18,15 +18,15 @@
 
         <dependencies>
             <group targetFramework="native">
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x86" version="2021.11.0" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x64" version="2021.11.0" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x86" version="2021.11.0" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x64" version="2021.11.0" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x86" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.win-x64" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x86" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.win7-x64" version="2021.11.0.1" />
 
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.linux-x64" version="2021.11.0" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.linux-x64" version="2021.11.0.1" />
 
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-x64" version="2021.11.0" />
-                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-arm64" version="2021.11.0" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-x64" version="2021.11.0.1" />
+                <dependency id="ImeSense.Packages.OneTbb.Symbols.osx-arm64" version="2021.11.0.1" />
             </group>
         </dependencies>
     </metadata>
