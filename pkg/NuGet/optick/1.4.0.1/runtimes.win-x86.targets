@@ -10,29 +10,22 @@
         <NuGetConfiguration>Release</NuGetConfiguration>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Platform)' == 'Win32' Or '$(Platform)' == 'x86'">
-        <NuGetPlatform>Win32</NuGetPlatform>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Platform)' == 'x64'">
-        <NuGetPlatform>x64</NuGetPlatform>
-    </PropertyGroup>
-
     <PropertyGroup>
-        <Optick-RootPath>$(MSBuildThisFileDirectory)\..\..\native</Optick-RootPath>
-        <Optick-BinPath>$(Optick-RootPath)\bin\$(NuGetPlatform)\$(NuGetConfiguration)\</Optick-BinPath>
-        <Optick-LibPath>$(Optick-RootPath)\lib\$(NuGetPlatform)\$(NuGetConfiguration)\</Optick-LibPath>
+        <Optick-RuntimeId>win-x86</Optick-RuntimeId>
+        <Optick-RootPath>$(MSBuildThisFileDirectory)\..\..</Optick-RootPath>
+        <Optick-BinPath>$(Optick-RootPath)\runtimes\$(Optick-RuntimeId)\native\$(NuGetConfiguration)\</Optick-BinPath>
+        <Optick-IncPath>$(Optick-RootPath)\build\native\include</Optick-IncPath>
     </PropertyGroup>
 
     <ItemDefinitionGroup>
         <ClCompile>
-            <AdditionalIncludeDirectories>$(Optick-RootPath)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(Optick-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
         </ClCompile>
 
         <Link>
-            <AdditionalLibraryDirectories>$(Optick-LibPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalLibraryDirectories>$(Optick-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
         </Link>
     </ItemDefinitionGroup>
-
     <ItemDefinitionGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
         <Link>
             <AdditionalDependencies>OptickCored.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -46,9 +39,7 @@
 
     <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
         <ReferenceCopyLocalPaths Include="$(Optick-BinPath)\OptickCored.dll" />
-        <ReferenceCopyLocalPaths Include="$(Optick-BinPath)\OptickCored.pdb" />
     </ItemGroup>
-
     <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
         <ReferenceCopyLocalPaths Include="$(Optick-BinPath)\OptickCore.dll" />
     </ItemGroup>

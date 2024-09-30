@@ -1,13 +1,21 @@
 $Source      = "https://github.com/bombomby/optick.git"
-$Branch      = "1.4.0.0"
-$Destination = "dep/bombomby/optick/$Branch"
+$Commit      = "8abd28dee1a4034c973a3d32cd1777118e72df7e"
+$Destination = "dep/bombomby/optick/$Commit"
 
+$Root   = "../../../.."
 $Output = "out"
 
 function Invoke-Get {
     if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue)) {
-        git clone --branch $Branch --depth 1 $Source $Destination
+        git clone $Source $Destination
     }
+}
+
+function Invoke-Patch {
+    Set-Location $Destination
+    git reset --hard $Commit
+    git am --3way --ignore-space-change --keep-cr $PSScriptRoot\0001-Enable-RelWithDebInfo-config.patch
+    Set-Location $Root
 }
 
 function Invoke-Build {
@@ -44,17 +52,26 @@ function Invoke-Build {
         -D OPTICK_USE_VULKAN=ON
 
     cmake --build $Destination/build/Win32 --config Debug
-    cmake --build $Destination/build/Win32 --config Release
+    cmake --build $Destination/build/Win32 --config RelWithDebInfo
     cmake --build $Destination/build/x64 --config Debug
-    cmake --build $Destination/build/x64 --config Release
+    cmake --build $Destination/build/x64 --config RelWithDebInfo
 }
 
 function Invoke-Pack {
-    nuget pack $PSScriptRoot\ImeSense.Packages.Optick.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\metapackage.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\runtimes.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\runtimes.win-x86.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\runtimes.win-x64.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\symbols.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\symbols.win-x86.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\symbols.win-x64.nuspec -OutputDirectory $Output
 }
 
 function Invoke-Actions {
     Invoke-Get
+    Invoke-Patch
     Invoke-Build
     Invoke-Pack
 }
+
+Invoke-Actions

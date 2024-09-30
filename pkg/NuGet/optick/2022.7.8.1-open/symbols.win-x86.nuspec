@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Optick.Symbols.win-x86</id>
+        <version>2023.11.8.1-open</version>
+        <title>Optick</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/bombomby/optick</projectUrl>
+        <repository type="git" url="https://github.com/imesense/custom-build-recipes" />
+        <description>C++ Profiler For Games </description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2015-2022 Vadim Slyusarev</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\bombomby\optick\8abd28dee1a4034c973a3d32cd1777118e72df7e\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\bombomby\optick\8abd28dee1a4034c973a3d32cd1777118e72df7e\LICENSE" target="LICENSE" />
+
+        <file src="..\..\..\..\dep\bombomby\optick\8abd28dee1a4034c973a3d32cd1777118e72df7e\build\Win32\Debug\OptickCored.pdb" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\dep\bombomby\optick\8abd28dee1a4034c973a3d32cd1777118e72df7e\build\Win32\RelWithDebInfo\OptickCore.pdb" target="runtimes\win-x86\native\Release\" />
+
+        <file src="runtimes.win-x86.targets" target="build\native\ImeSense.Packages.Optick.Symbols.win-x86.targets" />
+        <file src="runtimes.win-x86.cmake" target="build\native\ImeSense.Packages.Optick.Symbols.win-x86.cmake" />
+    </files>
+</package>
