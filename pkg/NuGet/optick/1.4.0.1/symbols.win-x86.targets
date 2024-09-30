@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Optick-RuntimeId>win-x86</Optick-RuntimeId>
+        <Optick-RootPath>$(MSBuildThisFileDirectory)\..\..</Optick-RootPath>
+        <Optick-BinPath>$(Optick-RootPath)\runtimes\$(Optick-RuntimeId)\native\$(NuGetConfiguration)\</Optick-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(Optick-BinPath)\OptickCored.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Release'">
+        <ReferenceCopyLocalPaths Include="$(Optick-BinPath)\OptickCore.pdb" />
+    </ItemGroup>
+</Project>
