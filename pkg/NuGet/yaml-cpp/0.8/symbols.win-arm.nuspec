@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.YamlCpp.Symbols.win-arm</id>
+        <version>0.8</version>
+        <title>yaml-cpp</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/jbeder/yaml-cpp</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection" />
+        <description>A YAML parser and emitter in C++</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2008-2023 Jesse Beder</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\build\ARM\Debug\yaml-cppd.pdb" target="runtimes\win-arm\native\Debug\" />
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\build\ARM\RelWithDebInfo\yaml-cpp.pdb" target="runtimes\win-arm\native\Release\" />
+
+        <file src="symbols.win-arm.targets" target="build\native\ImeSense.Packages.YamlCpp.Symbols.win-arm.targets" />
+        <file src="symbols.win-arm.cmake" target="build\native\ImeSense.Packages.YamlCpp.Symbols.win-arm.cmake" />
+    </files>
+</package>

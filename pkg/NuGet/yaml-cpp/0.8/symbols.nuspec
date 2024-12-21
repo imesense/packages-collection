@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.YamlCpp.Symbols</id>
+        <version>0.8</version>
+        <title>yaml-cpp</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/jbeder/yaml-cpp</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection" />
+        <description>A YAML parser and emitter in C++</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2008-2023 Jesse Beder</copyright>
+        <tags>Native native nativepackage</tags>
+
+        <dependencies>
+            <group targetFramework="native">
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.win-x86" version="0.8" />
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.win-x64" version="0.8" />
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.win-arm" version="0.8" />
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.win-arm64" version="0.8" />
+
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.linux-x64" version="0.8" />
+
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.osx-x64" version="0.8" />
+                <dependency id="ImeSense.Packages.YamlCpp.Symbols.osx-arm64" version="0.8" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\README.md" target="README.md" />
+        <file src="..\..\..\..\dep\jbeder\yaml-cpp\0.8.0\LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>

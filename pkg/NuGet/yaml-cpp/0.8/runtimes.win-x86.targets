@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <YamlCpp-RuntimeId>win-x86</YamlCpp-RuntimeId>
+        <YamlCpp-RootPath>$(MSBuildThisFileDirectory)\..\..</YamlCpp-RootPath>
+        <YamlCpp-BinPath>$(YamlCpp-RootPath)\runtimes\$(YamlCpp-RuntimeId)\native\$(NuGetConfiguration)\</YamlCpp-BinPath>
+        <YamlCpp-IncPath>$(YamlCpp-RootPath)\build\native\include</YamlCpp-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(YamlCpp-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(YamlCpp-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemDefinitionGroup Condition="'$(Configuration.ToLower())' == 'debug'">
+        <Link>
+            <AdditionalDependencies>yaml-cppd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration.ToLower())' != 'debug'">
+        <Link>
+            <AdditionalDependencies>yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup Condition="'$(Configuration.ToLower())' == 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\yaml-cppd.dll" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration.ToLower())' != 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\yaml-cpp.dll" />
+    </ItemGroup>
+</Project>

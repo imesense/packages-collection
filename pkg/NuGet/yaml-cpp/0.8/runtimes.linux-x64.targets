@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <YamlCpp-RuntimeId>linux-x64</YamlCpp-RuntimeId>
+        <YamlCpp-RootPath>$(MSBuildThisFileDirectory)\..\..</Sdl-RootPath>
+        <YamlCpp-BinPath>$(YamlCpp-RootPath)\runtimes\$(YamlCpp-RuntimeId)\native\$(NuGetConfiguration)\</Sdl-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration.ToLower())' == 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\libyaml-cppd.so.0.8.0" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration.ToLower())' != 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\libyaml-cpp.so.0.8.0" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libyaml-cppd.so.0.8.0 libyaml-cppd.so" />
+        <Exec Command="ln -s libyaml-cppd.so.0.8.0 libyaml-cppd.so.0.8" />
+    </Target>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration.ToLower())' != 'debug'">
+        <Exec Command="cd $(OutDir)" />
+        <Exec Command="ln -s libyaml-cpp.so.0.8.0 libyaml-cpp.so" />
+        <Exec Command="ln -s libyaml-cpp.so.0.8.0 libyaml-cpp.so.0.8" />
+    </Target>
+</Project>

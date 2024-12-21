@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <YamlCpp-RuntimeId>win-x64</YamlCpp-RuntimeId>
+        <YamlCpp-RootPath>$(MSBuildThisFileDirectory)\..\..</YamlCpp-RootPath>
+        <YamlCpp-BinPath>$(YamlCpp-RootPath)\runtimes\$(YamlCpp-RuntimeId)\native\$(NuGetConfiguration)\</YamlCpp-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(Configuration.ToLower())' == 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\yaml-cppd.pdb" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(Configuration.ToLower())' != 'debug'">
+        <ReferenceCopyLocalPaths Include="$(YamlCpp-BinPath)\yaml-cpp.pdb" />
+    </ItemGroup>
+</Project>
