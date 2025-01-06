@@ -7,15 +7,18 @@ destination="dep/jbeder/yaml-cpp/$branch"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone --branch $branch --depth 1 $source $destination
         cp $destination/LICENSE $destination/LICENSE.txt
     fi
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build \
@@ -32,7 +35,8 @@ invoke_build() {
     cmake --install $destination/build --config RelWithDebInfo
 }
 
-fix_runpath() {
+fix_runpath()
+{
     cd $destination/build/Debug
     patchelf --set-rpath '$ORIGIN' libyaml-cppd.so.0.8.0
 
@@ -42,7 +46,8 @@ fix_runpath() {
     cd ../../../../../..
 }
 
-strip_symbols() {
+strip_symbols()
+{
     cd $destination/build/Debug
     objcopy --only-keep-debug libyaml-cppd.so.0.8.0 libyaml-cppd.so.0.8.0.debug
     objcopy --strip-all libyaml-cppd.so.0.8.0
@@ -56,9 +61,9 @@ strip_symbols() {
     cd ../../../../../..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
 
     mono ~/nuget.exe pack runtimes.linux-x64.nuspec -OutputDirectory $root/$output

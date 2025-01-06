@@ -2,21 +2,26 @@ $Source      = "https://github.com/LuaJIT/LuaJIT.git"
 $Branch      = "v2.1.0-beta3"
 $Destination = "dep/LuaJIT/LuaJIT/$Branch"
 
-$Root   = "../../../../.."
+$Root   = "../../../.."
 $Output = "out"
 
-function Invoke-Get {
-    if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue)) {
+function Invoke-Get
+{
+    if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue))
+    {
         git clone --branch $Branch --depth 1 $Source $Destination
     }
 }
 
-function Invoke-Patch {
+function Invoke-Patch
+{
     Copy-Item -Path $Destination/README -Destination $Destination/README.md
 }
 
-function Invoke-Build {
-    if (!(Test-Path -Path $Destination/out -ErrorAction SilentlyContinue)) {
+function Invoke-Build
+{
+    if (!(Test-Path -Path $Destination/out -ErrorAction SilentlyContinue))
+    {
         New-Item -Name $Destination/out/debug/x86 -ItemType directory
         New-Item -Name $Destination/out/debug/x64 -ItemType directory
         New-Item -Name $Destination/out/release/x86 -ItemType directory
@@ -52,13 +57,17 @@ function Invoke-Build {
     Move-Item -Path "$Destination/src/*.exp" -Destination "$Destination/out/release/x64/"
 }
 
-function Invoke-Pack {
+function Invoke-Pack
+{
     nuget pack $PSScriptRoot\package.nuspec -OutputDirectory $Output
 }
 
-function Invoke-Actions {
+function Invoke-Actions
+{
     Invoke-Get
     Invoke-Patch
     Invoke-Build
     Invoke-Pack
 }
+
+Invoke-Actions

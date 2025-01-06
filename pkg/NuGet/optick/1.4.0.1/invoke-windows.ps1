@@ -6,27 +6,33 @@ $Destination = "dep/bombomby/optick/$Branch"
 $Root   = "../../../.."
 $Output = "out"
 
-function Invoke-Get {
-    if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue)) {
+function Invoke-Get
+{
+    if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue))
+    {
         git clone --branch $Branch --depth 1 $Source $Destination
     }
 }
 
-Function Invoke-Patch {
+Function Invoke-Patch
+{
     Set-Location $Destination
     git reset --hard $Commit
     git am --3way --ignore-space-change --keep-cr $PSScriptRoot\0001-Enable-RelWithDebInfo-config.patch
     Set-Location $Root
 }
 
-function Invoke-Build {
+function Invoke-Build
+{
     $installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     $path      = & $installer -latest -prerelease -property installationPath
 
     Push-Location "$path\Common7\Tools"
     cmd /c "VsDevCmd.bat&set" |
-    ForEach-Object {
-        if ($_ -Match "=") {
+    ForEach-Object
+    {
+        if ($_ -Match "=")
+        {
             $v = $_.Split("=", 2)
             Set-Item -Force -Path "ENV:\$($v[0])" -Value "$($v[1])"
         }
@@ -58,17 +64,21 @@ function Invoke-Build {
     cmake --build $Destination/build/x64 --config RelWithDebInfo
 }
 
-function Invoke-Pack {
+function Invoke-Pack
+{
     nuget pack $PSScriptRoot\metapackage.nuspec -OutputDirectory $Output
+
     nuget pack $PSScriptRoot\runtimes.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\runtimes.win-x86.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\runtimes.win-x64.nuspec -OutputDirectory $Output
+
     nuget pack $PSScriptRoot\symbols.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\symbols.win-x86.nuspec -OutputDirectory $Output
     nuget pack $PSScriptRoot\symbols.win-x64.nuspec -OutputDirectory $Output
 }
 
-function Invoke-Actions {
+function Invoke-Actions
+{
     Invoke-Get
     Invoke-Patch
     Invoke-Build

@@ -2,27 +2,32 @@ $Source      = "https://github.com/kcat/openal-soft.git"
 $Branch      = "1.23.1"
 $Destination = "dep/kcat/openal-soft/$Branch"
 
+$Root   = "../../../.."
 $Output = "out"
 
-function Invoke-Get {
+function Invoke-Get
+{
     if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue)) {
         git clone --branch $Branch --depth 1 $Source $Destination
     }
 }
 
-function Invoke-Build {
+function Invoke-Build
+{
     $installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     $path      = & $installer -latest -prerelease -property installationPath
 
-    pushd "$path\Common7\Tools"
+    Push-Location "$path\Common7\Tools"
     cmd /c "VsDevCmd.bat&set" |
-    foreach {
-        if ($_ -Match "=") {
+    ForEach-Object
+    {
+        if ($_ -Match "=")
+        {
             $v = $_.Split("=", 2)
             Set-Item -Force -Path "ENV:\$($v[0])" -Value "$($v[1])"
         }
     }
-    popd
+    Pop-Location
     Write-Host "Visual Studio 2022 Command Prompt" -ForegroundColor Yellow
 
     cmake `
@@ -50,12 +55,16 @@ function Invoke-Build {
     cmake --build $Destination/build/x64 --config Release
 }
 
-function Invoke-Pack {
+function Invoke-Pack
+{
     nuget pack $PSScriptRoot\package.nuspec -OutputDirectory $Output
 }
 
-function Invoke-Actions {
+function Invoke-Actions
+{
     Invoke-Get
     Invoke-Build
     Invoke-Pack
 }
+
+Invoke-Actions

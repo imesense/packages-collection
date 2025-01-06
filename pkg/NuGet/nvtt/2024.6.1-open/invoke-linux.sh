@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/imesense/nvidia-texture-tools.git"
 commit="64930f757db91c1208dbb2d29ca454096889dac0"
 destination="dep/imesense/nvidia-texture-tools/$commit"
@@ -5,21 +7,27 @@ destination="dep/imesense/nvidia-texture-tools/$commit"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone $source $destination
     fi
 }
 
-invoke_patch() {
+invoke_patch()
+{
     cd $destination
     git reset --hard $commit
+
     cp LICENSE LICENSE.txt
+
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/Debug \
@@ -42,7 +50,8 @@ invoke_build() {
     cmake --install $destination/build/Release
 }
 
-fix_runpath() {
+fix_runpath()
+{
     cd $destination/build/Debug/install/lib
     patchelf --set-rpath '$ORIGIN' libnvcore.so
     patchelf --set-rpath '$ORIGIN' libnvimage.so
@@ -62,7 +71,8 @@ fix_runpath() {
     cd ../../../../../../../..
 }
 
-strip_symbols() {
+strip_symbols()
+{
     cd $destination/build/Debug/install/lib
     objcopy --only-keep-debug libnvcore.so libnvcore.so.debug
     objcopy --strip-all libnvcore.so
@@ -116,9 +126,11 @@ strip_symbols() {
     cd ../../../../../../../..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     mono ~/nuget.exe pack runtimes.linux-x64.nuspec -OutputDirectory $root/$output
     mono ~/nuget.exe pack symbols.linux-x64.nuspec -OutputDirectory $root/$output
 }

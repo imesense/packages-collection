@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/libsdl-org/SDL.git"
 commit="f3d8a2def5e2214290bbbc075a6381fa9b753acf"
 destination="dep/libsdl-org/SDL/$commit"
@@ -5,20 +7,24 @@ destination="dep/libsdl-org/SDL/$commit"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone $source $destination
     fi
 }
 
-invoke_patch() {
+invoke_patch()
+{
     cd $destination
     git reset --hard $commit
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/Debug \
@@ -34,7 +40,8 @@ invoke_build() {
     cmake --build $destination/build/Release
 }
 
-strip_symbols() {
+strip_symbols()
+{
     cd $destination/build/Debug
     objcopy --only-keep-debug libSDL3.so.0.0.0 libSDL3.so.0.0.0.debug
     objcopy --strip-all libSDL3.so.0.0.0
@@ -48,14 +55,17 @@ strip_symbols() {
     cd ../../../../../..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     mono ~/nuget.exe pack runtimes.linux-x64.nuspec -OutputDirectory $root/$output
     mono ~/nuget.exe pack symbols.linux-x64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_patch
     invoke_build

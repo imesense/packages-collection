@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/imesense/nvidia-texture-tools.git"
 commit="64930f757db91c1208dbb2d29ca454096889dac0"
 destination="dep/imesense/nvidia-texture-tools/$commit"
@@ -5,21 +7,27 @@ destination="dep/imesense/nvidia-texture-tools/$commit"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone $source $destination
     fi
 }
 
-invoke_patch() {
+invoke_patch()
+{
     cd $destination
     git reset --hard $commit
+
     cp LICENSE LICENSE.txt
+
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/arm64 \
@@ -33,8 +41,9 @@ invoke_build() {
     cmake --build $destination/build/arm64 --config RelWithDebInfo
 }
 
-fix_runpath() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+fix_runpath()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 
     cd $destination/build/arm64/src
 
@@ -76,14 +85,17 @@ fix_runpath() {
     cd $root/..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     nuget pack runtimes.osx-arm64.nuspec -OutputDirectory $root/$output
     nuget pack symbols.osx-arm64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_patch
     invoke_build

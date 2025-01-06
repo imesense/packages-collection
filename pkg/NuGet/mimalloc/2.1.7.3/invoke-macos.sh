@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/microsoft/mimalloc.git"
 commit="8c532c32c3c96e5ba1f2283e032f69ead8add00f"
 branch="v2.1.7"
@@ -6,24 +8,30 @@ destination="dep/microsoft/mimalloc/$branch"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone --branch $branch --depth 1 $source $destination
     fi
 }
 
-invoke_patch() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_patch()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 
     cd $destination
     git reset --hard $commit
     git am --3way --ignore-space-change --keep-cr $script_root/0001-Fix-incorrect-NULL-definitions.patch
+
     cp LICENSE LICENSE.txt
+
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/x86_64 \
@@ -56,16 +64,20 @@ invoke_build() {
     cmake --install $destination/build/arm64 --config RelWithDebInfo
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     nuget pack runtimes.osx-arm64.nuspec -OutputDirectory $root/$output
     nuget pack runtimes.osx-x64.nuspec -OutputDirectory $root/$output
+
     nuget pack symbols.osx-arm64.nuspec -OutputDirectory $root/$output
     nuget pack symbols.osx-x64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_patch
     invoke_build

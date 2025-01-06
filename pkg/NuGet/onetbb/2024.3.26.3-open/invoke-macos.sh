@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source="https://github.com/oneapi-src/oneTBB.git"
 commit="3210a79406d55e73dafe307e7a3fa14c6c1a9ebd"
 destination="dep/oneapi-src/oneTBB/$commit"
@@ -5,20 +7,24 @@ destination="dep/oneapi-src/oneTBB/$commit"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone $source $destination
     fi
 }
 
-invoke_patch() {
+invoke_patch()
+{
     cd $destination
     git reset --hard $commit
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/x86_64 \
@@ -49,16 +55,19 @@ invoke_build() {
     cmake --install $destination/build/arm64 --config RelWithDebInfo
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     nuget pack runtimes.osx-arm64.nuspec -OutputDirectory $root/$output
     nuget pack runtimes.osx-x64.nuspec -OutputDirectory $root/$output
     nuget pack symbols.osx-arm64.nuspec -OutputDirectory $root/$output
     nuget pack symbols.osx-x64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_patch
     invoke_build

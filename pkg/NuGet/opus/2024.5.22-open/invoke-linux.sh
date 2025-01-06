@@ -7,22 +7,28 @@ destination="dep/xiph/opus/$commit"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone $source $destination
     fi
 }
 
-invoke_patch() {
+invoke_patch()
+{
     cd $destination
     git reset --hard $commit
+
     cp README README.md
     cp COPYING LICENSE.txt
+
     cd $root
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build \
@@ -38,7 +44,8 @@ invoke_build() {
     cmake --install $destination/build --config RelWithDebInfo
 }
 
-fix_runpath() {
+fix_runpath()
+{
     cd $destination/build/Debug
     patchelf --set-rpath '$ORIGIN' libopus.so.0.10.1
 
@@ -48,7 +55,8 @@ fix_runpath() {
     cd ../../../../../..
 }
 
-strip_symbols() {
+strip_symbols()
+{
     cd $destination/build/Debug
     objcopy --only-keep-debug libopus.so.0.10.1 libopus.so.0.10.1.debug
     objcopy --strip-all libopus.so.0.10.1
@@ -62,14 +70,17 @@ strip_symbols() {
     cd ../../../../../..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     mono ~/nuget.exe pack runtimes.linux-x64.nuspec -OutputDirectory $root/$output
     mono ~/nuget.exe pack symbols.linux-x64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_patch
     invoke_build

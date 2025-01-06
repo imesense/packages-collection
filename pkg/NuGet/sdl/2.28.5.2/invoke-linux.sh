@@ -7,14 +7,17 @@ destination="dep/libsdl-org/SDL/$branch"
 root="../../../.."
 output="out"
 
-invoke_get() {
-    if [ ! -d "$destination" ]; then
+invoke_get()
+{
+    if [ ! -d "$destination" ]
+    then
         mkdir -p $destination
         git clone --branch $branch --depth 1 $source $destination
     fi
 }
 
-invoke_build() {
+invoke_build()
+{
     cmake \
         -S $destination \
         -B $destination/build/Debug \
@@ -30,7 +33,8 @@ invoke_build() {
     cmake --build $destination/build/Release
 }
 
-strip_symbols() {
+strip_symbols()
+{
     cd $destination/build/Debug
     objcopy --only-keep-debug libSDL2-2.0d.so.0.2800.5 libSDL2-2.0d.so.0.2800.5.debug
     objcopy --strip-all libSDL2-2.0d.so.0.2800.5
@@ -44,14 +48,17 @@ strip_symbols() {
     cd ../../../../../..
 }
 
-invoke_pack() {
-    script_root=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+invoke_pack()
+{
+    script_root=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
     cd $script_root
+
     mono ~/nuget.exe pack runtimes.linux-x64.nuspec -OutputDirectory $root/$output
     mono ~/nuget.exe pack symbols.linux-x64.nuspec -OutputDirectory $root/$output
 }
 
-invoke_actions() {
+invoke_actions()
+{
     invoke_get
     invoke_build
     strip_symbols
