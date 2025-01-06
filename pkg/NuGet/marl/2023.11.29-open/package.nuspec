@@ -38,6 +38,6 @@
         <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Release\marl.lib" target="native\lib\x64\Release\" />
         <file src="..\..\..\..\dep\google\marl\535d49182e6c87e4d999ac25f61c729a66687be8\build\x64\Release\marl.exp" target="native\lib\x64\Release\" />
 
-        <file src="ImeSense.Packages.Marl.targets" target="build\native\" />
+        <file src="package.targets" target="build\native\ImeSense.Packages.Marl.targets" />
     </files>
 </package>

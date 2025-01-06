@@ -58,7 +58,7 @@ function Invoke-Build {
 }
 
 function Invoke-Pack {
-    nuget pack $PSScriptRoot\ImeSense.Packages.Marl.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\package.nuspec -OutputDirectory $Output
 }
 
 function Invoke-Actions {
