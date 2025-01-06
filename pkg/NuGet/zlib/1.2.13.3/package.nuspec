@@ -55,6 +55,6 @@
         <file src="..\..\..\..\dep\madler\zlib\v1.2.13\build\x64\Release\zlib.lib" target="native\lib\x64\Release\" />
         <file src="..\..\..\..\dep\madler\zlib\v1.2.13\build\x64\Release\zlib.exp" target="native\lib\x64\Release\" />
 
-        <file src="ImeSense.Packages.Zlib.targets" target="build\native\" />
+        <file src="package.targets" target="build\native\ImeSense.Packages.Zlib.targets" />
     </files>
 </package>
