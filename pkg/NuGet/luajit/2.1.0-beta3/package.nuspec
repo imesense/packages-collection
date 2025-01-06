@@ -61,6 +61,6 @@
         <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x64\lua51.lib" target="native\lib\x64\Release" />
         <file src="..\..\..\..\dep\LuaJIT\LuaJIT\v2.1.0-beta3\out\release\x64\lua51.exp" target="native\lib\x64\Release" />
 
-        <file src="ImeSense.Packages.LuaJIT.targets" target="build\native\" />
+        <file src="package.targets" target="build\native\ImeSense.Packages.LuaJIT.targets" />
     </files>
 </package>
