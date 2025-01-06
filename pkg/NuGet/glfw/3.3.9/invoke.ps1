@@ -47,7 +47,7 @@ function Invoke-Build {
 }
 
 function Invoke-Pack {
-    nuget pack $PSScriptRoot\ImeSense.Packages.Glfw.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\package.nuspec -OutputDirectory $Output
 }
 
 function Invoke-Actions {
@@ -55,3 +55,5 @@ function Invoke-Actions {
     Invoke-Build
     Invoke-Pack
 }
+
+Invoke-Actions

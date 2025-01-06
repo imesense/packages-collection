@@ -38,6 +38,6 @@
         <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Release\glfw3dll.lib" target="native\lib\x64\Release\" />
         <file src="..\..\..\..\dep\glfw\glfw\3.3.9\build\x64\src\Release\glfw3dll.exp" target="native\lib\x64\Release\" />
 
-        <file src="ImeSense.Packages.Glfw.targets" target="build\native\" />
+        <file src="package.targets" target="build\native\ImeSense.Packages.Glfw.targets" />
     </files>
 </package>
