@@ -67,6 +67,6 @@
         <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Release\OpenAL32.lib" target="native\lib\x64\Release\" />
         <file src="..\..\..\..\dep\kcat\openal-soft\1.23.1\build\x64\Release\OpenAL32.exp" target="native\lib\x64\Release\" />
 
-        <file src="ImeSense.Packages.OpenALSoft.targets" target="build\native\" />
+        <file src="package.targets" target="build\native\ImeSense.Packages.OpenALSoft.targets" />
     </files>
 </package>

@@ -1,28 +1,35 @@
 $Source      = "https://github.com/kcat/openal-soft.git"
-$Branch      = "1.23.1"
-$Destination = "dep/kcat/openal-soft/$Branch"
+$Commit      = "d44112514d84614af6c16ec48d9450706da3b335"
+$Destination = "dep/kcat/openal-soft/$Commit"
 
+$Root   = "../../../.."
 $Output = "out"
 
 function Invoke-Get {
     if (!(Test-Path -Path "$Destination" -ErrorAction SilentlyContinue)) {
-        git clone --branch $Branch --depth 1 $Source $Destination
+        git clone $Source $Destination
     }
+}
+
+function Invoke-Patch {
+    Set-Location $Destination
+    git reset --hard $Commit
+    Set-Location $Root
 }
 
 function Invoke-Build {
     $installer = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     $path      = & $installer -latest -prerelease -property installationPath
 
-    pushd "$path\Common7\Tools"
+    Push-Location "$path\Common7\Tools"
     cmd /c "VsDevCmd.bat&set" |
-    foreach {
+    ForEach-Object {
         if ($_ -Match "=") {
             $v = $_.Split("=", 2)
             Set-Item -Force -Path "ENV:\$($v[0])" -Value "$($v[1])"
         }
     }
-    popd
+    Pop-Location
     Write-Host "Visual Studio 2022 Command Prompt" -ForegroundColor Yellow
 
     cmake `
@@ -51,11 +58,12 @@ function Invoke-Build {
 }
 
 function Invoke-Pack {
-    nuget pack $PSScriptRoot\ImeSense.Packages.OpenALSoft.nuspec -OutputDirectory $Output
+    nuget pack $PSScriptRoot\package.nuspec -OutputDirectory $Output
 }
 
 function Invoke-Actions {
     Invoke-Get
+    Invoke-Patch
     Invoke-Build
     Invoke-Pack
 }
