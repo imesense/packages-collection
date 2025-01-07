@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Embree.Runtimes.linux-x64</id>
+        <version>4.3.3</version>
+        <title>Embree</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/RenderKit/embree</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection" />
+        <description>Embree ray tracing kernels repository</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/README.md" target="README.md" />
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/build/RelWithDebInfo/install/include/embree4/**" target="build\native\include\embree4\" />
+
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/build/Debug/install/lib/libembree4.so.4.3.3" target="runtimes\linux-x64\native\Debug\" />
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/build/RelWithDebInfo/install/lib/libembree4.so.4.3.3" target="runtimes\linux-x64\native\Release\" />
+
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/build/Debug/install/lib/cmake/embree-4.3.3/**" target="runtimes\linux-x64\native\Debug\cmake\embree-4.3.3\" />
+        <file src="../../../../../dep/RenderKit/embree/v4.3.3/build/RelWithDebInfo/install/lib/cmake/embree-4.3.3/**" target="runtimes\linux-x64\native\Release\cmake\embree-4.3.3\" />
+
+        <file src="../msbuild/runtimes.linux-x64.targets" target="build\native\ImeSense.Packages.Embree.Runtimes.linux-x64.targets" />
+        <file src="../cmake/runtimes.linux-x64.cmake" target="build\native\ImeSense.Packages.Embree.Runtimes.linux-x64.cmake" />
+    </files>
+</package>

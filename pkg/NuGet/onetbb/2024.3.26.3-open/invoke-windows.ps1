@@ -27,7 +27,7 @@ function Invoke-Build
 
     Push-Location "$path\Common7\Tools"
     cmd /c "VsDevCmd.bat&set" |
-    ForEach-Object
+    ForEach-Object `
     {
         if ($_ -Match "=")
         {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Embree.Symbols.win-x64</id>
+        <version>4.3.3</version>
+        <title>Embree</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/RenderKit/embree</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection" />
+        <description>Embree ray tracing kernels repository</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\README.md" target="README.md" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\x64\Debug\embree4.pdb" target="runtimes\win-x64\native\Debug\" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\x64\RelWithDebInfo\embree4.pdb" target="runtimes\win-x64\native\Release\" />
+
+        <file src="..\msbuild\symbols.win-x64.targets" target="build\native\ImeSense.Packages.Embree.Symbols.win-x64.targets" />
+        <file src="..\cmake\symbols.win-x64.cmake" target="build\native\ImeSense.Packages.Embree.Symbols.win-x64.cmake" />
+    </files>
+</package>

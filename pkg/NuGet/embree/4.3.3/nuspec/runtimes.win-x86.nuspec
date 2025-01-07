@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Packages.Embree.Runtimes.win-x86</id>
+        <version>4.3.3</version>
+        <title>Embree</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/RenderKit/embree</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection" />
+        <description>Embree ray tracing kernels repository</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2024 Intel Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\README.md" target="README.md" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\install\include\embree4\**" target="build\native\include\embree4\" />
+
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\Debug\embree4.dll" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\RelWithDebInfo\embree4.dll" target="runtimes\win-x86\native\Release\" />
+
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\Debug\embree4.lib" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\Debug\embree4.exp" target="runtimes\win-x86\native\Debug\" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\RelWithDebInfo\embree4.lib" target="runtimes\win-x86\native\Release\" />
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\RelWithDebInfo\embree4.exp" target="runtimes\win-x86\native\Release\" />
+
+        <file src="..\..\..\..\..\dep\RenderKit\embree\v4.3.3\build\Win32\install\lib\cmake\embree-4.3.3\**" target="runtimes\win-x86\native\cmake\embree-4.3.3\" />
+
+        <file src="..\msbuild\runtimes.win-x86.targets" target="build\native\ImeSense.Packages.Embree.Runtimes.win-x86.targets" />
+        <file src="..\cmake\runtimes.win-x86.cmake" target="build\native\ImeSense.Packages.Embree.Runtimes.win-x86.cmake" />
+    </files>
+</package>
