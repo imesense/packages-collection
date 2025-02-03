@@ -25,7 +25,7 @@ invoke_get()
 
 invoke_build()
 {
-    Configure
+    # Configure
     echo_green "Configuring Debug target..."
     echo ""
     cmake \
