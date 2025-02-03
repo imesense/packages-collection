@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Nvtt-RootPath>$(MSBuildThisFileDirectory)\..\..</Nvtt-RootPath>
+        <Nvtt-BinPath>$(Nvtt-RootPath)\runtimes\osx-arm64\native\$(NuGetConfiguration)\</Nvtt-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvcore.dylib" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvimage.dylib" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvmath.dylib" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvthread.dylib" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvtt.dylib" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>IXRay.Packages.Nvtt.Runtimes.win-x64</id>
+        <version>2020.12.21.1-open</version>
+        <title>Nvidia Texture Tools</title>
+        <authors>acidicMercury8</authors>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE</license>
+        <readme>README.md</readme>
+        <projectUrl>https://github.com/castano/nvidia-texture-tools</projectUrl>
+        <repository type="git" url="https://github.com/ixray-team/ixray-packages" />
+        <description>The NVIDIA Texture Tools is a collection of image processing and texture manipulation tools, designed to be integrated in game tools and asset processing pipelines</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2009-2020 Ignacio Castaño, &#169; 2007-2009 NVIDIA Corporation</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\README.md" target="README.md" />
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\LICENSE" target="LICENSE" />
+
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Release.Win32\include\nvtt\*.h" target="build\native\include\nvtt\" />
+
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Debug.x64\bin\nvtt.dll" target="runtimes\win-x64\native\Debug\" />
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Release.x64\bin\nvtt.dll" target="runtimes\win-x64\native\Release\" />
+
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Debug.x64\lib\nvtt.lib" target="runtimes\win-x64\native\Debug\" />
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Debug.x64\lib\nvtt.exp" target="runtimes\win-x64\native\Debug\" />
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Release.x64\lib\nvtt.lib" target="runtimes\win-x64\native\Release\" />
+        <file src="..\..\..\..\..\dep\castano\nvidia-texture-tools\aeddd65f81d36d8cb7b169b469ef25156666077e\project\vc2017\Release.x64\lib\nvtt.exp" target="runtimes\win-x64\native\Release\" />
+
+        <file src="..\msbuild\runtimes.win-x64.targets" target="build\native\IXRay.Packages.Nvtt.Runtimes.win-x64.targets" />
+        <file src="..\cmake\runtimes.win-x64.cmake" target="build\native\IXRay.Packages.Nvtt.Runtimes.win-x64.cmake" />
+    </files>
+</package>

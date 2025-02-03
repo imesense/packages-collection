@@ -1,0 +1,24 @@
+From e19b555cd1c47213a8b505bc23ea1a622ac5f36b Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Tue, 9 Apr 2024 23:16:34 +0300
+Subject: [PATCH] Delete hardcoded legacy platforms
+
+---
+ extern/libsquish-1.15/CMakeLists.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/extern/libsquish-1.15/CMakeLists.txt b/extern/libsquish-1.15/CMakeLists.txt
+index a36e574..87bfc63 100644
+--- a/extern/libsquish-1.15/CMakeLists.txt
++++ b/extern/libsquish-1.15/CMakeLists.txt
+@@ -32,7 +32,6 @@ IF (BUILD_SQUISH_WITH_OPENMP)
+ ENDIF()
+ 
+ IF (CMAKE_GENERATOR STREQUAL "Xcode")
+-    SET(CMAKE_OSX_ARCHITECTURES "i386;ppc")
+ ELSE (CMAKE_GENERATOR STREQUAL "Xcode")
+     IF (BUILD_SQUISH_WITH_SSE2 AND NOT WIN32)
+         ADD_DEFINITIONS(-DSQUISH_USE_SSE=2 -msse2)
+-- 
+2.44.0
+

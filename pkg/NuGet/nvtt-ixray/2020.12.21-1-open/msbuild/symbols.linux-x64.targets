@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Nvtt-RootPath>$(MSBuildThisFileDirectory)\..\..</Nvtt-RootPath>
+        <Nvtt-BinPath>$(Nvtt-RootPath)\runtimes\linux-x64\native\$(NuGetConfiguration)\</Nvtt-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvcore.so.debug" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvimage.so.debug" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvmath.so.debug" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvthread.so.debug" />
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libnvtt.so.debug" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libsquishd.so.0.0.debug" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(NuGetConfiguration)' == 'Debug'">
+        <ReferenceCopyLocalPaths Include="$(Nvtt-BinPath)\libsquish.so.0.0.debug" />
+    </ItemGroup>
+</Project>

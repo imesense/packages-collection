@@ -16,12 +16,12 @@ function Invoke-Get
         git clone `
             $Source `
             $Destination
+        Write-Host
     }
 }
 
 function Invoke-Patch
 {
-    Write-Host
     Write-Host "Patching sources..." -ForegroundColor Green
     Write-Host
 

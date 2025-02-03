@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup Label="Debug" Condition="'$(Configuration.ToLower())' == 'debug'">
+        <NuGetConfiguration>Debug</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Label="Non_Debug" Condition="'$(Configuration.ToLower())' == 'release'">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(NuGetConfiguration)' == ''">
+        <NuGetConfiguration>Release</NuGetConfiguration>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Nvtt-RootPath>$(MSBuildThisFileDirectory)\..\..</Nvtt-RootPath>
+        <Nvtt-BinPath>$(Nvtt-RootPath)\runtimes\osx-arm64\native\$(NuGetConfiguration)\</Nvtt-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Nvtt-Symbols1 Include="$(Nvtt-BinPath)\libnvcore.dylib.dSYM\**" />
+        <Nvtt-Symbols2 Include="$(Nvtt-BinPath)\libnvimage.dylib.dSYM\**" />
+        <Nvtt-Symbols3 Include="$(Nvtt-BinPath)\libnvmath.dylib.dSYM\**" />
+        <Nvtt-Symbols4 Include="$(Nvtt-BinPath)\libnvthread.dylib.dSYM\**" />
+        <Nvtt-Symbols5 Include="$(Nvtt-BinPath)\libnvtt.dylib.dSYM\**" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(Nvtt-Symbols1)" DestinationFolder="$(OutDir)\libnvcore.dylib.dSYM\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Nvtt-Symbols2)" DestinationFolder="$(OutDir)\libnvimage.dylib.dSYM\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Nvtt-Symbols3)" DestinationFolder="$(OutDir)\libnvmath.dylib.dSYM\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Nvtt-Symbols4)" DestinationFolder="$(OutDir)\libnvthread.dylib.dSYM\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Nvtt-Symbols5)" DestinationFolder="$(OutDir)\libnvtt.dylib.dSYM\%(RecursiveDir)" />
+</Project>
