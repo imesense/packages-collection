@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <LuaJIT-RootPath>$(MSBuildThisFileDirectory)\..\..</LuaJIT-RootPath>
+        <LuaJIT-BinPath>$(LuaJIT-RootPath)\runtimes\linux-x64\native\</LuaJIT-BinPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(LuaJIT-BinPath)\libluajit.so" />
+    </ItemGroup>
+</Project>
