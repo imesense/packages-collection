@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <LuaJIT-RootPath>$(MSBuildThisFileDirectory)\..\..</LuaJIT-RootPath>
+        <LuaJIT-BinPath>$(LuaJIT-RootPath)\runtimes\win-x86\native\</LuaJIT-BinPath>
+        <LuaJIT-IncPath>$(LuaJIT-RootPath)\build\native\include</LuaJIT-IncPath>
+    </PropertyGroup>
+
+    <ItemDefinitionGroup>
+        <ClCompile>
+            <AdditionalIncludeDirectories>$(LuaJIT-IncPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+        </ClCompile>
+
+        <Link>
+            <AdditionalLibraryDirectories>$(LuaJIT-BinPath);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+            <AdditionalDependencies>lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <ReferenceCopyLocalPaths Include="$(LuaJIT-BinPath)\lua51.dll" />
+    </ItemGroup>
+</Project>

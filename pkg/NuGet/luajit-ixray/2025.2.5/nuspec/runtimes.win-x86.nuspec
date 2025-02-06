@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>IXRay.Packages.LuaJIT.Runtimes.win-x86</id>
+        <version>2025.2.5</version>
+        <title>LuaJIT</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">COPYRIGHT</license>
+        <readme>README.md</readme>
+        <projectUrl>http://luajit.org</projectUrl>
+        <repository type="git" url="https://github.com/ixray-team/ixray-packages" />
+        <description>LuaJIT is a Just-In-Time (JIT) compiler for the Lua programming language</description>
+        <releaseNotes></releaseNotes>
+        <copyright>&#169; 2005-2017 Mike Pall, &#169; 1994-2012 Lua.org, PUC-Rio</copyright>
+        <tags>Native native nativepackage</tags>
+    </metadata>
+
+    <files>
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\README.md" target="README.md" />
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\COPYRIGHT" target="COPYRIGHT" />
+
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\build\Win32\install\include\luajit-2.0\*.h" target="build\native\include\luajit-2.0\" />
+
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\build\Win32\install\bin\lua51.dll" target="runtimes\win-x86\native\" />
+
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\build\Win32\install\lib\lua51.lib" target="runtimes\win-x86\native\" />
+        <file src="..\..\..\..\..\dep\ixray-team\luajit-ixray\d2025.2.5\build\Win32\install\lib\lua51.exp" target="runtimes\win-x86\native\" />
+
+        <file src="..\msbuild\runtimes.win-x86.targets" target="build\native\IXRay.Packages.LuaJIT.Runtimes.win-x86.targets" />
+        <file src="..\cmake\runtimes.win-x86.cmake" target="build\native\IXRay.Packages.LuaJIT.Runtimes.win-x86.cmake" />
+    </files>
+</package>
