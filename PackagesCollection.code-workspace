@@ -1,12 +1,20 @@
 {
     "folders": [
         {
-            "path": ".",
-            "name": "Packages Collection"
+            "name": "Packages Collection",
+            "path": "."
         }
     ],
+
     "settings": {
         "cmake.configureOnOpen": false,
-        "dotnet.defaultSolution": "disable"
+
+        "dotnet.defaultSolution": "disable",
+
+        "redhat.telemetry.enabled": false,
+
+        "[markdown]": {
+            "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        }
     }
 }
