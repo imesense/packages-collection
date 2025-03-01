@@ -1,6 +1,14 @@
 # Packages Collection
 
-Monorepository for cusom build recipes and manifests of various provided packages
+<div>
+  <p>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
+    </a>
+  </p>
+</div>
+
+Monorepository for custom build recipes and manifests of various provided packages
 
 ## License
 
