@@ -1,11 +1,18 @@
 # Global ignoring of different binaries and another temporary files
 
-# Dependencies
+# Local tree
+bin/
+share/
+tmp/
+
+# Cache and dependencies
+cache/
 dep/
 
 # Build results
 obj/
 out/
 
-# macOS cache
+# System cache
+Thumbs.db
 .DS_Store
