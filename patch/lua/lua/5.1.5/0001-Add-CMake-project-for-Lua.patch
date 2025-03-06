@@ -1,0 +1,1323 @@
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..98e5532
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,5 @@
++# Global ignoring of different binaries and another temporary files
++
++# Build results
++build*/
++*.out
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..629e7a0
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,58 @@
++cmake_minimum_required(VERSION 3.18)
++
++project(Lua)
++
++option(LUA_ENABLE_INTERPRETER "Enable building Lua interpreter" OFF)
++option(LUA_ENABLE_COMPILER "Enable building Lua compiler" OFF)
++option(LUA_ENABLE_INSTALL "Enable install target for Lua" ON)
++option(LUA_ENABLE_TESTS "Enable default tests for Lua" OFF)
++
++set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
++set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
++set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
++
++set(CMAKE_SKIP_RPATH FALSE)
++
++list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
++
++include(GNUInstallDirs)
++
++set(LUA_VERSION_MAJOR 5)
++set(LUA_VERSION_MINOR 1)
++set(LUA_VERSION_PATCH 5)
++set(LUA_VERSION ${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR})
++set(LUA_RELEASE ${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}.${LUA_VERSION_PATCH})
++
++if(WIN32 AND MSVC)
++    set(LUA_BUILD_FLAGS /MP /Zi /FS)
++    set(LUA_BUILD_DEFINES -D_CRT_SECURE_NO_WARNINGS)
++    set(LUA_BUILD_DEFINES_DYNAMIC -DLUA_BUILD_AS_DLL)
++    set(LUA_LINK_FLAGS /DEBUG)
++
++    if(CMAKE_SYSTEM_PROCESSOR MATCHES "i386|i686|x86" OR CMAKE_VS_PLATFORM_NAME STREQUAL "Win32")
++        set(LUA_BUILD_FLAGS ${LUA_BUILD_FLAGS} /arch:SSE2)
++    endif()
++elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU")
++    set(LUA_BUILD_FLAGS -Wall -fPIC -g -Wno-misleading-indentation)
++    set(LUA_BUILD_FLAGS_DYNAMIC -shared)
++    set(LUA_BUILD_DEFINES -DLUA_USE_LINUX)
++elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "Clang")
++    set(LUA_BUILD_FLAGS -Wall -fPIC -g -Wno-misleading-indentation -Wno-empty-body)
++    set(LUA_BUILD_DEFINES -DLUA_USE_LINUX)
++elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++    set(LUA_BUILD_FLAGS -Wall -fPIC -Wno-empty-body)
++    set(LUA_BUILD_DEFINES -DLUA_USE_MACOSX)
++endif()
++
++if(LINUX)
++    find_package(LibM REQUIRED)
++    find_package(LibDl REQUIRED)
++    find_package(Readline REQUIRED)
++endif()
++
++include(EmbedManifest)
++include(GenerateSymbols)
++add_subdirectory(src)
++
++include(InstallLua)
++add_subdirectory(test)
+diff --git a/cmake/EmbedManifest.cmake b/cmake/EmbedManifest.cmake
+new file mode 100644
+index 0000000..d666076
+--- /dev/null
++++ b/cmake/EmbedManifest.cmake
+@@ -0,0 +1,29 @@
++function(generate_manifest source destination)
++    if(NOT WIN32 AND NOT MSVC)
++        return()
++    endif()
++
++    configure_file(
++        ${source}
++        ${destination}
++    )
++endfunction()
++
++function(embed_manifest target_name target_type manifest_file)
++    if(NOT WIN32 AND NOT MSVC)
++        return()
++    endif()
++
++    if(target_type STREQUAL "EXE")
++        set(id_value 1)
++    elseif(target_type STREQUAL "DLL")
++        set(id_value 2)
++    else()
++        message(FATAL_ERROR "Invalid target type: ${target_type}. Expected 'EXE' or 'DLL'!")
++    endif()
++
++    set_target_properties(${target_name}
++        PROPERTIES
++            LINK_FLAGS "/MANIFEST:EMBED,ID=${id_value} /MANIFESTINPUT:${manifest_file}"
++    )
++endfunction()
+diff --git a/cmake/FindLibDl.cmake b/cmake/FindLibDl.cmake
+new file mode 100644
+index 0000000..b655591
+--- /dev/null
++++ b/cmake/FindLibDl.cmake
+@@ -0,0 +1,13 @@
++include(FindPackageHandleStandardArgs)
++
++find_package_handle_standard_args(LibDl
++    REQUIRED_VARS
++        CMAKE_DL_LIBS
++)
++
++mark_as_advanced(CMAKE_DL_LIBS)
++
++if(NOT LibDl::Library)
++    add_library(LibDl::Library INTERFACE IMPORTED)
++    target_link_libraries(LibDl::Library INTERFACE ${CMAKE_DL_LIBS})
++endif()
+diff --git a/cmake/FindLibM.cmake b/cmake/FindLibM.cmake
+new file mode 100644
+index 0000000..7309eef
+--- /dev/null
++++ b/cmake/FindLibM.cmake
+@@ -0,0 +1,26 @@
++include(FindPackageHandleStandardArgs)
++
++find_library(LibM_LIBRARIES
++    NAMES
++        m
++)
++
++find_package_handle_standard_args(LibM
++    REQUIRED_VARS
++        LibM_LIBRARIES
++)
++
++if(LibM_FOUND)
++    mark_as_advanced(LibM_LIBRARIES)
++endif()
++
++if(LibM_FOUND AND NOT LibM::Library)
++    add_library(LibM::Library UNKNOWN IMPORTED)
++    set_target_properties(LibM::Library
++        PROPERTIES
++            IMPORTED_LOCATION ${LibM_LIBRARIES}
++    )
++else()
++    add_library(LibM::Library INTERFACE)
++    target_compile_options(LibM::Library INTERFACE -lm)
++endif()
+diff --git a/cmake/FindReadline.cmake b/cmake/FindReadline.cmake
+new file mode 100644
+index 0000000..6c9cb8f
+--- /dev/null
++++ b/cmake/FindReadline.cmake
+@@ -0,0 +1,67 @@
++include(FindPackageHandleStandardArgs)
++
++find_path(Readline_Readline_INCLUDE
++    NAMES
++        readline/readline.h
++    PATHS
++        /usr/include
++        /usr/local/include
++)
++find_library(Readline_Readline_LIBRARY
++    NAMES
++        readline
++    PATHS
++        /usr/lib
++        /usr/local/lib
++)
++
++find_path(Readline_History_INCLUDE
++    NAMES
++        readline/readline.h
++    PATHS
++        /usr/include
++        /usr/local/include
++)
++find_library(Readline_History_LIBRARY
++    NAMES
++        history
++    PATHS
++        /usr/lib
++        /usr/local/lib
++)
++
++find_package_handle_standard_args(Readline
++    REQUIRED_VARS
++        Readline_Readline_INCLUDE
++        Readline_Readline_LIBRARY
++        Readline_History_INCLUDE
++        Readline_History_LIBRARY
++)
++
++if(Readline_Readline_FOUND)
++    mark_as_advanced(Readline_Readline_INCLUDE)
++    mark_as_advanced(Readline_Readline_LIBRARY)
++endif()
++
++if(Readline_History_FOUND)
++    mark_as_advanced(Readline_History_INCLUDE)
++    mark_as_advanced(Readline_History_LIBRARY)
++endif()
++
++if(NOT Readline::Library::Readline)
++    add_library(Readline::Library::Readline UNKNOWN IMPORTED)
++    set_target_properties(Readline::Library::Readline
++        PROPERTIES
++            IMPORTED_LOCATION ${Readline_Readline_LIBRARY}
++            INTERFACE_INCLUDE_DIRECTORIES ${Readline_Readline_INCLUDE}
++    )
++endif()
++
++if(NOT Readline::Library::History)
++    add_library(Readline::Library::History UNKNOWN IMPORTED)
++    set_target_properties(Readline::Library::History
++        PROPERTIES
++            IMPORTED_LOCATION ${Readline_History_LIBRARY}
++            INTERFACE_INCLUDE_DIRECTORIES ${Readline_History_INCLUDE}
++    )
++endif()
+diff --git a/cmake/GenerateSymbols.cmake b/cmake/GenerateSymbols.cmake
+new file mode 100644
+index 0000000..f76390a
+--- /dev/null
++++ b/cmake/GenerateSymbols.cmake
+@@ -0,0 +1,36 @@
++function(generate_symbols target_name)
++    if(NOT LINUX AND NOT CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" OR APPLE)
++        return()
++    endif()
++
++    # Extract symbols
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Extracting symbols from $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --only-keep-debug
++            $<TARGET_FILE:${target_name}>
++            $<TARGET_FILE_DIR:${target_name}>/$<TARGET_FILE_NAME:${target_name}>.debug
++    )
++    # Strip symbols
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Stripping $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --strip-all $<TARGET_FILE:${target_name}>
++    )
++    # Link debug module
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Linking symbols to $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --add-gnu-debuglink=$<TARGET_FILE_DIR:${target_name}>/$<TARGET_FILE_NAME:${target_name}>.debug
++            $<TARGET_FILE:${target_name}>
++    )
++endfunction()
+diff --git a/cmake/InstallLua.cmake b/cmake/InstallLua.cmake
+new file mode 100644
+index 0000000..4217532
+--- /dev/null
++++ b/cmake/InstallLua.cmake
+@@ -0,0 +1,211 @@
++# Return if not enabled installing
++if(NOT LUA_ENABLE_INSTALL)
++    return()
++endif()
++
++# Install library
++install(
++    TARGETS liblua
++    EXPORT LuaTargets
++    RUNTIME
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_BINDIR}
++    LIBRARY
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    PERMISSIONS
++        OWNER_READ OWNER_WRITE
++        GROUP_READ
++        WORLD_READ
++)
++if(WIN32 AND MSVC)
++    install(
++        FILES
++            $<TARGET_PDB_FILE:Lua::Library>
++        DESTINATION ${CMAKE_INSTALL_BINDIR}
++        COMPONENT Library
++    )
++elseif(LINUX)
++    install(
++        FILES
++            $<TARGET_FILE_DIR:Lua::Library>/$<TARGET_FILE_NAME:Lua::Library>.debug
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        COMPONENT Library
++    )
++elseif(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
++    install(
++        DIRECTORY
++            $<TARGET_FILE_DIR:Lua::Library>/$<TARGET_FILE_NAME:Lua::Library>.dSYM
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        COMPONENT Library
++    )
++endif()
++
++# Install includes
++install(
++    FILES
++        ${CMAKE_CURRENT_SOURCE_DIR}/src/lua.h
++        ${CMAKE_CURRENT_SOURCE_DIR}/src/luaconf.h
++        ${CMAKE_CURRENT_SOURCE_DIR}/src/lualib.h
++        ${CMAKE_CURRENT_SOURCE_DIR}/src/lauxlib.h
++    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION}
++    COMPONENT Library
++)
++
++# Install interpreter
++if(LUA_ENABLE_INTERPRETER)
++    install(
++        TARGETS lua
++        EXPORT LuaTargets
++        RUNTIME
++            COMPONENT Interpreter
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++        PERMISSIONS
++            OWNER_READ OWNER_WRITE OWNER_EXECUTE
++            GROUP_READ GROUP_EXECUTE
++            WORLD_READ WORLD_EXECUTE
++    )
++
++    if(WIN32 AND MSVC)
++        install(
++            FILES
++                $<TARGET_PDB_FILE:Lua::Interpreter>
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    elseif(LINUX)
++        install(
++            FILES
++                $<TARGET_FILE_DIR:Lua::Interpreter>/$<TARGET_FILE_NAME:Lua::Interpreter>.debug
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    elseif(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
++        install(
++            DIRECTORY
++                $<TARGET_FILE_DIR:Lua::Interpreter>/$<TARGET_FILE_NAME:Lua::Interpreter>.dSYM
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    endif()
++endif()
++
++# Install compiler
++if(LUA_ENABLE_COMPILER)
++    install(
++        TARGETS luac
++        EXPORT LuaTargets
++        RUNTIME
++            COMPONENT Compiler
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++        PERMISSIONS
++            OWNER_READ OWNER_WRITE OWNER_EXECUTE
++            GROUP_READ GROUP_EXECUTE
++            WORLD_READ WORLD_EXECUTE
++    )
++
++    if(WIN32 AND MSVC)
++        install(
++            FILES
++                $<TARGET_PDB_FILE:Lua::Compiler>
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Compiler
++        )
++    elseif(LINUX)
++        install(
++            FILES
++                $<TARGET_FILE_DIR:Lua::Compiler>/$<TARGET_FILE_NAME:Lua::Compiler>.debug
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Compiler
++        )
++    elseif(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
++        install(
++            DIRECTORY
++                $<TARGET_FILE_DIR:Lua::Compiler>/$<TARGET_FILE_NAME:Lua::Compiler>.dSYM
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Compiler
++        )
++    endif()
++endif()
++
++# Install package config
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/lua.pc.in
++    ${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/lua-${LUA_VERSION}.pc
++    @ONLY
++)
++install(
++    FILES ${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/lua-${LUA_VERSION}.pc
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
++    COMPONENT Library
++)
++
++# Install documentation
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/COPYRIGHT
++    ${CMAKE_CURRENT_BINARY_DIR}/copyright
++    COPYONLY
++)
++install(
++    FILES ${CMAKE_CURRENT_BINARY_DIR}/copyright
++    DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/lua${LUA_VERSION}
++)
++if(LUA_ENABLE_INTERPRETER)
++    install(
++        FILES ${CMAKE_CURRENT_SOURCE_DIR}/doc/lua.1
++        DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
++        COMPONENT Interpreter
++    )
++endif()
++if(LUA_ENABLE_COMPILER)
++    install(
++        FILES ${CMAKE_CURRENT_SOURCE_DIR}/doc/luac.1
++        DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
++        COMPONENT Compiler
++    )
++endif()
++
++# Export targets
++install(
++    EXPORT LuaTargets
++    FILE LuaTargets.cmake
++    NAMESPACE Lua::
++    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/cmake
++)
++
++# Export config
++include(CMakePackageConfigHelpers)
++configure_package_config_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/LuaConfig.cmake.in
++    ${CMAKE_CURRENT_BINARY_DIR}/cmake/LuaConfig.cmake
++    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lua-${LUA_VERSION}
++    NO_SET_AND_CHECK_MACRO
++    NO_CHECK_REQUIRED_COMPONENTS_MACRO
++)
++write_basic_package_version_file(
++    ${CMAKE_CURRENT_BINARY_DIR}/cmake/LuaConfigVersion.cmake
++    VERSION ${LUA_RELEASE}
++    COMPATIBILITY AnyNewerVersion
++)
++install(
++    FILES
++        ${CMAKE_CURRENT_BINARY_DIR}/cmake/LuaConfig.cmake
++        ${CMAKE_CURRENT_BINARY_DIR}/cmake/LuaConfigVersion.cmake
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lua-${LUA_VERSION}
++)
++install(
++    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cmake/
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lua-${LUA_VERSION}
++    FILES_MATCHING PATTERN "LuaTargets*.cmake"
++)
++
++# Replace prefix
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ReplacePrefix.cmake.in
++    ${CMAKE_CURRENT_BINARY_DIR}/ReplacePrefix.cmake
++    @ONLY
++)
++install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/ReplacePrefix.cmake)
+diff --git a/cmake/LuaConfig.cmake.in b/cmake/LuaConfig.cmake.in
+new file mode 100644
+index 0000000..dc67901
+--- /dev/null
++++ b/cmake/LuaConfig.cmake.in
+@@ -0,0 +1,39 @@
++@PACKAGE_INIT@
++
++# Include targets config
++include(${CMAKE_CURRENT_LIST_DIR}/LuaTargets.cmake)
++
++# Set aliases for all possible targets
++if(TARGET Lua::liblua)
++    add_library(Lua::Library ALIAS Lua::liblua)
++endif()
++if(TARGET Lua::lua)
++    add_executable(Lua::Interpreter ALIAS Lua::lua)
++endif()
++if(TARGET Lua::luac)
++    add_executable(Lua::Compiler ALIAS Lua::luac)
++endif()
++
++# Set default components list
++if(NOT Lua_FIND_COMPONENTS)
++    set(Lua_FIND_COMPONENTS Library)
++    foreach(component IN LISTS Lua_FIND_COMPONENTS)
++        set(Lua_FIND_REQUIRED_${component} TRUE)
++    endforeach()
++endif()
++
++# Find components
++foreach(component IN ITEMS ${Lua_FIND_COMPONENTS})
++    if(NOT TARGET Lua::${component})
++        set(Lua_${component}_FOUND FALSE)
++        if(Lua_FIND_REQUIRED_${component})
++            message(FATAL_ERROR "Could NOT find Lua::${component}")
++        endif()
++    else()
++        set(Lua_${component}_FOUND TRUE)
++        message(STATUS "Found Lua::${component}")
++    endif()
++endforeach()
++
++# Define package as found
++set(Lua_FOUND TRUE)
+diff --git a/cmake/ReplacePrefix.cmake.in b/cmake/ReplacePrefix.cmake.in
+new file mode 100644
+index 0000000..bab26fb
+--- /dev/null
++++ b/cmake/ReplacePrefix.cmake.in
+@@ -0,0 +1,15 @@
++# Replace import prefix
++file(READ
++    ${CMAKE_INSTALL_PREFIX}/lib/cmake/lua-@LUA_VERSION@/LuaTargets.cmake
++    LUA_TARGETS_CONTENT
++)
++string(REGEX REPLACE
++    "set\\(_IMPORT_PREFIX \"[^\"]*\"\\)"
++    "set(_IMPORT_PREFIX \"\${CMAKE_CURRENT_LIST_DIR}/../../..\")"
++    LUA_TARGETS_CONTENT
++    ${LUA_TARGETS_CONTENT}
++)
++file(WRITE
++    ${CMAKE_INSTALL_PREFIX}/lib/cmake/lua-@LUA_VERSION@/LuaTargets.cmake
++    ${LUA_TARGETS_CONTENT}
++)
+diff --git a/cmake/liblua.dll.manifest.in b/cmake/liblua.dll.manifest.in
+new file mode 100644
+index 0000000..60874f2
+--- /dev/null
++++ b/cmake/liblua.dll.manifest.in
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
++    <assemblyIdentity name="lua@LUA_VERSION@" version="@LUA_RELEASE@.0" />
++
++    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
++        <security>
++            <requestedPrivileges>
++                <requestedExecutionLevel level="asInvoker" uiAccess="false" />
++            </requestedPrivileges>
++        </security>
++    </trustInfo>
++
++    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
++        <application>
++            <!-- Windows 7 -->
++            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
++            <!-- Windows 8 -->
++            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
++            <!-- Windows 8.1 -->
++            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
++            <!-- Windows 10 and 11 -->
++            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
++        </application>
++    </compatibility>
++</assembly>
+diff --git a/cmake/liblua.rc.in b/cmake/liblua.rc.in
+new file mode 100644
+index 0000000..dcae2d3
+--- /dev/null
++++ b/cmake/liblua.rc.in
+@@ -0,0 +1,50 @@
++#include <windows.h>
++
++#include "lua.h"
++
++#ifndef DEBUG
++#define VER_DEBUG 0
++#else
++#define VER_DEBUG VS_FF_DEBUG
++#endif
++
++#define VER_PRIVATEBUILD 0x0L
++#define VER_PRERELEASE 0x0L
++
++#define LUA_VERSION_STRING "@LUA_RELEASE@"
++#define LUA_VERSION_CSV @LUA_VERSION_MAJOR@,@LUA_VERSION_MINOR@,@LUA_VERSION_PATCH@
++
++1 ICON DISCARDABLE "lua.ico"
++
++VS_VERSION_INFO VERSIONINFO
++    FILEVERSION LUA_VERSION_CSV
++    PRODUCTVERSION LUA_VERSION_CSV
++    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
++    FILEFLAGS (VER_PRIVATEBUILD | VER_PRERELEASE | VER_DEBUG)
++    FILEOS VOS_NT_WINDOWS32
++    FILETYPE VFT_DLL
++    FILESUBTYPE VFT2_UNKNOWN
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        // English (US), Unicode
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "Comment", LUA_AUTHORS
++            VALUE "CompanyName", "Lua.org, PUC-Rio\0"
++            VALUE "FileDescription", "Lua programming language library\0"
++            VALUE "FileVersion", LUA_VERSION_CSV
++            VALUE "InternalName", "lua\0"
++            VALUE "LegalCopyright", LUA_COPYRIGHT
++            VALUE "OriginalFilename", "lua@LUA_VERSION@\0"
++            VALUE "ProductName", "Lua"
++            VALUE "ProductVersion", LUA_VERSION_STRING
++        END
++    END
++
++    BLOCK "VarFileInfo"
++    BEGIN
++        // English (US), Unicode
++        VALUE "Translation", 0x409, 1200
++    END
++END
+diff --git a/cmake/lua.exe.manifest.in b/cmake/lua.exe.manifest.in
+new file mode 100644
+index 0000000..60874f2
+--- /dev/null
++++ b/cmake/lua.exe.manifest.in
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
++    <assemblyIdentity name="lua@LUA_VERSION@" version="@LUA_RELEASE@.0" />
++
++    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
++        <security>
++            <requestedPrivileges>
++                <requestedExecutionLevel level="asInvoker" uiAccess="false" />
++            </requestedPrivileges>
++        </security>
++    </trustInfo>
++
++    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
++        <application>
++            <!-- Windows 7 -->
++            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
++            <!-- Windows 8 -->
++            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
++            <!-- Windows 8.1 -->
++            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
++            <!-- Windows 10 and 11 -->
++            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
++        </application>
++    </compatibility>
++</assembly>
+diff --git a/cmake/lua.pc.in b/cmake/lua.pc.in
+new file mode 100644
+index 0000000..40cd287
+--- /dev/null
++++ b/cmake/lua.pc.in
+@@ -0,0 +1,28 @@
++# lua.pc -- pkg-config data for Lua
++
++# vars
++
++V= @LUA_VERSION@
++R= @LUA_RELEASE@
++
++prefix=${pcfiledir}/../..
++INSTALL_BIN=${prefix}/bin
++INSTALL_INC=${prefix}/include
++INSTALL_LIB=${prefix}/lib
++INSTALL_MAN=${prefix}/man/man1
++INSTALL_LMOD=${prefix}/share/lua/${V}
++INSTALL_CMOD=${prefix}/lib/lua/${V}
++
++# canonical vars
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: Lua
++Description: An Extensible Extension Language
++Version: ${R}
++Requires: 
++Libs: -L${libdir} -llua${V} -lm
++Cflags: -I${includedir}/lua${V}
++
++# (end of lua.pc)
+diff --git a/cmake/lua.rc.in b/cmake/lua.rc.in
+new file mode 100644
+index 0000000..f3c043f
+--- /dev/null
++++ b/cmake/lua.rc.in
+@@ -0,0 +1,50 @@
++#include <windows.h>
++
++#include "lua.h"
++
++#ifndef DEBUG
++#define VER_DEBUG 0
++#else
++#define VER_DEBUG VS_FF_DEBUG
++#endif
++
++#define VER_PRIVATEBUILD 0x0L
++#define VER_PRERELEASE 0x0L
++
++#define LUA_VERSION_STRING "@LUA_RELEASE@"
++#define LUA_VERSION_CSV @LUA_VERSION_MAJOR@,@LUA_VERSION_MINOR@,@LUA_VERSION_PATCH@
++
++1 ICON DISCARDABLE "lua.ico"
++
++VS_VERSION_INFO VERSIONINFO
++    FILEVERSION LUA_VERSION_CSV
++    PRODUCTVERSION LUA_VERSION_CSV
++    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
++    FILEFLAGS (VER_PRIVATEBUILD | VER_PRERELEASE | VER_DEBUG)
++    FILEOS VOS_NT_WINDOWS32
++    FILETYPE VFT_APP
++    FILESUBTYPE VFT2_UNKNOWN
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        // English (US), Unicode
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "Comment", LUA_AUTHORS
++            VALUE "CompanyName", "Lua.org, PUC-Rio\0"
++            VALUE "FileDescription", "Lua programming language interpreter\0"
++            VALUE "FileVersion", LUA_VERSION_CSV
++            VALUE "InternalName", "lua\0"
++            VALUE "LegalCopyright", LUA_COPYRIGHT
++            VALUE "OriginalFilename", "lua@LUA_VERSION@\0"
++            VALUE "ProductName", "Lua"
++            VALUE "ProductVersion", LUA_VERSION_STRING
++        END
++    END
++
++    BLOCK "VarFileInfo"
++    BEGIN
++        // English (US), Unicode
++        VALUE "Translation", 0x409, 1200
++    END
++END
+diff --git a/cmake/luac.exe.manifest.in b/cmake/luac.exe.manifest.in
+new file mode 100644
+index 0000000..105cf12
+--- /dev/null
++++ b/cmake/luac.exe.manifest.in
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
++    <assemblyIdentity name="luac@LUA_VERSION@" version="@LUA_RELEASE@.0" />
++
++    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
++        <security>
++            <requestedPrivileges>
++                <requestedExecutionLevel level="asInvoker" uiAccess="false" />
++            </requestedPrivileges>
++        </security>
++    </trustInfo>
++
++    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
++        <application>
++            <!-- Windows 7 -->
++            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
++            <!-- Windows 8 -->
++            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
++            <!-- Windows 8.1 -->
++            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
++            <!-- Windows 10 and 11 -->
++            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
++        </application>
++    </compatibility>
++</assembly>
+diff --git a/cmake/luac.rc.in b/cmake/luac.rc.in
+new file mode 100644
+index 0000000..19c819b
+--- /dev/null
++++ b/cmake/luac.rc.in
+@@ -0,0 +1,50 @@
++#include <windows.h>
++
++#include "lua.h"
++
++#ifndef DEBUG
++#define VER_DEBUG 0
++#else
++#define VER_DEBUG VS_FF_DEBUG
++#endif
++
++#define VER_PRIVATEBUILD 0x0L
++#define VER_PRERELEASE 0x0L
++
++#define LUA_VERSION_STRING "@LUA_RELEASE@"
++#define LUA_VERSION_CSV @LUA_VERSION_MAJOR@,@LUA_VERSION_MINOR@,@LUA_VERSION_PATCH@
++
++1 ICON DISCARDABLE "lua.ico"
++
++VS_VERSION_INFO VERSIONINFO
++    FILEVERSION LUA_VERSION_CSV
++    PRODUCTVERSION LUA_VERSION_CSV
++    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
++    FILEFLAGS (VER_PRIVATEBUILD | VER_PRERELEASE | VER_DEBUG)
++    FILEOS VOS_NT_WINDOWS32
++    FILETYPE VFT_APP
++    FILESUBTYPE VFT2_UNKNOWN
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        // English (US), Unicode
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "Comment", LUA_AUTHORS
++            VALUE "CompanyName", "Lua.org, PUC-Rio\0"
++            VALUE "FileDescription", "Lua programming language compiler\0"
++            VALUE "FileVersion", LUA_VERSION_CSV
++            VALUE "InternalName", "lua\0"
++            VALUE "LegalCopyright", LUA_COPYRIGHT
++            VALUE "OriginalFilename", "luac@LUA_VERSION@\0"
++            VALUE "ProductName", "Lua"
++            VALUE "ProductVersion", LUA_VERSION_STRING
++        END
++    END
++
++    BLOCK "VarFileInfo"
++    BEGIN
++        // English (US), Unicode
++        VALUE "Translation", 0x409, 1200
++    END
++END
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+new file mode 100644
+index 0000000..f1fec61
+--- /dev/null
++++ b/src/CMakeLists.txt
+@@ -0,0 +1,333 @@
++# List of files
++set(COMMON_HEADERS
++    ${CMAKE_CURRENT_SOURCE_DIR}/lua.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/luaconf.h
++)
++set(CORE_HEADERS
++    ${CMAKE_CURRENT_SOURCE_DIR}/lapi.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lcode.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldebug.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldo.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lfunc.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lgc.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/llex.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/llimits.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lmem.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lobject.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lopcodes.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lparser.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lstate.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lstring.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/ltable.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/ltm.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lundump.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lvm.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lzio.h
++)
++set(CORE_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/lapi.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lcode.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldebug.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldo.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldump.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lfunc.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lgc.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/llex.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lmem.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lobject.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lopcodes.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lparser.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lstate.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lstring.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ltable.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ltm.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lundump.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lvm.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lzio.c
++)
++set(LIB_HEADERS
++    ${CMAKE_CURRENT_SOURCE_DIR}/lauxlib.h
++    ${CMAKE_CURRENT_SOURCE_DIR}/lualib.h
++)
++set(LIB_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/lauxlib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lbaselib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ldblib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/liolib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/linit.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lmathlib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/loadlib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/loslib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/lstrlib.c
++    ${CMAKE_CURRENT_SOURCE_DIR}/ltablib.c
++)
++
++# Project for Lua library
++project(liblua
++    LANGUAGES C
++    VERSION ${LUA_RELEASE}
++)
++
++set(CMAKE_C_STANDARD 99)
++
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/liblua.rc.in
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/liblua${LUA_VERSION}.rc
++)
++set(LIB_RESOURCES
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/liblua${LUA_VERSION}.rc
++)
++
++source_group("Common" FILES ${COMMON_HEADERS})
++source_group("Core" FILES ${CORE_HEADERS})
++source_group("Core" FILES ${CORE_SOURCES})
++source_group("Library" FILES ${LIB_HEADERS})
++source_group("Library" FILES ${LIB_SOURCES})
++source_group("Resources" FILES ${LIB_RESOURCES})
++
++add_library(${PROJECT_NAME} SHARED
++    ${COMMON_HEADERS}
++    ${CORE_HEADERS}
++    ${CORE_SOURCES}
++    ${LIB_HEADERS}
++    ${LIB_SOURCES}
++    ${LIB_RESOURCES}
++)
++add_library(Lua::Library ALIAS ${PROJECT_NAME})
++
++set_target_properties(${PROJECT_NAME}
++    PROPERTIES
++        ENABLE_EXPORTS TRUE
++)
++
++target_include_directories(${PROJECT_NAME}
++    PUBLIC
++        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
++        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION}>
++)
++target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../etc)
++
++target_compile_options(${PROJECT_NAME} PRIVATE ${LUA_BUILD_FLAGS})
++target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUA_BUILD_DEFINES})
++
++generate_symbols(${PROJECT_NAME})
++
++generate_manifest(
++    ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/liblua.dll.manifest.in
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/liblua${LUA_VERSION}.dll.manifest
++)
++embed_manifest(${PROJECT_NAME}
++    DLL
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/liblua${LUA_VERSION}.dll.manifest
++)
++
++if(WIN32 AND MSVC)
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUA_BUILD_DEFINES_DYNAMIC})
++    target_link_options(${PROJECT_NAME} PRIVATE ${LUA_LINK_FLAGS})
++
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME lua${LUA_VERSION}
++    )
++elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    if(CMAKE_C_COMPILER_ID MATCHES "GNU")
++        target_compile_options(${PROJECT_NAME} PRIVATE ${LUA_BUILD_FLAGS_DYNAMIC})
++    endif()
++
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME lua${LUA_VERSION}
++            SOVERSION ${LUA_VERSION_PATCH}
++            INSTALL_RPATH "$ORIGIN"
++            BUILD_WITH_INSTALL_RPATH TRUE
++    )
++elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME lua${LUA_VERSION}
++            SOVERSION ${LUA_VERSION_PATCH}
++            MACOSX_RPATH TRUE
++            INSTALL_NAME_DIR "@rpath"
++            INSTALL_RPATH "@loader_path;@loader_path/../lib;@loader_path/../../lib/$<CONFIG>"
++            BUILD_WITH_INSTALL_RPATH TRUE
++            XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
++    )
++endif()
++
++if(LINUX)
++    target_link_libraries(${PROJECT_NAME} PRIVATE LibM::Library)
++    target_link_libraries(${PROJECT_NAME} PRIVATE LibDl::Library)
++endif()
++
++# Project for Lua interpreter
++project(lua
++    LANGUAGES C
++    VERSION ${LUA_RELEASE}
++)
++
++set(CMAKE_C_STANDARD 99)
++
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/lua.rc.in
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/lua${LUA_VERSION}.rc
++)
++
++set(LUA_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/lua.c
++)
++set(LUA_RESOURCES
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/lua${LUA_VERSION}.rc
++)
++
++source_group("Interpreter" FILES ${LUA_SOURCES})
++source_group("Resources" FILES ${LUA_RESOURCES})
++
++if(LUA_ENABLE_INTERPRETER)
++    add_executable(${PROJECT_NAME}
++        ${COMMON_HEADERS}
++        ${LIB_HEADERS}
++        ${LUA_SOURCES}
++        ${LUA_RESOURCES}
++    )
++    add_executable(Lua::Interpreter ALIAS ${PROJECT_NAME})
++
++    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
++    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../etc)
++
++    target_compile_options(${PROJECT_NAME} PRIVATE ${LUA_BUILD_FLAGS})
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUA_BUILD_DEFINES})
++
++    add_dependencies(${PROJECT_NAME} Lua::Library)
++    target_link_libraries(${PROJECT_NAME} PRIVATE Lua::Library)
++
++    generate_symbols(Lua::Interpreter)
++
++    generate_manifest(
++        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/lua.exe.manifest.in
++        ${CMAKE_CURRENT_BINARY_DIR}/../res/lua${LUA_VERSION}.exe.manifest
++    )
++    embed_manifest(${PROJECT_NAME}
++        EXE
++        ${CMAKE_CURRENT_BINARY_DIR}/../res/lua${LUA_VERSION}.exe.manifest
++    )
++
++    if(WIN32 AND MSVC)
++        target_link_options(${PROJECT_NAME} PRIVATE ${LUA_LINK_FLAGS})
++
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME lua
++        )
++    elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME lua${LUA_VERSION}
++                INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib:$ORIGIN/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++        )
++    elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME lua${LUA_VERSION}
++                MACOSX_RPATH TRUE
++                INSTALL_NAME_DIR "@rpath"
++                INSTALL_RPATH "@executable_path;@executable_path/../lib;@executable_path/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++                XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
++        )
++    endif()
++
++    if(LINUX)
++        target_link_libraries(${PROJECT_NAME} PRIVATE Readline::Library::Readline)
++        target_link_libraries(${PROJECT_NAME} PRIVATE Readline::Library::History)
++    endif()
++endif()
++
++# Project for Lua compiler
++project(luac
++    LANGUAGES C
++    VERSION ${LUA_RELEASE}
++)
++
++set(CMAKE_C_STANDARD 99)
++
++configure_file(
++    ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/luac.rc.in
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/luac${LUA_VERSION}.rc
++)
++
++set(LUAC_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/luac.c
++)
++set(PRINT_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/print.c
++)
++set(LUAC_RESOURCES
++    ${CMAKE_CURRENT_BINARY_DIR}/../res/luac${LUA_VERSION}.rc
++)
++
++source_group("Compiler" FILES ${LUAC_SOURCES})
++source_group("Print" FILES ${PRINT_SOURCES})
++source_group("Resources" FILES ${LUAC_RESOURCES})
++
++if(LUA_ENABLE_COMPILER)
++    add_executable(${PROJECT_NAME}
++        ${COMMON_HEADERS}
++        ${CORE_HEADERS}
++        ${CORE_SOURCES}
++        ${LUAC_SOURCES}
++        ${PRINT_SOURCES}
++        ${LUAC_RESOURCES}
++    )
++    add_executable(Lua::Compiler ALIAS ${PROJECT_NAME})
++
++    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
++    target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../etc)
++
++    target_compile_options(${PROJECT_NAME} PRIVATE ${LUA_BUILD_FLAGS})
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUA_BUILD_DEFINES})
++
++    add_dependencies(${PROJECT_NAME} Lua::Library)
++    target_link_libraries(${PROJECT_NAME} PRIVATE Lua::Library)
++
++    generate_symbols(${PROJECT_NAME})
++
++    generate_manifest(
++        ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/luac.exe.manifest.in
++        ${CMAKE_CURRENT_BINARY_DIR}/../res/luac${LUA_VERSION}.exe.manifest
++    )
++    embed_manifest(${PROJECT_NAME}
++        EXE
++        ${CMAKE_CURRENT_BINARY_DIR}/../res/luac${LUA_VERSION}.exe.manifest
++    )
++
++    if(WIN32 AND MSVC)
++        target_link_options(${PROJECT_NAME} PRIVATE ${LUA_LINK_FLAGS})
++
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luac
++        )
++    elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luac${LUA_VERSION}
++                INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib:$ORIGIN/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++        )
++    elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luac${LUA_VERSION}
++                MACOSX_RPATH TRUE
++                INSTALL_NAME_DIR "@rpath"
++                INSTALL_RPATH "@executable_path;@executable_path/../lib;@executable_path/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++                XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
++        )
++    endif()
++
++    if(LINUX)
++        target_link_libraries(${PROJECT_NAME} PRIVATE LibM::Library)
++    endif()
++endif()
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+new file mode 100644
+index 0000000..c9fcb5c
+--- /dev/null
++++ b/test/CMakeLists.txt
+@@ -0,0 +1,124 @@
++# Return if not enabled testing
++if(NOT LUA_ENABLE_TESTS)
++    return()
++endif()
++if(NOT LUA_ENABLE_INTERPRETER AND NOT LUA_ENABLE_COMPILER)
++    return()
++endif()
++
++enable_testing()
++
++# Clean results
++if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/luac.out)
++    file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/luac.out)
++endif()
++
++# Run tests
++add_test(
++    NAME bisect
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/bisect.lua
++)
++add_test(
++    NAME cf
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/cf.lua
++)
++add_test(
++    NAME echo
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/echo.lua echo
++)
++add_test(
++    NAME env
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/env.lua
++)
++add_test(
++    NAME factorial
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/factorial.lua
++)
++add_test(
++    NAME fib
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/fib.lua
++)
++add_test(
++    NAME fibfor
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/fibfor.lua
++)
++add_test(
++    NAME hello
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/hello.lua
++)
++add_test(
++    NAME life
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/life.lua
++)
++add_test(
++    NAME luac
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/luac.lua hello.lua
++    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++)
++add_test(
++    NAME printf
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/printf.lua
++)
++add_test(
++    NAME sieve
++    COMMAND $<TARGET_FILE:lua> -e N=1000 ${CMAKE_CURRENT_SOURCE_DIR}/sieve.lua
++)
++add_test(
++    NAME sort
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/sort.lua
++)
++add_test(
++    NAME trace-calls
++    COMMAND $<TARGET_FILE:lua> -ltrace-calls ${CMAKE_CURRENT_SOURCE_DIR}/bisect.lua
++    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++)
++add_test(
++    NAME trace-globals
++    COMMAND $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/trace-globals.lua
++)
++
++set(globals_pass_pattern "setmetatable: 6[\r\n\t ]*")
++if(WIN32)
++    add_test(
++        NAME globals
++        COMMAND powershell -Command "$<TARGET_FILE:luac> -p -l ${CMAKE_CURRENT_SOURCE_DIR}/readonly.lua | $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/globals.lua | sort | $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/table.lua"
++        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++    )
++    set_tests_properties(globals
++        PROPERTIES
++            PASS_REGULAR_EXPRESSION ${globals_pass_pattern}
++    )
++elseif(UNIX)
++    add_test(
++        NAME globals
++        COMMAND "/usr/bin/env" "bash" "-c" "$<TARGET_FILE:luac> -p -l ${CMAKE_CURRENT_SOURCE_DIR}/readonly.lua | $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/globals.lua | sort | $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/table.lua"
++        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++    )
++    set_tests_properties(globals
++        PROPERTIES
++            PASS_REGULAR_EXPRESSION ${globals_pass_pattern}
++    )
++endif()
++
++set(xd_pass_pattern "00000000  2D 2D 20 68 65 78 20 64 75 6D 70 0A 2D 2D 20 75  -- hex dump.-- u[\r\n\t ]*")
++if(WIN32)
++    add_test(
++        NAME xd
++        COMMAND powershell -Command "Get-Content ${CMAKE_CURRENT_SOURCE_DIR}/xd.lua | $<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/xd.lua"
++        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++    )
++    set_tests_properties(xd
++        PROPERTIES
++            PASS_REGULAR_EXPRESSION ${xd_pass_pattern}
++    )
++elseif(UNIX)
++    add_test(
++        NAME xd
++        COMMAND "/usr/bin/env" "bash" "-c" "$<TARGET_FILE:lua> ${CMAKE_CURRENT_SOURCE_DIR}/xd.lua < ${CMAKE_CURRENT_SOURCE_DIR}/xd.lua"
++        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++    )
++    set_tests_properties(xd
++        PROPERTIES
++            PASS_REGULAR_EXPRESSION ${xd_pass_pattern}
++    )
++endif()

@@ -8,6 +8,10 @@
 *.nuspec  linguist-language=XML
 *.targets linguist-language=XML
 
+# Patches
+patch/**/!*.patch -linguist-detectable
+*.patch text
+
 # YAML files
 *.yml  text eof=lf encoding=utf-8
 *.yaml text eof=lf encoding=utf-8

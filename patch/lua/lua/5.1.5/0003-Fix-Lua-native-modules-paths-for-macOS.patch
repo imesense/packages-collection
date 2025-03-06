@@ -1,0 +1,21 @@
+diff --git a/src/luaconf.h b/src/luaconf.h
+index 51993c0..f14c44a 100644
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -92,7 +92,15 @@
+ 		             LUA_CDIR"?.lua;"  LUA_CDIR"?\\init.lua"
+ #define LUA_CPATH_DEFAULT \
+ 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+-
++#elif defined(LUA_USE_MACOSX)
++#define LUA_ROOT	"/usr/local/"
++#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
++#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
++#define LUA_PATH_DEFAULT  \
++		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
++		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
++#define LUA_CPATH_DEFAULT \
++	"./?.dylib;"  LUA_CDIR"?.dylib;" LUA_CDIR"loadall.dylib"
+ #else
+ #define LUA_ROOT	"/usr/local/"
+ #define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
