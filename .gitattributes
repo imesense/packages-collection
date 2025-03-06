@@ -7,3 +7,7 @@
 *.targets linguist-detectable
 *.nuspec  linguist-language=XML
 *.targets linguist-language=XML
+
+# YAML files
+*.yml  text eof=lf encoding=utf-8
+*.yaml text eof=lf encoding=utf-8
