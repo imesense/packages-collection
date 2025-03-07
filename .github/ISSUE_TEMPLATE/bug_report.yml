@@ -2,8 +2,9 @@
 
 name: Bug report
 description: Create bug report
-title: "[Bug]: "
-labels: ["bug"]
+title: "Bug: "
+labels:
+    - "bug"
 
 body:
     # Bug information

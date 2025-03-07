@@ -2,8 +2,9 @@
 
 name: Feature request
 description: Suggest feature for integration
-title: "[Feature]: "
-labels: ["enhancement"]
+title: "Feature: "
+labels:
+    - "enhancement"
 
 body:
     # Feature information

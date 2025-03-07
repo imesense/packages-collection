@@ -2,8 +2,9 @@
 
 name: Package request
 description: Suggest component for packaging
-title: "[Package]: "
-labels: ["enhancement"]
+title: "Pack: "
+labels:
+    - "enhancement"
 
 body:
     # Package information
