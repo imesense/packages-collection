@@ -2,6 +2,8 @@
 
 # Local tree
 bin/
+inc/
+lib/
 share/
 tmp/
 
