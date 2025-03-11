@@ -1,4 +1,8 @@
 {
+    "files.associations": {
+        "**/*.rockspec": "lua"
+    },
+
     "cmake.configureOnOpen": false,
 
     "dotnet.defaultSolution": "disable",
