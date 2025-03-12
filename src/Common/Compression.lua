@@ -7,12 +7,9 @@ local module = {
     Name = "Compression"
 }
 
-function module.UnpackArchive(file, destination, silent)
-    local executable = "." .. filesystem.Separator .. "bin" .. filesystem.Separator .. "7za.exe"
-    local output = console.ExecuteCommand(executable .. " x ".. file .. " -o" .. destination)
-    if not silent then
-        console.PrintColor(output, console.Colors.Default)
-    end
+function module.UnpackArchive(file, destination)
+    local command = "." .. filesystem.Separator .. "bin" .. filesystem.Separator .. "7za.exe"
+    console.ExecuteCommand(command .. " x ".. file .. " -o" .. destination)
 end
 
 return module

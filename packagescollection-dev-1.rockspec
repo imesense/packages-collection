@@ -34,6 +34,8 @@ build = {
         ["Common.Compression"] = "src\\Common\\Compression.lua",
         ["Common.Console"] = "src\\Common\\Console.lua",
         ["Common.Filesystem"] = "src\\Common\\Filesystem.lua",
-        ["Common.Network"] = "src\\Common\\Network.lua"
+        ["Common.Globals"] = "src\\Common\\Globals.lua",
+        ["Common.Network"] = "src\\Common\\Network.lua",
+        ["Common.Repositories"] = "src\\Common\\Repositories.lua"
     }
 }

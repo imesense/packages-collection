@@ -25,7 +25,9 @@ function module.ExecuteCommand(command)
     local output = handle:read("*a")
     handle:close()
 
-    return output
+    if _G.EnableCommandsOutput then
+        module.PrintColor(output, module.Colors.Default)
+    end
 end
 
 return module
