@@ -1,3 +1,50 @@
+From 9590970e02e23d4dceafeb5600b3b03b49030ca0 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Sat, 15 Feb 2025 01:51:09 +0300
+Subject: [PATCH 1/3] Add CMake project for Lua
+
+Co-authored-by: leha-bot <leha-bot@users.noreply.github.com>
+---
+ .gitignore                   |   5 +
+ CMakeLists.txt               |  58 ++++++
+ cmake/EmbedManifest.cmake    |  29 +++
+ cmake/FindLibDl.cmake        |  13 ++
+ cmake/FindLibM.cmake         |  26 +++
+ cmake/FindReadline.cmake     |  67 +++++++
+ cmake/GenerateSymbols.cmake  |  36 ++++
+ cmake/InstallLua.cmake       | 211 ++++++++++++++++++++++
+ cmake/LuaConfig.cmake.in     |  39 ++++
+ cmake/ReplacePrefix.cmake.in |  15 ++
+ cmake/liblua.dll.manifest.in |  25 +++
+ cmake/liblua.rc.in           |  50 ++++++
+ cmake/lua.exe.manifest.in    |  25 +++
+ cmake/lua.pc.in              |  28 +++
+ cmake/lua.rc.in              |  50 ++++++
+ cmake/luac.exe.manifest.in   |  25 +++
+ cmake/luac.rc.in             |  50 ++++++
+ src/CMakeLists.txt           | 333 +++++++++++++++++++++++++++++++++++
+ test/CMakeLists.txt          | 124 +++++++++++++
+ 19 files changed, 1209 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 CMakeLists.txt
+ create mode 100644 cmake/EmbedManifest.cmake
+ create mode 100644 cmake/FindLibDl.cmake
+ create mode 100644 cmake/FindLibM.cmake
+ create mode 100644 cmake/FindReadline.cmake
+ create mode 100644 cmake/GenerateSymbols.cmake
+ create mode 100644 cmake/InstallLua.cmake
+ create mode 100644 cmake/LuaConfig.cmake.in
+ create mode 100644 cmake/ReplacePrefix.cmake.in
+ create mode 100644 cmake/liblua.dll.manifest.in
+ create mode 100644 cmake/liblua.rc.in
+ create mode 100644 cmake/lua.exe.manifest.in
+ create mode 100644 cmake/lua.pc.in
+ create mode 100644 cmake/lua.rc.in
+ create mode 100644 cmake/luac.exe.manifest.in
+ create mode 100644 cmake/luac.rc.in
+ create mode 100644 src/CMakeLists.txt
+ create mode 100644 test/CMakeLists.txt
+
 diff --git a/.gitignore b/.gitignore
 new file mode 100644
 index 0000000..98e5532
@@ -1321,3 +1368,6 @@ index 0000000..c9fcb5c
 +            PASS_REGULAR_EXPRESSION ${xd_pass_pattern}
 +    )
 +endif()
+-- 
+2.47.1.windows.2
+

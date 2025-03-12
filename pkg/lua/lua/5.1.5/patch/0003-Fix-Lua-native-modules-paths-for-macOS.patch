@@ -1,3 +1,12 @@
+From f74fdb7b6a4c1f0b49fcd19251bc3a65b6b5d94f Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Wed, 19 Feb 2025 18:59:21 +0300
+Subject: [PATCH 3/3] Fix Lua native modules paths for macOS
+
+---
+ src/luaconf.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
 diff --git a/src/luaconf.h b/src/luaconf.h
 index 51993c0..f14c44a 100644
 --- a/src/luaconf.h
@@ -19,3 +28,6 @@ index 51993c0..f14c44a 100644
  #else
  #define LUA_ROOT	"/usr/local/"
  #define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+-- 
+2.47.1.windows.2
+

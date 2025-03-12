@@ -1,3 +1,12 @@
+From 4a495eeb064ea43909ffd424ecfbcd2dfd639911 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Thu, 6 Mar 2025 16:49:06 +0300
+Subject: [PATCH 2/3] Fix linking on macOS
+
+---
+ src/luaconf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/src/luaconf.h b/src/luaconf.h
 index e2cb261..51993c0 100644
 --- a/src/luaconf.h
@@ -9,3 +18,8 @@ index e2cb261..51993c0 100644
 -#define LUA_DL_DYLD		/* does not need extra library */
 +#define LUA_USE_DLOPEN		/* does not need extra library */
  #endif
+ 
+ 
+-- 
+2.47.1.windows.2
+
