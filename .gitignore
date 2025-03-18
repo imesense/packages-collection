@@ -2,7 +2,7 @@
 
 # Local tree
 bin/
-inc/
+include/
 lib/
 share/
 tmp/

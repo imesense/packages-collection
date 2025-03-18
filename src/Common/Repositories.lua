@@ -10,6 +10,14 @@ function module.InitializeRepository(repository)
     console.ExecuteCommand("git -C " .. repository .. " init")
 end
 
+function module.CloneRepository(url, destination)
+    console.ExecuteCommand("git clone " .. url .. " " .. destination)
+end
+
+function module.CloneRepositoryBranch(url, destination, branch)
+    console.ExecuteCommand("git clone --depth=1 --branch " .. branch .. " " .. url .. " " .. destination)
+end
+
 function module.CreateCommit(repository, message)
     console.ExecuteCommand("git -C " .. repository .. " add .")
     console.ExecuteCommand("git -C " .. repository .. " commit -m \"" .. message .. "\"")

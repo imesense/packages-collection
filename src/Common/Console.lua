@@ -28,6 +28,8 @@ function module.ExecuteCommand(command)
     if _G.EnableCommandsOutput then
         module.PrintColor(output, module.Colors.Default)
     end
+
+    return output
 end
 
 return module

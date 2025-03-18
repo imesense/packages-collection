@@ -44,6 +44,17 @@ end
 
 module.CurrentFolder = module.GetCurrentFolder()
 
+function module.ChangeDirectory(path)
+    if not module.IsFolder(path) or not module.Exists(path) then
+        return
+    end
+
+    local result, err = lfs.chdir(path)
+    if not result then
+        console.PrintColor("Error " .. error, console.Colors.Red)
+    end
+end
+
 function module.CreateFolder(path)
     if module.Exists(path) then
         return
@@ -120,7 +131,7 @@ function module.DeleteFile(path)
     end
 end
 
-function module.DeleteFolder(path)
+function module.DeleteFolderOnly(path)
     if not module.IsFolder(path) or not module.Exists(path) then
         return
     end
@@ -131,7 +142,7 @@ function module.DeleteFolder(path)
     end
 end
 
-function module.DeleteFolderRecursively(path)
+function module.DeleteFolder(path)
     if not module.IsFolder(path) or not module.Exists(path) then
         return
     end
@@ -144,11 +155,11 @@ function module.DeleteFolderRecursively(path)
 
     for folder, _ in module.IterateFolder(path) do
         if module.IsFolder(folder) then
-            module.DeleteFolder(folder)
+            module.DeleteFolderOnly(folder)
         end
     end
 
-    module.DeleteFolder(path)
+    module.DeleteFolderOnly(path)
 end
 
 module.TreeFolders = {
@@ -157,7 +168,7 @@ module.TreeFolders = {
     "cache/Https",
     "cache/Source",
     "bin",
-    "inc",
+    "include",
     "lib",
     "share"
 }
