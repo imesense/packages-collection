@@ -1,6 +1,10 @@
 -- Current module
 local module = {
-    Name = "Console"
+    Name = "Console",
+
+    Parameters = {
+        EnableCommandsOutput = false
+    }
 }
 
 -- Text colors
@@ -25,7 +29,7 @@ function module.ExecuteCommand(command)
     local output = handle:read("*a")
     handle:close()
 
-    if _G.EnableCommandsOutput then
+    if module.Parameters.EnableCommandsOutput then
         module.PrintColor(output, module.Colors.Default)
     end
 
