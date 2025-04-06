@@ -164,9 +164,12 @@ end
 
 module.TreeFolders = {
     "tmp",
+    "tmp/out",
     "cache",
     "cache/Https",
     "cache/Source",
+    "cache/CMake",
+    "cache/NuGet",
     "bin",
     "include",
     "lib",
