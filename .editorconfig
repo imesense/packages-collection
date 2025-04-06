@@ -1,6 +1,16 @@
 # Enable top-most EditorConfig file
 root = true
 
+# Markdown files
+[*.md]
+
+# Common settings
+charset = utf-8
+end_of_line = crlf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+
 # YAML files
 [*.{yml,yaml}]
 
