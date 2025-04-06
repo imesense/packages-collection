@@ -5,10 +5,9 @@ local utilities = require("src.Common.Utilities")
 
 -- Current module
 local module = {
-    Name = "VisualStudio"
+    Name = "VisualStudio",
+    Triplet = {}
 }
-
-local triplet = _G.Triplet
 
 function module.FindFolder(version)
     local programFilesX86 = utilities.GetEnvironmentVariable("ProgramFiles(x86)")
@@ -31,13 +30,13 @@ function module.FindFolder(version)
 end
 
 function module.RunDevCmd(command)
-    local platform = triplet.System.Platform
+    local winsdk = module.Triplet.WindowsSdk.Version
+    local subsystem = module.Triplet.WindowsSdk.Subsystem
 
-    local visualstudio = triplet.Toolchain.VisualStudio
-    local visualcpp = triplet.Toolchain.VisualCpp
+    local visualstudio = module.Triplet.VisualStudio.Version
 
-    local winsdk = triplet.Toolchain.WindowsSdk
-    local subsystem = triplet.Toolchain.WindowsSubsystem
+    local visualcpp = module.Triplet.VisualCpp.Version
+    local platform = module.Triplet.VisualCpp.Platform
 
     local vsdevcmd =
         "call " ..

@@ -4,14 +4,13 @@ local visualStudio = require("src.Tools.VisualStudio")
 
 -- Current module
 local module = {
-    Name = "CMake"
+    Name = "CMake",
+    Triplet = {}
 }
 
-local triplet = _G.Triplet
-
-local function InvokeShell(command)
-    local result = ""
-    if triplet.System.Name == "Windows" then
+function InvokeShell(command)
+    local result
+    if module.Triplet.System.Name == "Windows" then
         result = visualStudio.RunDevCmd(command)
     else
         result = console.ExecuteCommand(command)
@@ -26,7 +25,7 @@ end
 
 function module.ConfigureProject(source, build, generator, projectOptions, generatorOptions)
     local command =
-        triplet.Commands.CMake ..
+        module.Triplet.Commands.CMake ..
         " -S " .. source ..
         " -B " .. build ..
         " -G \"" .. generator .. "\""
@@ -55,7 +54,7 @@ end
 
 function module.BuildProject(build, config)
     local command =
-        triplet.Commands.CMake ..
+        module.Triplet.Commands.CMake ..
         " --build " .. build
     if config and config ~= "" then
         command = command .. " --config " .. config
@@ -65,7 +64,7 @@ end
 
 function module.InstallProject(build, config, prefix)
     local command =
-        triplet.Commands.CMake ..
+        module.Triplet.Commands.CMake ..
         " --install " .. build
     if config and config ~= "" then
         command = command .. " --config " .. config
