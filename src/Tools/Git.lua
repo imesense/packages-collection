@@ -92,4 +92,34 @@ function module.ApplyPatch(repository, patch)
     return result
 end
 
+function module.ResetCommit(repository, hash)
+    local result = console.ExecuteCommand(
+        module.Triplet.Commands.Git ..
+        " -C " .. repository ..
+        " reset" ..
+        " --hard " ..
+        hash
+    )
+    if not result then
+        console.PrintColor("Error: " .. result, console.Colors.Red)
+        return nil
+    end
+    return result
+end
+
+function module.CreateBranch(repository, branch, hash)
+    local result = console.ExecuteCommand(
+        module.Triplet.Commands.Git ..
+        " -C " .. repository ..
+        " checkout -b " ..
+        branch .. " " ..
+        hash
+    )
+    if not result then
+        console.PrintColor("Error: " .. result, console.Colors.Red)
+        return nil
+    end
+    return result
+end
+
 return module
