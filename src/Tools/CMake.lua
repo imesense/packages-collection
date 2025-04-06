@@ -1,21 +1,15 @@
 -- Local imports
 local console = require("src.Common.Console")
-local visualStudio = require("src.Tools.VisualStudio")
 
 -- Current module
 local module = {
     Name = "CMake",
-    Triplet = {}
+    Triplet = {},
+    Shell = nil
 }
 
-function InvokeShell(command)
-    local result
-    if module.Triplet.System.Name == "Windows" then
-        result = visualStudio.RunDevCmd(command)
-    else
-        result = console.ExecuteCommand(command)
-    end
-
+function module.InvokeShell(command)
+    local result = module.Shell(command)
     if not result or result == "" then
         console.PrintColor("Error: " .. result, console.Colors.Red)
         return nil
@@ -33,6 +27,9 @@ function module.ConfigureProject(source, build, generator, projectOptions, gener
     local options1 = ""
     if generatorOptions and generatorOptions ~= "" then
         for key, value in pairs(generatorOptions) do
+            if key == "-A" then
+                value = "\"" .. value .. "\""
+            end
             if key == "-T" then
                 value = "\"" .. value .. "\""
             end
@@ -62,7 +59,7 @@ function module.BuildProject(build, config)
     return module.InvokeShell(command)
 end
 
-function module.InstallProject(build, config, prefix)
+function module.InstallProject(build, prefix, config)
     local command =
         module.Triplet.Commands.CMake ..
         " --install " .. build
@@ -81,6 +78,21 @@ function module.DeleteFolder(path)
         " -E" ..
         " remove_directory " ..
         path
+    )
+    if not result then
+        console.PrintColor("Error: " .. result, console.Colors.Red)
+        return nil
+    end
+    return result
+end
+
+function module.Rename(source, destination)
+    local result = console.ExecuteCommand(
+        module.Triplet.Commands.CMake ..
+        " -E" ..
+        " rename " ..
+        source .. " " ..
+        destination
     )
     if not result then
         console.PrintColor("Error: " .. result, console.Colors.Red)
