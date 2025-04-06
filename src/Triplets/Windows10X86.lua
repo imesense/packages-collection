@@ -4,13 +4,17 @@ local module = {
 
 module.Commands = {
     Git = "git",
-    SevenZip = "7za",
+    SevenZip = "/bin/7za.exe",
 
     CMake = "cmake",
     CTest = "ctest",
     CPack = "cpack",
 
     NuGet = "nuget"
+}
+
+module.Formats = {
+    Archive = "zip"
 }
 
 module.System = {
@@ -24,12 +28,20 @@ module.WindowsSdk = {
 }
 
 module.VisualStudio = {
-    Version = "17"
+    Version = "17",
+    Year = "2022"
 }
 
 module.VisualCpp = {
     Version = "14.43",
     Platform = "x86"
 }
+
+module.RuntimeID =
+    "win." .. module.WindowsSdk.Version ..
+    "-" .. module.System.Platform
+
+module.CMakeGenerator =
+    "Visual Studio " .. module.VisualStudio.Version .. " " .. module.VisualStudio.Year
 
 return module
