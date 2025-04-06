@@ -1,3 +1,5 @@
+---@diagnostic disable: lowercase-global
+
 rockspec_format = "3.0"
 
 package = "PackagesCollection"
@@ -41,6 +43,7 @@ build = {
         ["Tools.SevenZip"] = "src\\Tools\\SevenZip.lua",
         ["Tools.VisualStudio"] = "src\\Tools\\VisualStudio.lua",
 
-        ["Triplets.WindowsX64"] = "src\\Triplets\\WindowsX64.lua"
+        ["Triplets.Windows10X64"] = "src\\Triplets\\Windows10X64.lua",
+        ["Triplets.Windows10X86"] = "src\\Triplets\\Windows10X86.lua"
     }
 }
