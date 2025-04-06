@@ -1,0 +1,62 @@
+From a3fb20ae72259c23dee9158e523db4e26eb2c2c3 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Sun, 16 Mar 2025 14:25:04 +0300
+Subject: [PATCH 2/7] Revert "Remove Lua 5.0 compatibility defines"
+
+This reverts commit de5568e0eaf22d2c7d58c2cbd9060460abc4ff2f
+
+Co-authored-by: ForserX <sv3nk@yandex.ru>
+---
+ src/lib_math.c   | 4 ++++
+ src/lib_string.c | 4 ++++
+ src/luaconf.h    | 4 ++++
+ 3 files changed, 12 insertions(+)
+
+diff --git a/src/lib_math.c b/src/lib_math.c
+index e9a0b597..03757e78 100644
+--- a/src/lib_math.c
++++ b/src/lib_math.c
+@@ -196,6 +196,10 @@ LUALIB_API int luaopen_math(lua_State *L)
+   PRNGState *rs = (PRNGState *)lua_newuserdata(L, sizeof(PRNGState));
+   lj_prng_seed_fixed(rs);
+   LJ_LIB_REG(L, LUA_MATHLIBNAME, math);
++#if defined(LUA_COMPAT_MOD) && !LJ_52
++  lua_getfield(L, -1, "fmod");
++  lua_setfield(L, -2, "mod");
++#endif
+   return 1;
+ }
+ 
+diff --git a/src/lib_string.c b/src/lib_string.c
+index 75d855d6..ec391c16 100644
+--- a/src/lib_string.c
++++ b/src/lib_string.c
+@@ -662,6 +662,10 @@ LUALIB_API int luaopen_string(lua_State *L)
+   GCtab *mt;
+   global_State *g;
+   LJ_LIB_REG(L, LUA_STRLIBNAME, string);
++#if defined(LUA_COMPAT_GFIND) && !LJ_52
++  lua_getfield(L, -1, "gmatch");
++  lua_setfield(L, -2, "gfind");
++#endif
+   mt = lj_tab_new(L, 0, 1);
+   /* NOBARRIER: basemt is a GC root. */
+   g = G(L);
+diff --git a/src/luaconf.h b/src/luaconf.h
+index 5ba6eda9..1f3e8443 100644
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -92,6 +92,10 @@
+ #define LUAI_GCMUL	200	/* Run GC at 200% of allocation speed. */
+ #define LUA_MAXCAPTURES	32	/* Max. pattern captures. */
+ 
++/* Compatibility with older library function names. */
++#define LUA_COMPAT_MOD		/* OLD: math.mod, NEW: math.fmod */
++#define LUA_COMPAT_GFIND	/* OLD: string.gfind, NEW: string.gmatch */
++
+ /* Configuration for the frontend (the luajit executable). */
+ #if defined(luajit_c)
+ #define LUA_PROGNAME	"luajit"  /* Fallback frontend name. */
+-- 
+2.47.1.windows.2
+

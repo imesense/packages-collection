@@ -1,0 +1,53 @@
+From 2bdb9260e412d012e53630b2b7982f8569b056a5 Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Sun, 16 Mar 2025 14:36:03 +0300
+Subject: [PATCH 6/7] Revert "Add jit.security()"
+
+This reverts commit 2e68e1fc1897bfd83f7498b4df04d0bde256663d
+
+Co-authored-by: ForserX <sv3nk@yandex.ru>
+---
+ src/lib_jit.c |  7 -------
+ src/lj_arch.h | 10 ----------
+ 2 files changed, 17 deletions(-)
+
+diff --git a/src/lib_jit.c b/src/lib_jit.c
+index 817c2967..af21d944 100644
+--- a/src/lib_jit.c
++++ b/src/lib_jit.c
+@@ -113,13 +113,6 @@ LJLIB_CF(jit_status)
+ #endif
+ }
+ 
+-LJLIB_CF(jit_security)
+-{
+-  int idx = lj_lib_checkopt(L, 1, -1, LJ_SECURITY_MODESTRING);
+-  setintV(L->top++, ((LJ_SECURITY_MODE >> (2*idx)) & 3));
+-  return 1;
+-}
+-
+ LJLIB_CF(jit_attach)
+ {
+ #ifdef LUAJIT_DISABLE_VMEVENT
+diff --git a/src/lj_arch.h b/src/lj_arch.h
+index 7d3a9936..18a34394 100644
+--- a/src/lj_arch.h
++++ b/src/lj_arch.h
+@@ -672,14 +672,4 @@ extern void *LJ_WIN_LOADLIBA(const char *path);
+ #define LUAJIT_SECURITY_MCODE	1
+ #endif
+ 
+-#define LJ_SECURITY_MODE \
+-  ( 0u \
+-  | ((LUAJIT_SECURITY_PRNG & 3) << 0) \
+-  | ((LUAJIT_SECURITY_STRHASH & 3) << 2) \
+-  | ((LUAJIT_SECURITY_STRID & 3) << 4) \
+-  | ((LUAJIT_SECURITY_MCODE & 3) << 6) \
+-  )
+-#define LJ_SECURITY_MODESTRING \
+-  "\004prng\007strhash\005strid\005mcode"
+-
+ #endif
+-- 
+2.47.1.windows.2
+

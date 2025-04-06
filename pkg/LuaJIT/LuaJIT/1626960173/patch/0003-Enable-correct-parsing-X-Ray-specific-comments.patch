@@ -1,0 +1,49 @@
+From 9d23a9f77a2c72a172361862d980af31a4afa3ca Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Sun, 16 Mar 2025 14:29:33 +0300
+Subject: [PATCH 3/7] Enable correct parsing X-Ray specific comments
+
+Co-authored-by: Mortan <cheatmaster1@mail.ru>
+---
+ src/lj_lex.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/src/lj_lex.c b/src/lj_lex.c
+index cc6fa533..c6a101c9 100644
+--- a/src/lj_lex.c
++++ b/src/lj_lex.c
+@@ -383,6 +383,31 @@ static LexToken lex_scan(LexState *ls, TValue *tv)
+       }
+     case LEX_EOF:
+       return TK_eof;
++    case '/':
++      lex_next(ls);
++      if (ls->c == '/') {
++        while (ls->c != '\n' && ls->c != LEX_EOF) {
++          lex_next(ls);
++        }
++        continue;
++      }
++      else if (ls->c == '*') {
++        lex_next(ls);
++        while (ls->c != LEX_EOF) {
++          if (ls->c == '*') {
++            lex_next(ls);
++            if (ls->c == '/') {
++              lex_next(ls);
++              break;
++            }
++          }
++          lex_next(ls);
++        }
++        continue;
++      }
++      else {
++        return '/';
++      }
+     default: {
+       LexChar c = ls->c;
+       lex_next(ls);
+-- 
+2.47.1.windows.2
+

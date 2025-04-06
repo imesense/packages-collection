@@ -1,0 +1,1578 @@
+From cc4e366e9f374ae238f9dd96a89df82c739ceebc Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Sat, 11 Jan 2025 22:16:51 +0300
+Subject: [PATCH 1/7] Add CMake projects for LuaJIT
+
+Co-authored-by: leha-bot <leha-bot@users.noreply.github.com>
+---
+ .gitignore                                   |   1 +
+ CMakeLists.txt                               |  48 ++++
+ cmake/Compilers/DarwinAppleClang.cmake       |  13 ++
+ cmake/Compilers/LinuxClang.cmake             |  20 ++
+ cmake/Compilers/LinuxGcc.cmake               |  22 ++
+ cmake/Compilers/WindowsMsvc.cmake            |  22 ++
+ cmake/ConfigureCompilers.cmake               |  10 +
+ cmake/DetectArchitecture.cmake               |  47 ++++
+ cmake/EmbedManifest.cmake                    |  29 +++
+ cmake/FindLibDl.cmake                        |  17 ++
+ cmake/FindLibM.cmake                         |  62 +++++
+ cmake/GenerateSymbols.cmake                  |  36 +++
+ cmake/InstallLuaJIT.cmake                    | 194 ++++++++++++++++
+ cmake/LuaJITConfig.cmake.in                  |  37 +++
+ cmake/ReplacePrefix.cmake.in                 |  15 ++
+ cmake/Toolchains/DarwinAppleClangArm64.cmake |   8 +
+ cmake/Toolchains/DarwinAppleClangX64.cmake   |   8 +
+ cmake/Toolchains/LinuxClangArm32.cmake       |   7 +
+ cmake/Toolchains/LinuxClangArm64.cmake       |   7 +
+ cmake/Toolchains/LinuxClangX64.cmake         |   7 +
+ cmake/Toolchains/LinuxClangX86.cmake         |   7 +
+ cmake/Toolchains/LinuxGccArm32.cmake         |   7 +
+ cmake/Toolchains/LinuxGccArm64.cmake         |   7 +
+ cmake/Toolchains/LinuxGccX64.cmake           |   7 +
+ cmake/Toolchains/LinuxGccX86.cmake           |   7 +
+ cmake/Toolchains/WindowsMsvcArm32.cmake      |   9 +
+ cmake/Toolchains/WindowsMsvcArm64.cmake      |   9 +
+ cmake/Toolchains/WindowsMsvcArm64Ec.cmake    |   9 +
+ cmake/Toolchains/WindowsMsvcX64.cmake        |   9 +
+ cmake/Toolchains/WindowsMsvcX86.cmake        |   9 +
+ cmake/libluajit.dll.manifest.in              |  25 ++
+ cmake/libluajit.rc.in                        |  46 ++++
+ cmake/luajit.exe.manifest.in                 |  25 ++
+ cmake/luajit.pc.in                           |  25 ++
+ cmake/luajit.rc.in                           |  46 ++++
+ src/CMakeLists.txt                           | 184 +++++++++++++++
+ src/host/CMakeLists.txt                      | 228 +++++++++++++++++++
+ 37 files changed, 1269 insertions(+)
+ create mode 100644 CMakeLists.txt
+ create mode 100644 cmake/Compilers/DarwinAppleClang.cmake
+ create mode 100644 cmake/Compilers/LinuxClang.cmake
+ create mode 100644 cmake/Compilers/LinuxGcc.cmake
+ create mode 100644 cmake/Compilers/WindowsMsvc.cmake
+ create mode 100644 cmake/ConfigureCompilers.cmake
+ create mode 100644 cmake/DetectArchitecture.cmake
+ create mode 100644 cmake/EmbedManifest.cmake
+ create mode 100644 cmake/FindLibDl.cmake
+ create mode 100644 cmake/FindLibM.cmake
+ create mode 100644 cmake/GenerateSymbols.cmake
+ create mode 100644 cmake/InstallLuaJIT.cmake
+ create mode 100644 cmake/LuaJITConfig.cmake.in
+ create mode 100644 cmake/ReplacePrefix.cmake.in
+ create mode 100644 cmake/Toolchains/DarwinAppleClangArm64.cmake
+ create mode 100644 cmake/Toolchains/DarwinAppleClangX64.cmake
+ create mode 100644 cmake/Toolchains/LinuxClangArm32.cmake
+ create mode 100644 cmake/Toolchains/LinuxClangArm64.cmake
+ create mode 100644 cmake/Toolchains/LinuxClangX64.cmake
+ create mode 100644 cmake/Toolchains/LinuxClangX86.cmake
+ create mode 100644 cmake/Toolchains/LinuxGccArm32.cmake
+ create mode 100644 cmake/Toolchains/LinuxGccArm64.cmake
+ create mode 100644 cmake/Toolchains/LinuxGccX64.cmake
+ create mode 100644 cmake/Toolchains/LinuxGccX86.cmake
+ create mode 100644 cmake/Toolchains/WindowsMsvcArm32.cmake
+ create mode 100644 cmake/Toolchains/WindowsMsvcArm64.cmake
+ create mode 100644 cmake/Toolchains/WindowsMsvcArm64Ec.cmake
+ create mode 100644 cmake/Toolchains/WindowsMsvcX64.cmake
+ create mode 100644 cmake/Toolchains/WindowsMsvcX86.cmake
+ create mode 100644 cmake/libluajit.dll.manifest.in
+ create mode 100644 cmake/libluajit.rc.in
+ create mode 100644 cmake/luajit.exe.manifest.in
+ create mode 100644 cmake/luajit.pc.in
+ create mode 100644 cmake/luajit.rc.in
+ create mode 100644 src/CMakeLists.txt
+ create mode 100644 src/host/CMakeLists.txt
+
+diff --git a/.gitignore b/.gitignore
+index 1a07bf75..564115d2 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -9,3 +9,4 @@
+ *.dmp
+ *.swp
+ .tags
++build*/
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 00000000..9481bcac
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,48 @@
++cmake_minimum_required(VERSION 3.18)
++
++project(LuaJIT)
++
++set(LUA_COMMAND "" CACHE FILEPATH "Path to Lua interpreter")
++set(LUAJIT_TARGET_ARCH "" CACHE STRING "Target architecture of LuaJIT")
++
++option(LUAJIT_ENABLE_APPLICATION "Enable building LuaJIT application" OFF)
++option(LUAJIT_ENABLE_INSTALL "Enable install target for LuaJIT" ON)
++
++set(CMAKE_C_STANDARD 90)
++set(CMAKE_C_STANDARD_REQUIRED 90)
++
++set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
++set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
++set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
++
++set(CMAKE_SKIP_RPATH FALSE)
++
++list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
++
++include(GNUInstallDirs)
++
++set(LUAJIT_VERSION_MAJOR 2)
++set(LUAJIT_VERSION_MINOR 1)
++set(LUAJIT_VERSION_PATCH 0)
++set(LUAJIT_PRERELEASE_POSTFIX -beta3)
++set(LUAJIT_VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}${LUAJIT_PRERELEASE_POSTFIX})
++
++set(LUAJIT_ABI_VERSION 5.1)
++set(LUAJIT_NODOTABI_VERSION 51)
++
++set(LUAJIT_ROOT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR})
++set(LUAJIT_BUILD_FOLDER ${CMAKE_CURRENT_BINARY_DIR})
++
++include(DetectArchitecture)
++include(ConfigureCompilers)
++
++find_package(LibM REQUIRED)
++find_package(LibDl REQUIRED)
++
++include(EmbedManifest)
++include(GenerateSymbols)
++
++add_subdirectory(src/host)
++add_subdirectory(src)
++
++include(InstallLuaJIT)
+diff --git a/cmake/Compilers/DarwinAppleClang.cmake b/cmake/Compilers/DarwinAppleClang.cmake
+new file mode 100644
+index 00000000..869cb999
+--- /dev/null
++++ b/cmake/Compilers/DarwinAppleClang.cmake
+@@ -0,0 +1,13 @@
++set(LUAJIT_COMPILE_FLAGS -O2 -fomit-frame-pointer -fno-stack-protector -Wall -fPIC -Wno-shorten-64-to-32)
++set(LUAJIT_COMPILE_DEFINES -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DLUAJIT_UNWIND_EXTERNAL -DLUAJIT_OS=LUAJIT_OS_OSX)
++set(LUAJIT_COMPILE_DEFINES_DYNAMIC -shared)
++
++set(LUAJIT_VM_MODE machasm)
++
++if(LUAJIT_TARGET_ARCH STREQUAL "x64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x64.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D DUALNUM -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm64.dasc)
++endif()
+diff --git a/cmake/Compilers/LinuxClang.cmake b/cmake/Compilers/LinuxClang.cmake
+new file mode 100644
+index 00000000..d0cdc4b6
+--- /dev/null
++++ b/cmake/Compilers/LinuxClang.cmake
+@@ -0,0 +1,20 @@
++set(LUAJIT_COMPILE_FLAGS -O2 -fomit-frame-pointer -fno-stack-protector -Wall -fPIC -g -Wno-misleading-indentation)
++set(LUAJIT_COMPILE_DEFINES -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DLUAJIT_UNWIND_EXTERNAL -DLUAJIT_OS=LUAJIT_OS_LINUX)
++
++set(LUAJIT_VM_MODE elfasm)
++
++if(LUAJIT_TARGET_ARCH STREQUAL "x86")
++    set(LUAJIT_COMPILE_FLAGS ${LUAJIT_COMPILE_FLAGS} -m32 -march=i686 -msse -msse2 -mfpmath=sse)
++
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x86.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "x64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x64.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm32")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D DUALNUM)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D DUALNUM -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm64.dasc)
++endif()
+diff --git a/cmake/Compilers/LinuxGcc.cmake b/cmake/Compilers/LinuxGcc.cmake
+new file mode 100644
+index 00000000..09c1893e
+--- /dev/null
++++ b/cmake/Compilers/LinuxGcc.cmake
+@@ -0,0 +1,22 @@
++set(LUAJIT_COMPILE_FLAGS -O2 -fomit-frame-pointer -fno-stack-protector -Wall -fPIC -g -Wno-misleading-indentation)
++set(LUAJIT_COMPILE_DEFINES -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DLUAJIT_UNWIND_EXTERNAL -DLUAJIT_OS=LUAJIT_OS_LINUX)
++set(LUAJIT_COMPILE_DEFINES_DYNAMIC -shared)
++
++set(LUAJIT_VM_MODE elfasm)
++
++if(LUAJIT_TARGET_ARCH STREQUAL "x86")
++    set(LUAJIT_COMPILE_FLAGS ${LUAJIT_COMPILE_FLAGS} -m32 -march=i686 -msse -msse2 -mfpmath=sse)
++    set(LUAJIT_LINK_FLAGS -m32)
++
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x86.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "x64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x64.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm32")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D DUALNUM)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm64")
++    set(DASM_FLAGS -D JIT -D FFI -D ENDIAN_LE -D FPU -D HFABI -D DUALNUM -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm64.dasc)
++endif()
+diff --git a/cmake/Compilers/WindowsMsvc.cmake b/cmake/Compilers/WindowsMsvc.cmake
+new file mode 100644
+index 00000000..d97cbdb3
+--- /dev/null
++++ b/cmake/Compilers/WindowsMsvc.cmake
+@@ -0,0 +1,22 @@
++set(LUAJIT_COMPILE_FLAGS /W3 /MP /Zi /FS)
++set(LUAJIT_COMPILE_DEFINES -D_CRT_SECURE_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS -DLUAJIT_OS=LUAJIT_OS_WINDOWS)
++set(LUAJIT_COMPILE_DEFINES_DYNAMIC -DLUA_BUILD_AS_DLL -D "_CRT_STDIO_INLINE=__declspec(dllexport)__inline")
++set(LUAJIT_LINK_FLAGS /DEBUG)
++
++set(LUAJIT_VM_MODE peobj)
++
++if(LUAJIT_TARGET_ARCH STREQUAL "x86")
++    set(LUAJIT_COMPILE_FLAGS ${LUAJIT_COMPILE_FLAGS} /arch:SSE2)
++
++    set(DASM_FLAGS -D WIN -D JIT -D FFI -D ENDIAN_LE -D FPU)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x86.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "x64")
++    set(DASM_FLAGS -D WIN -D JIT -D FFI -D ENDIAN_LE -D FPU -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_x64.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm32")
++    set(DASM_FLAGS -D WIN -D JIT -D FFI -D ENDIAN_LE -D FPU -D DUALNUM -D HFABI)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm.dasc)
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm64")
++    set(DASM_FLAGS -D WIN -D JIT -D FFI -D ENDIAN_LE -D FPU -D DUALNUM -D HFABI -D P64)
++    set(DASC_FILE ${LUAJIT_ROOT_FOLDER}/src/vm_arm64.dasc)
++endif()
+diff --git a/cmake/ConfigureCompilers.cmake b/cmake/ConfigureCompilers.cmake
+new file mode 100644
+index 00000000..8084fa95
+--- /dev/null
++++ b/cmake/ConfigureCompilers.cmake
+@@ -0,0 +1,10 @@
++# Include compilers configs
++if(LINUX AND CMAKE_C_COMPILER_ID STREQUAL "Clang")
++    include(Compilers/LinuxClang)
++elseif(LINUX AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
++    include(Compilers/LinuxGcc)
++elseif(APPLE AND CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
++    include(Compilers/DarwinAppleClang)
++elseif(WIN32 AND MSVC)
++    include(Compilers/WindowsMsvc)
++endif()
+diff --git a/cmake/DetectArchitecture.cmake b/cmake/DetectArchitecture.cmake
+new file mode 100644
+index 00000000..d3e1951d
+--- /dev/null
++++ b/cmake/DetectArchitecture.cmake
+@@ -0,0 +1,47 @@
++if(NOT LUAJIT_TARGET_ARCH STREQUAL "")
++    return()
++endif()
++
++if(WIN32)
++    if(CMAKE_VS_PLATFORM_NAME MATCHES "^(x86|Win32)$")
++        set(LUAJIT_TARGET_ARCH "x86")
++    elseif(CMAKE_VS_PLATFORM_NAME MATCHES "^x64$")
++        set(LUAJIT_TARGET_ARCH "x64")
++    elseif(CMAKE_VS_PLATFORM_NAME MATCHES "^ARM$")
++        set(LUAJIT_TARGET_ARCH "arm32")
++    elseif(CMAKE_VS_PLATFORM_NAME MATCHES "^ARM64$")
++        set(LUAJIT_TARGET_ARCH "arm64")
++    else()
++        if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i.86|x86)$")
++            set(LUAJIT_TARGET_ARCH "x86")
++        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|AMD64|x64)$")
++            set(LUAJIT_TARGET_ARCH "x64")
++        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv7|arm)$")
++            set(LUAJIT_TARGET_ARCH "arm32")
++        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
++            set(LUAJIT_TARGET_ARCH "arm64")
++        endif()
++    endif()
++elseif(LINUX)
++    if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(i.86|x86)$")
++        set(LUAJIT_TARGET_ARCH "x86")
++    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|amd64)$")
++        set(LUAJIT_TARGET_ARCH "x64")
++    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(armv[6-9]|arm|armhf)$")
++        set(LUAJIT_TARGET_ARCH "arm32")
++    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
++        set(LUAJIT_TARGET_ARCH "arm64")
++    endif()
++elseif(APPLE)
++    if(CMAKE_OSX_ARCHITECTURES MATCHES "^x86_64$")
++        set(LUAJIT_TARGET_ARCH "x64")
++    elseif(CMAKE_OSX_ARCHITECTURES MATCHES "^arm64$")
++        set(LUAJIT_TARGET_ARCH "arm64")
++    else()
++        if(CMAKE_SYSTEM_PROCESSOR MATCHES "^x86_64$")
++            set(LUAJIT_TARGET_ARCH "x64")
++        elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm64|aarch64)$")
++            set(LUAJIT_TARGET_ARCH "arm64")
++        endif()
++    endif()
++endif()
+diff --git a/cmake/EmbedManifest.cmake b/cmake/EmbedManifest.cmake
+new file mode 100644
+index 00000000..d6660769
+--- /dev/null
++++ b/cmake/EmbedManifest.cmake
+@@ -0,0 +1,29 @@
++function(generate_manifest source destination)
++    if(NOT WIN32 AND NOT MSVC)
++        return()
++    endif()
++
++    configure_file(
++        ${source}
++        ${destination}
++    )
++endfunction()
++
++function(embed_manifest target_name target_type manifest_file)
++    if(NOT WIN32 AND NOT MSVC)
++        return()
++    endif()
++
++    if(target_type STREQUAL "EXE")
++        set(id_value 1)
++    elseif(target_type STREQUAL "DLL")
++        set(id_value 2)
++    else()
++        message(FATAL_ERROR "Invalid target type: ${target_type}. Expected 'EXE' or 'DLL'!")
++    endif()
++
++    set_target_properties(${target_name}
++        PROPERTIES
++            LINK_FLAGS "/MANIFEST:EMBED,ID=${id_value} /MANIFESTINPUT:${manifest_file}"
++    )
++endfunction()
+diff --git a/cmake/FindLibDl.cmake b/cmake/FindLibDl.cmake
+new file mode 100644
+index 00000000..249bf83e
+--- /dev/null
++++ b/cmake/FindLibDl.cmake
+@@ -0,0 +1,17 @@
++if(NOT LINUX)
++    return()
++endif()
++
++include(FindPackageHandleStandardArgs)
++
++find_package_handle_standard_args(LibDl
++    REQUIRED_VARS
++        CMAKE_DL_LIBS
++)
++
++mark_as_advanced(CMAKE_DL_LIBS)
++
++if(NOT LibDl::Library)
++    add_library(LibDl::Library INTERFACE IMPORTED)
++    target_link_libraries(LibDl::Library INTERFACE ${CMAKE_DL_LIBS})
++endif()
+diff --git a/cmake/FindLibM.cmake b/cmake/FindLibM.cmake
+new file mode 100644
+index 00000000..fa26a1ba
+--- /dev/null
++++ b/cmake/FindLibM.cmake
+@@ -0,0 +1,62 @@
++if(NOT LINUX)
++    return()
++endif()
++
++include(FindPackageHandleStandardArgs)
++
++if(LUAJIT_TARGET_ARCH STREQUAL "x86")
++    set(CMAKE_FIND_LIBRARY_CUSTOM_LIB_SUFFIX
++        "i386-linux-gnu;i686-linux-gnu;32"
++    )
++    set(LibM_SEARCH_PATHS
++        /usr/lib/i386-linux-gnu
++        /usr/lib32
++        /lib/i386-linux-gnu
++        /usr/lib/i686-linux-gnu
++        /usr/lib
++    )
++elseif(LUAJIT_TARGET_ARCH STREQUAL "x64")
++    set(LibM_SEARCH_PATHS
++        /usr/lib/x86_64-linux-gnu
++        /usr/lib64
++        /usr/lib
++    )
++elseif(LUAJIT_TARGET_ARCH STREQUAL "arm64")
++    set(LibM_SEARCH_PATHS
++        /usr/lib/aarch64-linux-gnu
++        /usr/lib
++    )
++else()
++    set(LibM_SEARCH_PATHS
++        /usr/lib
++        /lib
++    )
++endif()
++
++find_library(LibM_LIBRARIES
++    NAMES
++        m
++    PATHS
++        ${LibM_SEARCH_PATHS}
++    NO_DEFAULT_PATH
++)
++
++find_package_handle_standard_args(LibM
++    REQUIRED_VARS
++        LibM_LIBRARIES
++)
++
++if(LibM_FOUND)
++    mark_as_advanced(LibM_LIBRARIES)
++endif()
++
++if(LibM_FOUND AND NOT LibM::Library)
++    add_library(LibM::Library UNKNOWN IMPORTED)
++    set_target_properties(LibM::Library
++        PROPERTIES
++            IMPORTED_LOCATION ${LibM_LIBRARIES}
++    )
++else()
++    add_library(LibM::Library INTERFACE)
++    target_compile_options(LibM::Library INTERFACE -lm)
++endif()
+diff --git a/cmake/GenerateSymbols.cmake b/cmake/GenerateSymbols.cmake
+new file mode 100644
+index 00000000..4b011198
+--- /dev/null
++++ b/cmake/GenerateSymbols.cmake
+@@ -0,0 +1,36 @@
++function(generate_symbols target_name)
++    if(NOT LINUX AND NOT CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" OR APPLE)
++        return()
++    endif()
++
++    # Extract symbols
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Extracting symbols from $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --only-keep-debug
++            $<TARGET_FILE:${target_name}>
++            $<TARGET_FILE_DIR:${target_name}>/$<TARGET_FILE_NAME:${target_name}>.debug
++    )
++    # Strip symbols
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Stripping $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --strip-all $<TARGET_FILE:${target_name}>
++    )
++    # Link debug module
++    add_custom_command(
++        TARGET ${target_name}
++        POST_BUILD
++        COMMENT "Linking symbols to $<TARGET_FILE_NAME:${target_name}>..."
++        COMMAND
++            ${CMAKE_OBJCOPY}
++            --add-gnu-debuglink=$<TARGET_FILE_DIR:${target_name}>/$<TARGET_FILE_NAME:${target_name}>.debug
++            $<TARGET_FILE:${target_name}>
++    )
++endfunction()
+diff --git a/cmake/InstallLuaJIT.cmake b/cmake/InstallLuaJIT.cmake
+new file mode 100644
+index 00000000..755856a6
+--- /dev/null
++++ b/cmake/InstallLuaJIT.cmake
+@@ -0,0 +1,194 @@
++# Return if not enabled installing
++if(NOT LUAJIT_ENABLE_INSTALL)
++    return()
++endif()
++
++# Install library
++install(
++    TARGETS libluajit
++    EXPORT LuaJITTargets
++    RUNTIME
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_BINDIR}
++    LIBRARY
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    ARCHIVE
++        COMPONENT Library
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++    PERMISSIONS
++        OWNER_READ OWNER_WRITE
++        GROUP_READ
++        WORLD_READ
++)
++if(WIN32 AND MSVC)
++    install(
++        FILES
++            $<TARGET_PDB_FILE:LuaJIT::Library>
++        DESTINATION ${CMAKE_INSTALL_BINDIR}
++        COMPONENT Library
++    )
++elseif(LINUX)
++    install(
++        FILES
++            $<TARGET_FILE_DIR:LuaJIT::Library>/$<TARGET_FILE_NAME:LuaJIT::Library>.debug
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        COMPONENT Library
++    )
++elseif(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
++    install(
++        DIRECTORY
++            $<TARGET_FILE_DIR:LuaJIT::Library>/$<TARGET_FILE_NAME:LuaJIT::Library>.dSYM
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        COMPONENT Library
++    )
++endif()
++
++# Install headers
++install(
++    FILES
++        ${LUAJIT_ROOT_FOLDER}/src/lua.h
++        ${LUAJIT_ROOT_FOLDER}/src/lualib.h
++        ${LUAJIT_ROOT_FOLDER}/src/lauxlib.h
++        ${LUAJIT_ROOT_FOLDER}/src/luaconf.h
++        ${LUAJIT_ROOT_FOLDER}/src/lua.hpp
++        ${LUAJIT_ROOT_FOLDER}/src/luajit.h
++    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++    COMPONENT Library
++)
++
++# Install scripts
++install(
++    FILES
++        ${LUAJIT_ROOT_FOLDER}/src/jit/bc.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/bcsave.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_arm.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_arm64.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_arm64be.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mips.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mips64.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mips64el.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mips64r6.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mips64r6el.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_mipsel.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_ppc.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_x64.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dis_x86.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/dump.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/p.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/v.lua
++        ${LUAJIT_ROOT_FOLDER}/src/jit/zone.lua
++        ${LUAJIT_BUILD_FOLDER}/src/jit/vmdef.lua
++    DESTINATION ${CMAKE_INSTALL_DATADIR}/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++    COMPONENT Library
++)
++
++# Install application
++if(LUAJIT_ENABLE_APPLICATION)
++    install(
++        TARGETS luajit
++        EXPORT LuaJITTargets
++        RUNTIME
++            COMPONENT Application
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++        PERMISSIONS
++            OWNER_READ OWNER_WRITE OWNER_EXECUTE
++            GROUP_READ GROUP_EXECUTE
++            WORLD_READ WORLD_EXECUTE
++    )
++
++    if(WIN32 AND MSVC)
++        install(
++            FILES
++                $<TARGET_PDB_FILE:LuaJIT::Application>
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    elseif(LINUX)
++        install(
++            FILES
++                $<TARGET_FILE_DIR:LuaJIT::Application>/$<TARGET_FILE_NAME:LuaJIT::Application>.debug
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    elseif(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
++        install(
++            DIRECTORY
++                $<TARGET_FILE_DIR:LuaJIT::Application>/$<TARGET_FILE_NAME:LuaJIT::Application>.dSYM
++            DESTINATION ${CMAKE_INSTALL_BINDIR}
++            COMPONENT Interpreter
++        )
++    endif()
++endif()
++
++# Install package config
++configure_file(
++    ${LUAJIT_ROOT_FOLDER}/cmake/luajit.pc.in
++    ${LUAJIT_BUILD_FOLDER}/pkgconfig/luajit.pc
++    @ONLY
++)
++install(
++    FILES ${LUAJIT_BUILD_FOLDER}/pkgconfig/luajit.pc
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
++    COMPONENT Library
++)
++
++# Install documentation
++configure_file(
++    ${LUAJIT_ROOT_FOLDER}/COPYRIGHT
++    ${LUAJIT_BUILD_FOLDER}/copyright
++    COPYONLY
++)
++install(
++    FILES ${LUAJIT_BUILD_FOLDER}/copyright
++    DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++if(LUAJIT_ENABLE_APPLICATION)
++    install(
++        FILES ${LUAJIT_ROOT_FOLDER}/etc/luajit.1
++        DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
++        COMPONENT Application
++    )
++endif()
++
++# Export targets
++install(
++    EXPORT LuaJITTargets
++    FILE LuaJITTargets.cmake
++    NAMESPACE LuaJIT::
++    DESTINATION ${LUAJIT_BUILD_FOLDER}/cmake
++)
++
++# Export config
++include(CMakePackageConfigHelpers)
++configure_package_config_file(
++    ${LUAJIT_ROOT_FOLDER}/cmake/LuaJITConfig.cmake.in
++    ${LUAJIT_BUILD_FOLDER}/cmake/LuaJITConfig.cmake
++    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++    NO_SET_AND_CHECK_MACRO
++    NO_CHECK_REQUIRED_COMPONENTS_MACRO
++)
++write_basic_package_version_file(
++    ${LUAJIT_BUILD_FOLDER}/cmake/LuaJITConfigVersion.cmake
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}.${LUAJIT_VERSION_PATCH}
++    COMPATIBILITY AnyNewerVersion
++)
++install(
++    FILES
++        ${LUAJIT_BUILD_FOLDER}/cmake/LuaJITConfig.cmake
++        ${LUAJIT_BUILD_FOLDER}/cmake/LuaJITConfigVersion.cmake
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++install(
++    DIRECTORY ${LUAJIT_BUILD_FOLDER}/cmake/
++    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++    FILES_MATCHING PATTERN "LuaJITTargets*.cmake"
++)
++
++# Replace prefix
++configure_file(
++    ${LUAJIT_ROOT_FOLDER}/cmake/ReplacePrefix.cmake.in
++    ${LUAJIT_BUILD_FOLDER}/ReplacePrefix.cmake
++    @ONLY
++)
++install(SCRIPT ${LUAJIT_BUILD_FOLDER}/ReplacePrefix.cmake)
+diff --git a/cmake/LuaJITConfig.cmake.in b/cmake/LuaJITConfig.cmake.in
+new file mode 100644
+index 00000000..949b8380
+--- /dev/null
++++ b/cmake/LuaJITConfig.cmake.in
+@@ -0,0 +1,37 @@
++@PACKAGE_INIT@
++
++# Include targets config
++include(${CMAKE_CURRENT_LIST_DIR}/LuaJITTargets.cmake)
++
++# Set aliases for all possible targets
++if(TARGET LuaJIT::libluajit)
++    add_library(LuaJIT::Library ALIAS LuaJIT::libluajit)
++endif()
++if(TARGET LuaJIT::luajit)
++    add_executable(LuaJIT::Application ALIAS LuaJIT::luajit)
++endif()
++
++# Set default components list
++if(NOT LuaJIT_FIND_COMPONENTS)
++    set(LuaJIT_FIND_COMPONENTS Library)
++    foreach(component IN LISTS LuaJIT_FIND_COMPONENTS)
++        set(LuaJIT_FIND_REQUIRED_${component} TRUE)
++        message(STATUS "Found LuaJIT::${component}")
++    endforeach()
++endif()
++
++# Find components
++foreach(component IN ITEMS ${LuaJIT_FIND_COMPONENTS})
++    if(NOT TARGET LuaJIT::${component})
++        set(LuaJIT_${component}_FOUND FALSE)
++        if(LuaJIT_FIND_REQUIRED_${component})
++            message(FATAL_ERROR "Could NOT find LuaJIT::${component}")
++        endif()
++    else()
++        set(LuaJIT_${component}_FOUND TRUE)
++        message(STATUS "Found LuaJIT::${component}")
++    endif()
++endforeach()
++
++# Define package as found
++set(LuaJIT_FOUND TRUE)
+diff --git a/cmake/ReplacePrefix.cmake.in b/cmake/ReplacePrefix.cmake.in
+new file mode 100644
+index 00000000..d3e91dd8
+--- /dev/null
++++ b/cmake/ReplacePrefix.cmake.in
+@@ -0,0 +1,15 @@
++# Replace import prefix
++file(READ
++    ${CMAKE_INSTALL_PREFIX}/lib/cmake/luajit-@LUAJIT_VERSION_MAJOR@.@LUAJIT_VERSION_MINOR@/LuaJITTargets.cmake
++    LUAJIT_TARGETS_CONTENT
++)
++string(REGEX REPLACE
++    "set\\(_IMPORT_PREFIX \"[^\"]*\"\\)"
++    "set(_IMPORT_PREFIX \"\${CMAKE_CURRENT_LIST_DIR}/../../..\")"
++    LUAJIT_TARGETS_CONTENT
++    ${LUAJIT_TARGETS_CONTENT}
++)
++file(WRITE
++    ${CMAKE_INSTALL_PREFIX}/lib/cmake/luajit-@LUAJIT_VERSION_MAJOR@.@LUAJIT_VERSION_MINOR@/LuaJITTargets.cmake
++    ${LUAJIT_TARGETS_CONTENT}
++)
+diff --git a/cmake/Toolchains/DarwinAppleClangArm64.cmake b/cmake/Toolchains/DarwinAppleClangArm64.cmake
+new file mode 100644
+index 00000000..77546db5
+--- /dev/null
++++ b/cmake/Toolchains/DarwinAppleClangArm64.cmake
+@@ -0,0 +1,8 @@
++set(CMAKE_SYSTEM_NAME "Darwin")
++
++set(CMAKE_SYSTEM_PROCESSOR "arm64")
++set(CMAKE_OSX_ARCHITECTURES "arm64")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "arm64")
+diff --git a/cmake/Toolchains/DarwinAppleClangX64.cmake b/cmake/Toolchains/DarwinAppleClangX64.cmake
+new file mode 100644
+index 00000000..68aa5e28
+--- /dev/null
++++ b/cmake/Toolchains/DarwinAppleClangX64.cmake
+@@ -0,0 +1,8 @@
++set(CMAKE_SYSTEM_NAME "Darwin")
++
++set(CMAKE_SYSTEM_PROCESSOR "x86_64")
++set(CMAKE_OSX_ARCHITECTURES "x86_64")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "x64")
+diff --git a/cmake/Toolchains/LinuxClangArm32.cmake b/cmake/Toolchains/LinuxClangArm32.cmake
+new file mode 100644
+index 00000000..28090626
+--- /dev/null
++++ b/cmake/Toolchains/LinuxClangArm32.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "arm")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "arm32")
+diff --git a/cmake/Toolchains/LinuxClangArm64.cmake b/cmake/Toolchains/LinuxClangArm64.cmake
+new file mode 100644
+index 00000000..d5aed0bf
+--- /dev/null
++++ b/cmake/Toolchains/LinuxClangArm64.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "aarch64")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "arm64")
+diff --git a/cmake/Toolchains/LinuxClangX64.cmake b/cmake/Toolchains/LinuxClangX64.cmake
+new file mode 100644
+index 00000000..e413e117
+--- /dev/null
++++ b/cmake/Toolchains/LinuxClangX64.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "x86_64")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "x64")
+diff --git a/cmake/Toolchains/LinuxClangX86.cmake b/cmake/Toolchains/LinuxClangX86.cmake
+new file mode 100644
+index 00000000..2e706f83
+--- /dev/null
++++ b/cmake/Toolchains/LinuxClangX86.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "i386")
++
++set(CMAKE_C_COMPILER "clang")
++
++set(LUAJIT_TARGET_ARCH "x86")
+diff --git a/cmake/Toolchains/LinuxGccArm32.cmake b/cmake/Toolchains/LinuxGccArm32.cmake
+new file mode 100644
+index 00000000..0e9a2478
+--- /dev/null
++++ b/cmake/Toolchains/LinuxGccArm32.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "arm")
++
++set(CMAKE_C_COMPILER "arm-linux-gnueabihf-gcc")
++
++set(LUAJIT_TARGET_ARCH "arm32")
+diff --git a/cmake/Toolchains/LinuxGccArm64.cmake b/cmake/Toolchains/LinuxGccArm64.cmake
+new file mode 100644
+index 00000000..28b5f7e1
+--- /dev/null
++++ b/cmake/Toolchains/LinuxGccArm64.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "aarch64")
++
++set(CMAKE_C_COMPILER "aarch64-linux-gnu-gcc")
++
++set(LUAJIT_TARGET_ARCH "arm64")
+diff --git a/cmake/Toolchains/LinuxGccX64.cmake b/cmake/Toolchains/LinuxGccX64.cmake
+new file mode 100644
+index 00000000..97c219b0
+--- /dev/null
++++ b/cmake/Toolchains/LinuxGccX64.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "x86_64")
++
++set(CMAKE_C_COMPILER "gcc")
++
++set(LUAJIT_TARGET_ARCH "x64")
+diff --git a/cmake/Toolchains/LinuxGccX86.cmake b/cmake/Toolchains/LinuxGccX86.cmake
+new file mode 100644
+index 00000000..76c9411c
+--- /dev/null
++++ b/cmake/Toolchains/LinuxGccX86.cmake
+@@ -0,0 +1,7 @@
++set(CMAKE_SYSTEM_NAME "Linux")
++
++set(CMAKE_SYSTEM_PROCESSOR "i386")
++
++set(CMAKE_C_COMPILER "gcc")
++
++set(LUAJIT_TARGET_ARCH "x86")
+diff --git a/cmake/Toolchains/WindowsMsvcArm32.cmake b/cmake/Toolchains/WindowsMsvcArm32.cmake
+new file mode 100644
+index 00000000..ce7d4ee0
+--- /dev/null
++++ b/cmake/Toolchains/WindowsMsvcArm32.cmake
+@@ -0,0 +1,9 @@
++set(CMAKE_SYSTEM_NAME "Windows")
++set(CMAKE_SYSTEM_VERSION "10.0")
++
++set(CMAKE_GENERATOR_PLATFORM "ARM")
++set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE "x64")
++
++set(CMAKE_C_COMPILER "cl")
++
++set(LUAJIT_TARGET_ARCH "arm32")
+diff --git a/cmake/Toolchains/WindowsMsvcArm64.cmake b/cmake/Toolchains/WindowsMsvcArm64.cmake
+new file mode 100644
+index 00000000..8147910e
+--- /dev/null
++++ b/cmake/Toolchains/WindowsMsvcArm64.cmake
+@@ -0,0 +1,9 @@
++set(CMAKE_SYSTEM_NAME "Windows")
++set(CMAKE_SYSTEM_VERSION "10.0")
++
++set(CMAKE_GENERATOR_PLATFORM "ARM64")
++set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE "x64")
++
++set(CMAKE_C_COMPILER "cl")
++
++set(LUAJIT_TARGET_ARCH "arm64")
+diff --git a/cmake/Toolchains/WindowsMsvcArm64Ec.cmake b/cmake/Toolchains/WindowsMsvcArm64Ec.cmake
+new file mode 100644
+index 00000000..6d6c751e
+--- /dev/null
++++ b/cmake/Toolchains/WindowsMsvcArm64Ec.cmake
+@@ -0,0 +1,9 @@
++set(CMAKE_SYSTEM_NAME "Windows")
++set(CMAKE_SYSTEM_VERSION "10.0")
++
++set(CMAKE_GENERATOR_PLATFORM "ARM64EC")
++set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE "x64")
++
++set(CMAKE_C_COMPILER "cl")
++
++set(LUAJIT_TARGET_ARCH "arm64")
+diff --git a/cmake/Toolchains/WindowsMsvcX64.cmake b/cmake/Toolchains/WindowsMsvcX64.cmake
+new file mode 100644
+index 00000000..22668204
+--- /dev/null
++++ b/cmake/Toolchains/WindowsMsvcX64.cmake
+@@ -0,0 +1,9 @@
++set(CMAKE_SYSTEM_NAME "Windows")
++set(CMAKE_SYSTEM_VERSION "10.0")
++
++set(CMAKE_GENERATOR_PLATFORM "x64")
++set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE "x64")
++
++set(CMAKE_C_COMPILER "cl")
++
++set(LUAJIT_TARGET_ARCH "x64")
+diff --git a/cmake/Toolchains/WindowsMsvcX86.cmake b/cmake/Toolchains/WindowsMsvcX86.cmake
+new file mode 100644
+index 00000000..6a7d8b0a
+--- /dev/null
++++ b/cmake/Toolchains/WindowsMsvcX86.cmake
+@@ -0,0 +1,9 @@
++set(CMAKE_SYSTEM_NAME "Windows")
++set(CMAKE_SYSTEM_VERSION "10.0")
++
++set(CMAKE_GENERATOR_PLATFORM "Win32")
++set(CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE "x64")
++
++set(CMAKE_C_COMPILER "cl")
++
++set(LUAJIT_TARGET_ARCH "x86")
+diff --git a/cmake/libluajit.dll.manifest.in b/cmake/libluajit.dll.manifest.in
+new file mode 100644
+index 00000000..efe74ffc
+--- /dev/null
++++ b/cmake/libluajit.dll.manifest.in
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
++    <assemblyIdentity name="lua@LUAJIT_NODOTABI_VERSION@" version="@LUAJIT_VERSION_MAJOR@.@LUAJIT_VERSION_MINOR@.@LUAJIT_VERSION_PATCH@.0" />
++
++    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
++        <security>
++            <requestedPrivileges>
++                <requestedExecutionLevel level="asInvoker" uiAccess="false" />
++            </requestedPrivileges>
++        </security>
++    </trustInfo>
++
++    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
++        <application>
++            <!-- Windows 7 -->
++            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
++            <!-- Windows 8 -->
++            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
++            <!-- Windows 8.1 -->
++            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
++            <!-- Windows 10 and 11 -->
++            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
++        </application>
++    </compatibility>
++</assembly>
+diff --git a/cmake/libluajit.rc.in b/cmake/libluajit.rc.in
+new file mode 100644
+index 00000000..86665a84
+--- /dev/null
++++ b/cmake/libluajit.rc.in
+@@ -0,0 +1,46 @@
++#include <windows.h>
++
++#ifndef DEBUG
++#define VER_DEBUG 0
++#else
++#define VER_DEBUG VS_FF_DEBUG
++#endif
++
++#define VER_PRIVATEBUILD 0x0L
++#define VER_PRERELEASE 0x0L
++
++#define LUAJIT_VERSION_STRING "@LUAJIT_VERSION@"
++#define LUAJIT_VERSION_CSV @LUAJIT_VERSION_MAJOR@,@LUAJIT_VERSION_MINOR@,@LUAJIT_VERSION_PATCH@
++
++VS_VERSION_INFO VERSIONINFO
++    FILEVERSION LUAJIT_VERSION_CSV
++    PRODUCTVERSION LUAJIT_VERSION_CSV
++    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
++    FILEFLAGS (VER_PRIVATEBUILD | VER_PRERELEASE | VER_DEBUG)
++    FILEOS VOS_NT_WINDOWS32
++    FILETYPE VFT_DLL
++    FILESUBTYPE VFT2_UNKNOWN
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        // English (US), Unicode
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "Comment", "Mike Pall"
++            VALUE "CompanyName", "Mike Pall"
++            VALUE "FileDescription", "Just-in-time compiler for Lua\0"
++            VALUE "FileVersion", LUAJIT_VERSION_CSV
++            VALUE "InternalName", "lua\0"
++            VALUE "LegalCopyright", "Copyright (C) 2005-2021 Mike Pall\0"
++            VALUE "OriginalFilename", "lua@LUAJIT_NODOTABI_VERSION@\0"
++            VALUE "ProductName", "LuaJIT"
++            VALUE "ProductVersion", LUAJIT_VERSION_STRING
++        END
++    END
++
++    BLOCK "VarFileInfo"
++    BEGIN
++        // English (US), Unicode
++        VALUE "Translation", 0x409, 1200
++    END
++END
+diff --git a/cmake/luajit.exe.manifest.in b/cmake/luajit.exe.manifest.in
+new file mode 100644
+index 00000000..d0763e9a
+--- /dev/null
++++ b/cmake/luajit.exe.manifest.in
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="utf-8"?>
++<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
++    <assemblyIdentity name="luajit" version="@LUAJIT_VERSION_MAJOR@.@LUAJIT_VERSION_MINOR@.@LUAJIT_VERSION_PATCH@.0" />
++
++    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
++        <security>
++            <requestedPrivileges>
++                <requestedExecutionLevel level="asInvoker" uiAccess="false" />
++            </requestedPrivileges>
++        </security>
++    </trustInfo>
++
++    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
++        <application>
++            <!-- Windows 7 -->
++            <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
++            <!-- Windows 8 -->
++            <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
++            <!-- Windows 8.1 -->
++            <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
++            <!-- Windows 10 and 11 -->
++            <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
++        </application>
++    </compatibility>
++</assembly>
+diff --git a/cmake/luajit.pc.in b/cmake/luajit.pc.in
+new file mode 100644
+index 00000000..5958dd33
+--- /dev/null
++++ b/cmake/luajit.pc.in
+@@ -0,0 +1,25 @@
++# Package information for LuaJIT to be used by pkg-config.
++majver=@LUAJIT_VERSION_MAJOR@
++minver=@LUAJIT_VERSION_MINOR@
++relver=@LUAJIT_VERSION_PATCH@
++version=${majver}.${minver}.${relver}@LUAJIT_PRERELEASE_POSTFIX@
++abiver=@LUAJIT_ABI_VERSION@
++
++prefix=${pcfiledir}/../..
++multilib=lib
++exec_prefix=${prefix}
++libdir=${exec_prefix}/${multilib}
++libname=luajit-${abiver}
++includedir=${prefix}/include/luajit-${majver}.${minver}
++
++INSTALL_LMOD=${prefix}/share/lua/${abiver}
++INSTALL_CMOD=${prefix}/${multilib}/lua/${abiver}
++
++Name: LuaJIT
++Description: Just-in-time compiler for Lua
++URL: https://luajit.org
++Version: ${version}
++Requires:
++Libs: -L${libdir} -l${libname}
++Libs.private: -Wl,-E -lm -ldl
++Cflags: -I${includedir}
+diff --git a/cmake/luajit.rc.in b/cmake/luajit.rc.in
+new file mode 100644
+index 00000000..27d33429
+--- /dev/null
++++ b/cmake/luajit.rc.in
+@@ -0,0 +1,46 @@
++#include <windows.h>
++
++#ifndef DEBUG
++#define VER_DEBUG 0
++#else
++#define VER_DEBUG VS_FF_DEBUG
++#endif
++
++#define VER_PRIVATEBUILD 0x0L
++#define VER_PRERELEASE 0x0L
++
++#define LUAJIT_VERSION_STRING "@LUAJIT_VERSION@"
++#define LUAJIT_VERSION_CSV @LUAJIT_VERSION_MAJOR@,@LUAJIT_VERSION_MINOR@,@LUAJIT_VERSION_PATCH@
++
++VS_VERSION_INFO VERSIONINFO
++    FILEVERSION LUAJIT_VERSION_CSV
++    PRODUCTVERSION LUAJIT_VERSION_CSV
++    FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
++    FILEFLAGS (VER_PRIVATEBUILD | VER_PRERELEASE | VER_DEBUG)
++    FILEOS VOS_NT_WINDOWS32
++    FILETYPE VFT_DLL
++    FILESUBTYPE VFT2_UNKNOWN
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        // English (US), Unicode
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "Comment", "Mike Pall"
++            VALUE "CompanyName", "Mike Pall"
++            VALUE "FileDescription", "Just-in-time compiler for Lua\0"
++            VALUE "FileVersion", LUAJIT_VERSION_CSV
++            VALUE "InternalName", "lua\0"
++            VALUE "LegalCopyright", "Copyright (C) 2005-2021 Mike Pall\0"
++            VALUE "OriginalFilename", "luajit\0"
++            VALUE "ProductName", "LuaJIT"
++            VALUE "ProductVersion", LUAJIT_VERSION_STRING
++        END
++    END
++
++    BLOCK "VarFileInfo"
++    BEGIN
++        // English (US), Unicode
++        VALUE "Translation", 0x409, 1200
++    END
++END
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+new file mode 100644
+index 00000000..b357adbc
+--- /dev/null
++++ b/src/CMakeLists.txt
+@@ -0,0 +1,184 @@
++# Project for LuaJIT library
++project(libluajit
++    LANGUAGES C
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++file(GLOB LIBRARY_HEADERS
++    ${LUAJIT_ROOT_FOLDER}/src/lj_*.h
++    ${LUAJIT_ROOT_FOLDER}/src/lib_*.h
++)
++file(GLOB LIBRARY_SOURCES
++    ${LUAJIT_ROOT_FOLDER}/src/lj_*.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_*.c
++)
++
++if(WIN32 AND MSVC)
++    configure_file(
++        ${LUAJIT_ROOT_FOLDER}/cmake/libluajit.rc.in
++        ${LUAJIT_BUILD_FOLDER}/res/libluajit.rc
++    )
++    set(LIBRARY_RESOURCES
++        ${LUAJIT_BUILD_FOLDER}/res/libluajit.rc
++    )
++endif()
++
++source_group("Library" FILES ${LIBRARY_HEADERS})
++source_group("Library" FILES ${LIBRARY_SOURCES})
++source_group("Resources" FILES ${LIBRARY_RESOURCES})
++
++add_library(${PROJECT_NAME} SHARED
++    ${LIBRARY_HEADERS}
++    ${LIBRARY_SOURCES}
++    ${LIBRARY_RESOURCES}
++)
++add_library(LuaJIT::Library ALIAS ${PROJECT_NAME})
++
++set_target_properties(${PROJECT_NAME}
++    PROPERTIES
++        ENABLE_EXPORTS TRUE
++)
++
++target_include_directories(${PROJECT_NAME}
++    PUBLIC
++        $<BUILD_INTERFACE:${LUAJIT_ROOT_FOLDER}/src>
++        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/luajit-${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}>
++)
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_ROOT_FOLDER}/src)
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_BUILD_FOLDER}/src)
++
++target_compile_options(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_FLAGS})
++target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES})
++
++target_link_options(${PROJECT_NAME} PRIVATE ${LUAJIT_LINK_FLAGS})
++
++generate_symbols(${PROJECT_NAME})
++
++generate_manifest(
++    ${LUAJIT_ROOT_FOLDER}/cmake/libluajit.dll.manifest.in
++    ${LUAJIT_BUILD_FOLDER}/res/libluajit.dll.manifest
++)
++embed_manifest(${PROJECT_NAME}
++    DLL
++    ${LUAJIT_BUILD_FOLDER}/res/libluajit.dll.manifest
++)
++
++add_dependencies(${PROJECT_NAME} gendef)
++
++if(WIN32)
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES_DYNAMIC})
++    target_link_options(${PROJECT_NAME} PRIVATE ${LUAJIT_LINK_FLAGS})
++    target_link_options(${PROJECT_NAME} PRIVATE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/$<CONFIG>/lj_vm.obj)
++
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME lua${LUAJIT_NODOTABI_VERSION}
++    )
++elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES_DYNAMIC})
++    target_link_libraries(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:lj_vm>)
++
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME luajit
++            VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++            SOVERSION ${LUAJIT_VERSION_MAJOR}
++            INSTALL_RPATH "$ORIGIN"
++            BUILD_WITH_INSTALL_RPATH TRUE
++    )
++elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++    target_link_libraries(${PROJECT_NAME} PRIVATE $<TARGET_OBJECTS:lj_vm>)
++
++    set_target_properties(${PROJECT_NAME}
++        PROPERTIES
++            OUTPUT_NAME luajit
++            VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++            SOVERSION ${LUAJIT_VERSION_MAJOR}
++            MACOSX_RPATH TRUE
++            INSTALL_NAME_DIR "@rpath"
++            INSTALL_RPATH "@loader_path;@loader_path/../lib;@loader_path/../../lib/$<CONFIG>"
++            BUILD_WITH_INSTALL_RPATH TRUE
++            XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
++    )
++endif()
++
++# Project for LuaJIT application
++project(luajit
++    LANGUAGES C
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++set(APPLICATION_SOURCES
++    ${LUAJIT_ROOT_FOLDER}/src/luajit.c
++)
++
++if(WIN32 AND MSVC)
++    configure_file(
++        ${LUAJIT_ROOT_FOLDER}/cmake/luajit.rc.in
++        ${LUAJIT_BUILD_FOLDER}/res/luajit.rc
++    )
++    set(APPLICATION_RESOURCES
++        ${LUAJIT_BUILD_FOLDER}/res/luajit.rc
++    )
++endif()
++
++source_group("Application" FILES ${APPLICATION_SOURCES})
++source_group("Resources" FILES ${APPLICATION_RESOURCES})
++
++if(LUAJIT_ENABLE_APPLICATION)
++    add_executable(${PROJECT_NAME}
++        ${APPLICATION_SOURCES}
++        ${APPLICATION_RESOURCES}
++    )
++    add_executable(LuaJIT::Application ALIAS ${PROJECT_NAME})
++
++    target_compile_options(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_FLAGS})
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES})
++
++    target_link_options(${PROJECT_NAME} PRIVATE ${LUAJIT_LINK_FLAGS})
++
++    generate_symbols(${PROJECT_NAME})
++
++    generate_manifest(
++        ${LUAJIT_ROOT_FOLDER}/cmake/luajit.exe.manifest.in
++        ${LUAJIT_BUILD_FOLDER}/res/luajit.exe.manifest
++    )
++    embed_manifest(${PROJECT_NAME}
++        EXE
++        ${LUAJIT_BUILD_FOLDER}/res/luajit.exe.manifest
++    )
++
++    add_dependencies(${PROJECT_NAME} LuaJIT::Library)
++    target_link_libraries(${PROJECT_NAME} PRIVATE LuaJIT::Library)
++
++    if(WIN32 AND MSVC)
++        target_link_options(${PROJECT_NAME} PRIVATE ${LUA_LINK_FLAGS})
++
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luajit
++        )
++    elseif(LINUX AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luajit
++                INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib:$ORIGIN/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++        )
++    elseif(APPLE AND CMAKE_C_COMPILER_ID MATCHES "AppleClang")
++        set_target_properties(${PROJECT_NAME}
++            PROPERTIES
++                OUTPUT_NAME luajit
++                MACOSX_RPATH TRUE
++                INSTALL_NAME_DIR "@rpath"
++                INSTALL_RPATH "@executable_path;@executable_path/../lib;@executable_path/../../lib/$<CONFIG>"
++                BUILD_WITH_INSTALL_RPATH TRUE
++                XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
++        )
++    endif()
++
++    if(LINUX)
++        target_link_libraries(${PROJECT_NAME} PRIVATE LibM::Library)
++        target_link_libraries(${PROJECT_NAME} PRIVATE LibDl::Library)
++    endif()
++endif()
+diff --git a/src/host/CMakeLists.txt b/src/host/CMakeLists.txt
+new file mode 100644
+index 00000000..4fe5eb17
+--- /dev/null
++++ b/src/host/CMakeLists.txt
+@@ -0,0 +1,228 @@
++# Project for MiniLua
++project(minilua
++    LANGUAGES C
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++set(MINILUA_SOURCES
++    ${LUAJIT_ROOT_FOLDER}/src/host/minilua.c
++)
++
++source_group("MiniLua" FILES ${MINILUA_SOURCES})
++
++if(NOT LUA_COMMAND)
++    add_executable(${PROJECT_NAME} ${MINILUA_SOURCES})
++    add_executable(LuaJIT::MiniLua ALIAS ${PROJECT_NAME})
++
++    target_compile_options(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_FLAGS})
++    target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES})
++
++    target_link_options(${PROJECT_NAME} PRIVATE ${LUAJIT_LINK_FLAGS})
++
++    set(MINILUA_TARGET $<TARGET_FILE:LuaJIT::MiniLua>)
++    set(LUA_COMMAND ${MINILUA_TARGET})
++
++    if(LINUX)
++        target_link_libraries(${PROJECT_NAME} PRIVATE LibM::Library)
++    endif()
++endif()
++
++# Project for DynAsm
++project(dynasm
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++set(DASM_COMMAND ${LUAJIT_ROOT_FOLDER}/dynasm/dynasm.lua)
++
++add_custom_command(
++    COMMAND
++        ${LUA_COMMAND}
++        ${DASM_COMMAND}
++        -LN ${DASM_FLAGS}
++        -o ${LUAJIT_BUILD_FOLDER}/src/host/buildvm_arch.h
++        ${DASC_FILE}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/host/buildvm_arch.h
++    COMMENT "Generating buildvm_arch.h..."
++)
++
++add_custom_target(${PROJECT_NAME}
++    DEPENDS
++        ${LUAJIT_BUILD_FOLDER}/src/host/buildvm_arch.h
++)
++
++if(NOT LUA_COMMAND)
++    add_dependencies(${PROJECT_NAME} LuaJIT::MiniLua)
++endif()
++
++# Project for BuildVM
++project(buildvm
++    LANGUAGES C
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++file(GLOB BUILDVM_HEADERS
++    ${LUAJIT_ROOT_FOLDER}/src/host/buildvm*.h
++)
++file(GLOB BUILDVM_SOURCES
++    ${LUAJIT_ROOT_FOLDER}/src/host/buildvm*.c
++)
++
++source_group("BuildVM" FILES ${BUILDVM_HEADERS})
++source_group("BuildVM" FILES ${BUILDVM_SOURCES})
++
++add_executable(${PROJECT_NAME}
++    ${BUILDVM_HEADERS}
++    ${BUILDVM_SOURCES}
++)
++add_executable(LuaJIT::BuildVM ALIAS ${PROJECT_NAME})
++
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_ROOT_FOLDER}/src)
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_ROOT_FOLDER}/src/host)
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_ROOT_FOLDER}/dynasm)
++target_include_directories(${PROJECT_NAME} PRIVATE ${LUAJIT_BUILD_FOLDER}/src/host)
++
++target_compile_options(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_FLAGS})
++target_compile_definitions(${PROJECT_NAME} PRIVATE ${LUAJIT_COMPILE_DEFINES})
++
++target_link_options(${PROJECT_NAME} PRIVATE ${LUAJIT_LINK_FLAGS})
++
++add_dependencies(${PROJECT_NAME} dynasm)
++
++set(BUILDVM_TARGET $<TARGET_FILE:LuaJIT::BuildVM>)
++set(BUILDVM_COMMAND ${BUILDVM_TARGET})
++
++# Project for GenDef
++project(gendef
++    VERSION ${LUAJIT_VERSION_MAJOR}.${LUAJIT_VERSION_MINOR}
++)
++
++set(GENDEF_INPUT_FILES
++    ${LUAJIT_ROOT_FOLDER}/src/lib_base.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_math.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_bit.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_string.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_table.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_io.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_os.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_package.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_debug.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_jit.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_ffi.c
++    ${LUAJIT_ROOT_FOLDER}/src/lib_buffer.c
++)
++
++file(MAKE_DIRECTORY ${LUAJIT_BUILD_FOLDER}/src/jit)
++
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++            -m bcdef
++            -o ${LUAJIT_BUILD_FOLDER}/src/lj_bcdef.h
++            ${GENDEF_INPUT_FILES}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_bcdef.h
++    COMMENT "Generating lj_bcdef.h..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++        -m ffdef
++        -o ${LUAJIT_BUILD_FOLDER}/src/lj_ffdef.h
++        ${GENDEF_INPUT_FILES}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_ffdef.h
++    COMMENT "Generating lj_ffdef.h..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++        -m libdef
++        -o ${LUAJIT_BUILD_FOLDER}/src/lj_libdef.h
++        ${GENDEF_INPUT_FILES}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_libdef.h
++    COMMENT "Generating lj_libdef.h..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++        -m recdef
++        -o ${LUAJIT_BUILD_FOLDER}/src/lj_recdef.h
++        ${GENDEF_INPUT_FILES}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_recdef.h
++    COMMENT "Generating lj_recdef.h..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++        -m vmdef
++        -o ${LUAJIT_BUILD_FOLDER}/src/jit/vmdef.lua
++        ${GENDEF_INPUT_FILES}
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/jit/vmdef.lua
++    COMMENT "Generating vmdef.lua..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++
++add_custom_command(
++    COMMAND
++        ${BUILDVM_COMMAND}
++        -m folddef
++        -o ${LUAJIT_BUILD_FOLDER}/src/lj_folddef.h
++        ${LUAJIT_ROOT_FOLDER}/src/lj_opt_fold.c
++    OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_folddef.h
++    COMMENT "Generating lj_folddef.h..."
++    WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++)
++
++set(GENDEF_OUTPUT_FILES
++    ${LUAJIT_BUILD_FOLDER}/src/lj_bcdef.h
++    ${LUAJIT_BUILD_FOLDER}/src/lj_ffdef.h
++    ${LUAJIT_BUILD_FOLDER}/src/lj_libdef.h
++    ${LUAJIT_BUILD_FOLDER}/src/lj_recdef.h
++    ${LUAJIT_BUILD_FOLDER}/src/jit/vmdef.lua
++    ${LUAJIT_BUILD_FOLDER}/src/lj_folddef.h
++)
++
++if(WIN32)
++    add_custom_command(
++        COMMAND
++            ${BUILDVM_COMMAND}
++            -m ${LUAJIT_VM_MODE}
++            -o ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/$<CONFIG>/lj_vm.obj
++        OUTPUT ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/$<CONFIG>/lj_vm.obj
++        COMMENT "Generating lj_vm.obj..."
++        WORKING_DIRECTORY ${LUAJIT_ROOT_FOLDER}
++    )
++
++    add_custom_target(${PROJECT_NAME}
++        DEPENDS
++            ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/$<CONFIG>/lj_vm.obj
++            ${GENDEF_OUTPUT_FILES}
++    )
++elseif(UNIX)
++    add_custom_command(
++        COMMAND
++            ${BUILDVM_COMMAND}
++            -m ${LUAJIT_VM_MODE}
++            -o ${LUAJIT_BUILD_FOLDER}/src/lj_vm.S
++        OUTPUT ${LUAJIT_BUILD_FOLDER}/src/lj_vm.S
++        COMMENT "Generating lj_vm.S..."
++    )
++
++    add_custom_target(${PROJECT_NAME}
++        DEPENDS
++            ${GENDEF_OUTPUT_FILES}
++    )
++
++    enable_language(ASM)
++
++    add_library(lj_vm OBJECT ${LUAJIT_BUILD_FOLDER}/src/lj_vm.S)
++
++    target_compile_options(lj_vm PRIVATE ${LUAJIT_COMPILE_FLAGS})
++    target_compile_definitions(lj_vm PRIVATE ${LUAJIT_COMPILE_DEFINES})
++
++    target_link_options(lj_vm PRIVATE ${LUAJIT_LINK_FLAGS})
++endif()
++
++add_dependencies(${PROJECT_NAME} LuaJIT::BuildVM)
+-- 
+2.47.1.windows.2
+
