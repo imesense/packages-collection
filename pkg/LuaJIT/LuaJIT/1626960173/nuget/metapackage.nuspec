@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>IXRay.LuaJIT</id>
+        <version>1626960173-open</version>
+        <title>LuaJIT</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://luajit.org/luajit.html</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection.git" />
+        <copyright>&#169; 2005-2021 Mike Pall, &#169; 1994-2012 Lua.org, PUC-Rio</copyright>
+        <tags>Native native nativepackage</tags>
+        <description>LuaJIT is a Just-In-Time (JIT) compiler for the Lua programming language</description>
+
+        <releaseNotes>
+Repository: https://luajit.org/git/luajit.git
+Commit: dbb6c39f7c69691f6bd9a8b5d6bf7c97b3dbe268
+Contains specific patches for IX-Ray project
+        </releaseNotes>
+
+        <dependencies>
+            <group>
+                <dependency id="IXRay.LuaJIT.Binaries.win10.0.19041.0-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.win10.0.19041.0-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-arm64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.osx-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.osx-arm64" version="1626960173-open" />
+
+                <dependency id="IXRay.LuaJIT.Symbols.win-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.win-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.ubuntu.20.04-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.ubuntu.20.04-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.ubuntu.20.04-arm64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.osx.11.0-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Symbols.osx.11.0-arm64" version="1626960173-open" />
+
+                <dependency id="IXRay.LuaJIT.Sources" version="1626960173-open" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file src="README.md" target="README.md" />
+        <file src="LICENSE.txt" target="LICENSE.txt" />
+    </files>
+</package>
