@@ -101,4 +101,19 @@ function module.Rename(source, destination)
     return result
 end
 
+function module.Copy(source, destination)
+    local result = console.ExecuteCommand(
+        module.Triplet.Commands.CMake ..
+        " -E" ..
+        " copy " ..
+        source .. " " ..
+        destination
+    )
+    if not result then
+        console.PrintColor("Error: " .. result, console.Colors.Red)
+        return nil
+    end
+    return result
+end
+
 return module

@@ -61,8 +61,8 @@ function module.CreateFolder(path)
     end
 
     local result, error = lfs.mkdir(path)
-    if result then
-        console.PrintColor(path .. " created", console.Colors.Green)
+    if not result and error then
+        console.PrintColor("Error: " .. error, console.Colors.Red)
     end
 end
 
