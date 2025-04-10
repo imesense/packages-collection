@@ -13,10 +13,6 @@ module.Commands = {
     NuGet = "nuget"
 }
 
-module.Formats = {
-    Archive = "zip"
-}
-
 module.System = {
     Name = "Windows",
     Platform = "x86"
