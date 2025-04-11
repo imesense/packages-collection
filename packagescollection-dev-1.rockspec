@@ -43,7 +43,8 @@ build = {
         ["Tools.SevenZip"] = "src\\Tools\\SevenZip.lua",
         ["Tools.VisualStudio"] = "src\\Tools\\VisualStudio.lua",
 
-        ["Triplets.Windows10X64"] = "src\\Triplets\\Windows10X64.lua",
-        ["Triplets.Windows10X86"] = "src\\Triplets\\Windows10X86.lua"
+        ["Triplets.Windows.X86.10.0.19041"] = "src\\Triplets\\Windows\\X86\\10\\0\\19041.lua",
+        ["Triplets.Windows.X64.10.0.19041"] = "src\\Triplets\\Windows\\X64\\10\\0\\19041.lua",
+        ["Triplets.Ubuntu.X64.20.04"] = "src\\Triplets\\Ubuntu\\X64\\20\\04.lua"
     }
 }
