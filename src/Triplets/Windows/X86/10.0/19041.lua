@@ -1,5 +1,5 @@
 local module = {
-    Name = "Windows10X86"
+    Name = "Windows.X86.10.0.19041"
 }
 
 module.Commands = {
@@ -34,7 +34,7 @@ module.VisualCpp = {
 }
 
 module.RuntimeID =
-    "win." .. module.WindowsSdk.Version ..
+    "win" .. module.WindowsSdk.Version ..
     "-" .. module.System.Platform
 
 module.CMakeGenerator =
