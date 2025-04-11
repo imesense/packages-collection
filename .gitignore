@@ -2,6 +2,7 @@
 
 # Local tree
 bin/
+etc/
 include/
 lib/
 share/
