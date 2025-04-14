@@ -10,6 +10,7 @@ local module = {
 
 function module.InvokeShell(command)
     local result = module.Shell(command)
+    console.PrintColor(result, console.Colors.Default)
     if not result or result == "" then
         console.PrintColor("Error: " .. result, console.Colors.Red)
         return nil
@@ -46,6 +47,8 @@ function module.ConfigureProject(source, build, generator, projectOptions, gener
         command = command .. options2
     end
 
+    console.PrintColor(command, console.Colors.Default)
+
     return module.InvokeShell(command)
 end
 
@@ -56,6 +59,7 @@ function module.BuildProject(build, config)
     if config and config ~= "" then
         command = command .. " --config " .. config
     end
+    console.PrintColor(command, console.Colors.Default)
     return module.InvokeShell(command)
 end
 
@@ -69,6 +73,7 @@ function module.InstallProject(build, prefix, config)
     if prefix and prefix ~= "" then
         command = command .. " --prefix " .. prefix
     end
+    console.PrintColor(command, console.Colors.Default)
     return module.InvokeShell(command)
 end
 
