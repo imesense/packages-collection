@@ -1,5 +1,5 @@
 local module = {
-    Name = "Ubuntu.X64.20.04"
+    Name = "Ubuntu.x64.20.04"
 }
 
 module.Commands = {
