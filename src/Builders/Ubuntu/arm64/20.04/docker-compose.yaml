@@ -1,0 +1,21 @@
+services:
+    packages-collection-builder:
+        container_name: packages-collection-builder
+        platform: linux/arm64/v8
+        build:
+            context: .
+            dockerfile: Dockerfile
+        profiles:
+            - arm64-20.04
+        volumes:
+            - ../../../../../src:/pkg/src
+            - ../../../../../pkg:/pkg/pkg
+            - ../../../../../cache:/pkg/cache
+            - ../../../../../tmp:/pkg/tmp
+            - ../../../../../run-script.bash:/pkg/run-script.bash
+        tty: true
+        command:
+            - "tail"
+            - "-f"
+            - "/dev/null"
+        working_dir: /pkg
