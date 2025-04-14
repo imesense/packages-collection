@@ -10,7 +10,7 @@ module.Commands = {
     CTest = "ctest",
     CPack = "cpack",
 
-    NuGet = "mono ./bin/nuget"
+    NuGet = "mono ./bin/nuget.exe"
 }
 
 module.System = {
