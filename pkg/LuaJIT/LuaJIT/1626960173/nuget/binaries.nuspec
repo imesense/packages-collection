@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
     <metadata>
-        <id>IXRay.LuaJIT</id>
+        <id>IXRay.LuaJIT.Binaries</id>
         <version>1626960173-open</version>
         <title>LuaJIT</title>
         <authors>acidicMercury8</authors>
@@ -23,9 +23,16 @@ Contains specific patches for IX-Ray project
 
         <dependencies>
             <group>
-                <dependency id="IXRay.LuaJIT.Binaries" version="1626960173-open" />
-                <dependency id="IXRay.LuaJIT.Symbols" version="1626960173-open" />
-                <dependency id="IXRay.LuaJIT.Sources" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.win10.0.19041.0-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.win10.0.19041.0-x64" version="1626960173-open" />
+
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-x86" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.ubuntu.20.04-arm64" version="1626960173-open" />
+
+                <dependency id="IXRay.LuaJIT.Binaries.osx.10.15-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.osx.11.0-x64" version="1626960173-open" />
+                <dependency id="IXRay.LuaJIT.Binaries.osx.11.0-arm64" version="1626960173-open" />
             </group>
         </dependencies>
     </metadata>

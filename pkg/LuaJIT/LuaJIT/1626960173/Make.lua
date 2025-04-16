@@ -369,6 +369,8 @@ function recipe.MakeNuGet(component)
     local out = temp .. "/out/"
 
     local metapackage = recipe.Modification .. "." .. recipe.Name .. "." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
+    local binaries = recipe.Modification .. "." .. recipe.Name .. ".Binaries." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
+    local symbols = recipe.Modification .. "." .. recipe.Name .. ".Symbols." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
     local sources = recipe.Modification .. "." .. recipe.Name .. ".Sources." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
 
     local runtimesWinX86 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.win10.0.19041.0-x86." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
@@ -389,6 +391,20 @@ function recipe.MakeNuGet(component)
         cmake.Copy(files .. "/res/" .. "README.md", out)
         cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
         nuget.Pack(out .. "metapackage.nuspec", nugetCache)
+        cmake.DeleteFolder(out)
+    elseif component == "binaries"
+    and not filesystem.Exists(nugetCache .. binaries) then
+        cmake.Copy(files .. "/nuget/" .. "binaries.nuspec", out)
+        cmake.Copy(files .. "/res/" .. "README.md", out)
+        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
+        nuget.Pack(out .. "binaries.nuspec", nugetCache)
+        cmake.DeleteFolder(out)
+    elseif component == "symbols"
+    and not filesystem.Exists(nugetCache .. symbols) then
+        cmake.Copy(files .. "/nuget/" .. "symbols.nuspec", out)
+        cmake.Copy(files .. "/res/" .. "README.md", out)
+        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
+        nuget.Pack(out .. "symbols.nuspec", nugetCache)
         cmake.DeleteFolder(out)
     elseif component == "sources"
     and not filesystem.Exists(nugetCache .. sources) then
