@@ -4,13 +4,14 @@ local filesystem = require("src.Common.Filesystem")
 
 -- Current module
 local module = {
-    Name = "SevenZip",
-    Triplet = {}
+    Name = "SevenZip"
 }
+
+local sevenZip = Triplet.SevenZip.Command
 
 function module.UnpackArchive(file, destination)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.SevenZip ..
+        sevenZip ..
         " x ".. file ..
         " -o" .. destination
     )
@@ -26,7 +27,7 @@ function module.PackArchive(path, file, format)
     filesystem.ChangeDirectory(path)
 
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.SevenZip ..
+        sevenZip ..
         " a" ..
         " -t" .. format ..
         " " .. file ..

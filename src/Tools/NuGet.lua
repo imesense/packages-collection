@@ -3,13 +3,14 @@ local console = require("src.Common.Console")
 
 -- Current module
 local module = {
-    Name = "NuGet",
-    Triplet = {}
+    Name = "NuGet"
 }
+
+local nuget = Triplet.NuGet.Command
 
 function module.Pack(manifest, output)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.NuGet ..
+        nuget ..
         " pack " .. manifest ..
         " -OutputDirectory " .. output
     )

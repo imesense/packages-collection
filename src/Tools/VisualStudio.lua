@@ -1,13 +1,21 @@
 -- Local imports
+local mappers = require("src.Common.Mappers")
 local console = require("src.Common.Console")
 local filesystem = require("src.Common.Filesystem")
 local utilities = require("src.Common.Utilities")
 
 -- Current module
 local module = {
-    Name = "VisualStudio",
-    Triplet = {}
+    Name = "VisualStudio"
 }
+
+local windowsSdk = Triplet.System.Version
+local windowsSubsystem = mappers.MapWindowsSubsystem(Triplet.System.Subsystem)
+
+local visualStudioVersion = Triplet.VisualStudio.VersionMajor
+
+local visualCppVersion = Triplet.VisualCpp.Version
+local visualCppPlatform = Triplet.VisualCpp.Platform
 
 function module.FindFolder(version)
     local programFilesX86 = utilities.GetEnvironmentVariable("ProgramFiles(x86)")
@@ -30,24 +38,16 @@ function module.FindFolder(version)
 end
 
 function module.RunDevCmd(command)
-    local winsdk = module.Triplet.WindowsSdk.Version
-    local subsystem = module.Triplet.WindowsSdk.Subsystem
-
-    local visualstudio = module.Triplet.VisualStudio.Version
-
-    local visualcpp = module.Triplet.VisualCpp.Version
-    local platform = module.Triplet.VisualCpp.Platform
-
     local vsdevcmd =
         "call " ..
         "\"" ..
-        module.FindFolder(visualstudio) ..
+        module.FindFolder(visualStudioVersion) ..
         "\\VC\\Auxiliary\\Build\\vcvarsall.bat" ..
         "\" " ..
-        platform .. " " ..
-        subsystem .. " " ..
-        winsdk ..
-        " -vcvars_ver=" .. visualcpp
+        visualCppPlatform .. " " ..
+        windowsSubsystem .. " " ..
+        windowsSdk ..
+        " -vcvars_ver=" .. visualCppVersion
     local result = console.ExecuteCommand(
         vsdevcmd ..
         " && " ..

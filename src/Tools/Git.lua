@@ -3,13 +3,14 @@ local console = require("src.Common.Console")
 
 -- Current module
 local module = {
-    Name = "Git",
-    Triplet = {}
+    Name = "Git"
 }
+
+local git = Triplet.Git.Command
 
 function module.InitializeRepository(repository)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " init"
     )
@@ -22,7 +23,7 @@ end
 
 function module.CloneRepository(url, destination)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " clone " ..
         url .. " " ..
         destination
@@ -36,7 +37,7 @@ end
 
 function module.CloneRepositoryBranch(url, destination, branch)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " clone" ..
         " --depth=1" ..
         " --branch " .. branch .. " " ..
@@ -52,7 +53,7 @@ end
 
 function module.AddFiles(repository)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " add " .. repository
     )
@@ -65,7 +66,7 @@ end
 
 function module.CreateCommit(repository, message)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " commit -m \"" .. message .. "\""
     )
@@ -78,7 +79,7 @@ end
 
 function module.ApplyPatch(repository, patch)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " am" ..
         " --3way" ..
@@ -94,7 +95,7 @@ end
 
 function module.ResetCommit(repository, hash)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " reset" ..
         " --hard " ..
@@ -109,7 +110,7 @@ end
 
 function module.CreateBranch(repository, branch, hash)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.Git ..
+        git ..
         " -C " .. repository ..
         " checkout -b " ..
         branch .. " " ..

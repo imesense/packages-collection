@@ -3,14 +3,22 @@ local console = require("src.Common.Console")
 
 -- Current module
 local module = {
-    Name = "CMake",
-    Triplet = {},
-    Shell = nil
+    Name = "CMake"
 }
 
-function module.InvokeShell(command)
-    local result = module.Shell(command)
-    console.PrintColor(result, console.Colors.Default)
+local cmake = Triplet.CMake.Command
+
+local function InvokeShell(command)
+    local shell = console.ExecuteCommand
+    if Triplet.System.Type == "Windows" then
+        local visualStudio = require("src.Tools.VisualStudio")
+        shell = visualStudio.RunDevCmd
+    elseif Triplet.System.Type == "Darwin" then
+        local rosetta = require("src.Tools.Rosetta")
+        shell = rosetta.RunAsX64
+    end
+
+    local result = shell(command)
     if not result or result == "" then
         console.PrintColor("Error: " .. result, console.Colors.Red)
         return nil
@@ -20,7 +28,7 @@ end
 
 function module.ConfigureProject(source, build, generator, projectOptions, generatorOptions)
     local command =
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " -S " .. source ..
         " -B " .. build ..
         " -G \"" .. generator .. "\""
@@ -47,25 +55,22 @@ function module.ConfigureProject(source, build, generator, projectOptions, gener
         command = command .. options2
     end
 
-    console.PrintColor(command, console.Colors.Default)
-
-    return module.InvokeShell(command)
+    return InvokeShell(command)
 end
 
 function module.BuildProject(build, config)
     local command =
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " --build " .. build
     if config and config ~= "" then
         command = command .. " --config " .. config
     end
-    console.PrintColor(command, console.Colors.Default)
-    return module.InvokeShell(command)
+    return InvokeShell(command)
 end
 
 function module.InstallProject(build, prefix, config)
     local command =
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " --install " .. build
     if config and config ~= "" then
         command = command .. " --config " .. config
@@ -73,13 +78,12 @@ function module.InstallProject(build, prefix, config)
     if prefix and prefix ~= "" then
         command = command .. " --prefix " .. prefix
     end
-    console.PrintColor(command, console.Colors.Default)
-    return module.InvokeShell(command)
+    return InvokeShell(command)
 end
 
 function module.DeleteFolder(path)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " -E" ..
         " remove_directory " ..
         path
@@ -93,7 +97,7 @@ end
 
 function module.Rename(source, destination)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " -E" ..
         " rename " ..
         source .. " " ..
@@ -108,7 +112,7 @@ end
 
 function module.Copy(source, destination)
     local result = console.ExecuteCommand(
-        module.Triplet.Commands.CMake ..
+        cmake ..
         " -E" ..
         " copy " ..
         source .. " " ..
