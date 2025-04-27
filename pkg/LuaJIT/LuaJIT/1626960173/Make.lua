@@ -1,39 +1,7 @@
 -- Local imports
 local console = require("src.Common.Console")
 local filesystem = require("src.Common.Filesystem")
-local git = require("src.Tools.Git")
-local sevenZip = require("src.Tools.SevenZip")
-local cmake = require("src.Tools.CMake")
-local visualStudio = require("src.Tools.VisualStudio")
-local nuget = require("src.Tools.NuGet")
-
--- Arguments and triplets
-local options = console.ParseArguments()
-local triplet = require("src.Triplets." .. options.Triplet)
-git.Triplet = triplet
-cmake.Triplet = triplet
-sevenZip.Triplet = triplet
-nuget.Triplet = triplet
-cmake.Shell = console.ExecuteCommand
-
-local function RunUnderRosetta(command)
-    local shell = "arch -x86_64 "
-    local result = console.ExecuteCommand(shell .. command)
-    if not result then
-        console.PrintColor("Error: " .. result, console.Colors.Red)
-        return nil
-    end
-    return result
-end
-
-if triplet.System.Name == "Windows" then
-    visualStudio.Triplet = triplet
-    sevenZip.Triplet.Commands.SevenZip = filesystem.CurrentFolder .. triplet.Commands.SevenZip
-    cmake.Shell = visualStudio.RunDevCmd
-elseif triplet.System.Name == "MacOS"
-and triplet.System.Platform == "x64" then
-    cmake.Shell = RunUnderRosetta
-end
+local actions = require("src.Recipes.Actions")
 
 -- Recipe module
 local recipe = {
@@ -42,616 +10,357 @@ local recipe = {
 
     Version = "1626960173",
     Revision = "0",
+    Patch = "0",
+    Postfix = "open",
     Modification = "IXRay"
 }
 
-function recipe.CreateFolders()
-    filesystem.InitializeTree()
-
-    local folders = {
-        "cache/Source/" .. recipe.Vendor,
-        "cache/CMake/" .. recipe.Vendor,
-        "cache/NuGet/" .. recipe.Vendor
-    }
-    for _, path in ipairs(folders) do
-        filesystem.CreateFolder(path)
+local package = {}
+package.Source = function (format, original)
+    local name = recipe.Name .. "."
+    if not original then
+        name = name .. recipe.Modification .. "."
     end
+    name = name .. recipe.Version .. "." .. format
+    return name
+end
+package.CMake = function (runtime, config, format)
+    local name =
+        recipe.Name .. "." ..
+        recipe.Modification .. "." ..
+        recipe.Version .. "." ..
+        runtime .. "." ..
+        config .. "." ..
+        format
+    return name
+end
+package.NuGet = function (component, runtime)
+    local name =
+        recipe.Modification .. "." ..
+        recipe.Name .. "."
+    if component then
+        name = name .. component .. "."
+    end
+    if runtime then
+        name = name .. runtime .. "."
+    end
+    name = name ..
+        recipe.Version .. "." .. recipe.Revision .. "." .. recipe.Patch .. "-" .. recipe.Postfix ..
+        ".nupkg"
+    return name
+end
+
+actions.PrepareFolders(recipe.Vendor)
+
+local cache = {}
+cache.Source = filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
+cache.CMake = filesystem.CurrentFolder .. "/cache/CMake/" .. recipe.Vendor .. "/"
+cache.NuGet = filesystem.CurrentFolder .. "/cache/NuGet/" .. recipe.Vendor .. "/"
+
+local files = filesystem.CurrentFolder .. "/pkg/" .. recipe.Vendor .. "/" .. recipe.Name .. "/" .. recipe.Version
+local patches = files .. "/patch/"
+local nuget = files .. "/nuget/"
+local resources = files .. "/res/"
+
+local temp = filesystem.CurrentFolder .. "/tmp/"
+local repository = temp .. "luajit"
+
+local out = temp .. "out/"
+local source = temp .. "luajit"
+local build = source .. "/build"
+local install = build .. "/install"
+
+local function MakeSourceOriginal(name, format)
+    if filesystem.Exists(cache.Source .. name) then
+        return
+    end
+
+    --local url = "https://luajit.org/git/luajit.git"
+    local url = "https://github.com/LuaJIT/LuaJIT.git"
+    Git.CloneRepository(url, repository)
+
+    local hash = "dbb6c39f7c69691f6bd9a8b5d6bf7c97b3dbe268"
+    Git.CreateBranch(repository, "default", hash)
+    CMake.DeleteFolder(repository .. "/.git")
+    SevenZip.PackArchive(repository, cache.Source .. name, format)
+end
+
+local function MakeSourcePatched(name, format)
+    if filesystem.Exists(cache.Source .. name) then
+        return
+    end
+
+    Git.InitializeRepository(repository)
+    Git.AddFiles(repository)
+    Git.CreateCommit(repository, "Initial commit")
+
+    Git.ApplyPatch(repository, patches .. "0001-Add-CMake-projects-for-LuaJIT.patch")
+    Git.ApplyPatch(repository, patches .. "0002-Revert-Remove-Lua-5.0-compatibility-defines.patch")
+    Git.ApplyPatch(repository, patches .. "0003-Enable-correct-parsing-X-Ray-specific-comments.patch")
+    Git.ApplyPatch(repository, patches .. "0004-Revert-Redesign-and-harden-string-interning.patch")
+    Git.ApplyPatch(repository, patches .. "0005-Apply-fix-after-revert.patch")
+    Git.ApplyPatch(repository, patches .. "0006-Revert-Add-jit.security.patch")
+    Git.ApplyPatch(repository, patches .. "0007-Backport-fixes-for-ARM-targets-and-Clang-compiler.patch")
+
+    CMake.DeleteFolder(repository .. "/.git")
+    SevenZip.PackArchive(repository, cache.Source .. name, format)
+    CMake.DeleteFolder(repository)
 end
 
 function recipe.MakeSource()
-    recipe.CreateFolders()
-
-    console.PrintColor("Making source packages ...", console.Colors.Default)
-
     local format = ""
-    if triplet.System.Name == "Windows" then
+    if Triplet.System.Type == "Windows" then
         format = "zip"
-    else
+    elseif Triplet.System.Type == "Linux" then
+        format = "tar"
+    elseif Triplet.System.Type == "Darwin" then
         format = "tar"
     end
 
-    local cache = filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
-    local temp = filesystem.CurrentFolder .. "/tmp/"
-    local repository = temp .. "luajit"
-
-    local packageOriginal =
-        recipe.Vendor .. "." .. recipe.Name .. "." ..
-        recipe.Version .. "." .. format
-    if not filesystem.Exists(cache .. packageOriginal) then
-        local url = "https://luajit.org/git/luajit.git"
-        git.CloneRepository(url, repository)
-
-        local hash = "dbb6c39f7c69691f6bd9a8b5d6bf7c97b3dbe268"
-        git.CreateBranch(repository, "default", hash)
-        cmake.DeleteFolder(repository .. "/.git")
-        sevenZip.PackArchive(repository, cache .. packageOriginal, format)
-    end
-
-    local packagePatched =
-        recipe.Vendor .. "." .. recipe.Name .. "." ..
-        recipe.Modification .. "." .. recipe.Version .. "." .. format
-    if not filesystem.Exists(cache .. packagePatched) then
-        local patches = filesystem.CurrentFolder .. "/pkg/" .. recipe.Vendor .. "/" .. recipe.Name .. "/" .. recipe.Version .. "/patch/"
-        git.InitializeRepository(repository)
-        git.AddFiles(repository)
-        git.CreateCommit(repository, "Initial commit")
-
-        git.ApplyPatch(repository, patches .. "0001-Add-CMake-projects-for-LuaJIT.patch")
-        git.ApplyPatch(repository, patches .. "0002-Revert-Remove-Lua-5.0-compatibility-defines.patch")
-        git.ApplyPatch(repository, patches .. "0003-Enable-correct-parsing-X-Ray-specific-comments.patch")
-        git.ApplyPatch(repository, patches .. "0004-Revert-Redesign-and-harden-string-interning.patch")
-        git.ApplyPatch(repository, patches .. "0005-Apply-fix-after-revert.patch")
-        git.ApplyPatch(repository, patches .. "0006-Revert-Add-jit.security.patch")
-        git.ApplyPatch(repository, patches .. "0007-Backport-fixes-for-ARM-targets-and-Clang-compiler.patch")
-
-        cmake.DeleteFolder(repository .. "/.git")
-        sevenZip.PackArchive(repository, cache .. packagePatched, format)
-        cmake.DeleteFolder(repository)
-    end
-
-    console.PrintColor("Making source packages done", console.Colors.Green)
+    MakeSourceOriginal(package.Source(format, true), format)
+    MakeSourcePatched(package.Source(format), format)
 end
 
-function recipe.MakeCMake()
-    recipe.CreateFolders()
-
-    console.PrintColor("Making CMake packages ...", console.Colors.Default)
-
-    local format = ""
-    if triplet.System.Name == "Windows" then
-        format = "zip"
-    else
-        format = "tar"
+local function MakeCMakeWindows(name, config)
+    if filesystem.Exists(cache.CMake .. name) then
+        return
     end
 
-    local sourceCache = filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
-    local binaryCache = filesystem.CurrentFolder .. "/cache/CMake/" .. recipe.Vendor .. "/"
+    local format = "zip"
+    SevenZip.UnpackArchive(cache.Source .. package.Source(format), source)
 
-    local temp = "tmp/"
-    local out = temp .. "/out"
-    local source = temp .. "luajit"
-    local build = source .. "/build"
-    local install = build .. "/install"
+    local projectOptions = {
+        ["CMAKE_SYSTEM_VERSION"] = "\"" .. Triplet.System.Version .. "\"",
+        ["LUAJIT_TARGET_ARCH"] = Triplet.System.Target.Platform,
+        ["LUAJIT_ENABLE_APPLICATION"] = "ON",
+        ["LUAJIT_ENABLE_INSTALL"] = "ON"
+    }
+    local generatorOptions = {
+        ["-A"] = Triplet.CMake.Generator.Target,
+        ["-T"] = "host=" .. Triplet.System.Host.Platform .. ",version=" .. Triplet.VisualCpp.Version
+    }
+    CMake.ConfigureProject(source, build, Triplet.CMake.Generator.Name, projectOptions, generatorOptions)
+    CMake.BuildProject(build, config)
+    CMake.InstallProject(build, install, config)
 
-    local debug = "Debug"
-    local release = "Release"
-    if triplet.System.Name == "MacOS" then
-        release = "RelWithDebInfo"
+    CMake.Rename(install, out .. "/" .. config)
+    CMake.DeleteFolder(source)
+    SevenZip.PackArchive(out .. "/" .. config, cache.CMake .. name, format)
+    CMake.DeleteFolder(out)
+end
+
+local function MakeCMakeLinux(name, config)
+    if filesystem.Exists(cache.CMake .. name) then
+        return
     end
 
-    local sourcePackage =
-        recipe.Vendor .. "." .. recipe.Name .. "." ..
-        recipe.Modification .. "." .. recipe.Version .. "." .. format
+    local format = "tar"
+    SevenZip.UnpackArchive(cache.Source .. package.Source(format), source)
 
-    local binaryPackageDebug =
-        recipe.Vendor .. "." .. recipe.Name .. "." ..
-        recipe.Modification .. "." .. recipe.Version .. "." ..
-        triplet.RuntimeID .. "." .. debug .. "." ..
-        format
-    local binaryPackageRelease =
-        recipe.Vendor .. "." .. recipe.Name .. "." ..
-        recipe.Modification .. "." .. recipe.Version .. "." ..
-        triplet.RuntimeID .. "." .. release .. "." ..
-        format
+    local projectOptions = {
+        ["LUAJIT_TARGET_ARCH"] = Triplet.System.Target.Platform,
+        ["LUAJIT_ENABLE_APPLICATION"] = "ON",
+        ["LUAJIT_ENABLE_INSTALL"] = "ON",
+        ["CMAKE_C_COMPILER"] = Triplet.CMake.C.Compiler
+    }
+    CMake.ConfigureProject(source, build, Triplet.CMake.Generator.Name, projectOptions)
+    CMake.BuildProject(build, config)
+    CMake.InstallProject(build, install, config)
 
-    if not filesystem.Exists(binaryCache .. binaryPackageDebug)
-    and not filesystem.Exists(binaryCache .. binaryPackageRelease) then
-        sevenZip.UnpackArchive(sourceCache .. sourcePackage, filesystem.CurrentFolder .. "/" .. source)
+    CMake.Rename(install, out .. "/" .. config)
+    CMake.DeleteFolder(source)
+    SevenZip.PackArchive(out .. "/" .. config, cache.CMake .. name, format)
+    CMake.DeleteFolder(out)
+end
 
-        if triplet.System.Name == "Windows"
-        and triplet.System.Platform == "x64" then
-            -- Set options
-            local projectOptions = {
-                ["CMAKE_SYSTEM_VERSION"] = "\"" .. triplet.WindowsSdk.Version .. "\"",
-                ["LUAJIT_TARGET_ARCH"] = triplet.System.Platform,
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON"
-            }
-            local generatorOptions = {
-                ["-A"] = triplet.System.Platform,
-                ["-T"] = "host=" .. triplet.System.Platform .. ",version=" .. triplet.VisualCpp.Version
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions, generatorOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions, generatorOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "Windows"
-        and triplet.System.Platform == "x86" then
-            -- Set options
-            local projectOptions = {
-                ["CMAKE_SYSTEM_VERSION"] = "\"" .. triplet.WindowsSdk.Version .. "\"",
-                ["LUAJIT_TARGET_ARCH"] = triplet.System.Platform,
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON"
-            }
-            local generatorOptions = {
-                ["-A"] = "Win32",
-                ["-T"] = "host=x64,version=" .. triplet.VisualCpp.Version
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions, generatorOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions, generatorOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "Ubuntu"
-        and triplet.System.Platform == "x86" then
-            -- Set options
-            local projectOptions = {
-                ["LUAJIT_TARGET_ARCH"] = "x86",
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON",
-                ["CMAKE_C_COMPILER"] = triplet.Compiler
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "Ubuntu"
-        and triplet.System.Platform == "x64" then
-            -- Set options
-            local projectOptions = {
-                ["LUAJIT_TARGET_ARCH"] = "x64",
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON",
-                ["CMAKE_C_COMPILER"] = triplet.Compiler
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "Ubuntu"
-        and triplet.System.Platform == "arm64" then
-            -- Set options
-            local projectOptions = {
-                ["LUAJIT_TARGET_ARCH"] = "arm64",
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON",
-                ["CMAKE_C_COMPILER"] = triplet.Compiler
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "MacOS"
-        and triplet.System.Platform == "x64" then
-            -- Set options
-            local projectOptions = {
-                ["LUAJIT_TARGET_ARCH"] = "x64",
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON",
-                ["CMAKE_OSX_DEPLOYMENT_TARGET"] = triplet.System.Version
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        elseif triplet.System.Name == "MacOS"
-        and triplet.System.Platform == "arm64" then
-            -- Set options
-            local projectOptions = {
-                ["LUAJIT_TARGET_ARCH"] = "arm64",
-                ["LUAJIT_ENABLE_APPLICATION"] = "ON",
-                ["LUAJIT_ENABLE_INSTALL"] = "ON",
-                ["CMAKE_OSX_DEPLOYMENT_TARGET"] = triplet.System.Version
-            }
-
-            -- Build debug package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, debug)
-            cmake.InstallProject(build, install .. "/" .. debug, debug)
-            cmake.Rename(install .. "/" .. debug, out .. "/" .. debug)
-            cmake.DeleteFolder(build)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. debug, binaryCache .. binaryPackageDebug, format)
-
-            -- Build release package
-            cmake.ConfigureProject(source, build, triplet.CMakeGenerator, projectOptions)
-            cmake.BuildProject(build, release)
-            cmake.InstallProject(build, install .. "/" .. release, release)
-            cmake.Rename(install .. "/" .. release, out .. "/" .. release)
-            cmake.DeleteFolder(source)
-            sevenZip.PackArchive(filesystem.CurrentFolder .. "/" .. out .. "/" .. release, binaryCache .. binaryPackageRelease, format)
-            cmake.DeleteFolder(out)
-        end
+local function MakeCMakeDarwin(name, config)
+    if filesystem.Exists(cache.CMake .. name) then
+        return
     end
 
-    console.PrintColor("Making CMake packages done", console.Colors.Green)
+    local format = "tar"
+    SevenZip.UnpackArchive(cache.Source .. package.Source(format) .. format, source)
+
+    local projectOptions = {
+        ["LUAJIT_TARGET_ARCH"] = Triplet.System.Target.Platform,
+        ["LUAJIT_ENABLE_APPLICATION"] = "ON",
+        ["LUAJIT_ENABLE_INSTALL"] = "ON",
+        ["CMAKE_OSX_DEPLOYMENT_TARGET"] = Triplet.System.Version
+    }
+    CMake.ConfigureProject(source, build, Triplet.CMake.Generator.Name, projectOptions)
+    CMake.BuildProject(build, config)
+    CMake.InstallProject(build, install, config)
+
+    CMake.Rename(install, out .. "/" .. config)
+    CMake.DeleteFolder(source)
+    SevenZip.PackArchive(out .. "/" .. config, cache.CMake .. name, format)
+    CMake.DeleteFolder(out)
+end
+
+function recipe.MakeCMake(config)
+    local runtime = Triplet.NuGet.RuntimeID
+    if Triplet.System.Type == "Windows" then
+        MakeCMakeWindows(package.CMake(runtime, config, "zip"), config)
+    elseif Triplet.System.Type == "Linux" then
+        MakeCMakeLinux(package.CMake(runtime, config, "tar"), config)
+    elseif Triplet.System.Type == "Darwin" then
+        MakeCMakeDarwin(package.CMake(runtime, config, "tar"), config)
+    end
+end
+
+local function MakeNuGetMetapackage(output, manifest)
+    if filesystem.Exists(cache.NuGet .. output) then
+        return
+    end
+
+    CMake.Copy(nuget .. manifest .. ".nuspec", out)
+    CMake.Copy(resources .. "README.md", out)
+    CMake.Copy(resources .. "LICENSE.txt", out)
+    NuGet.Pack(out .. manifest .. ".nuspec", cache.NuGet)
+    CMake.DeleteFolder(out)
+end
+
+local function MakeNuGetSources(output, manifest, input)
+    if filesystem.Exists(cache.NuGet .. output) then
+        return
+    end
+
+    SevenZip.UnpackArchive(cache.Source .. input, out)
+    CMake.Copy(nuget .. manifest .. ".nuspec", out)
+    CMake.Copy(resources .. "README.md", out)
+    CMake.Copy(resources .. "LICENSE.txt", out)
+    CMake.Rename(out .. "README", out .. "README.orig")
+    CMake.Rename(out .. "COPYRIGHT", out .. "COPYRIGHT.orig")
+    NuGet.Pack(out .. manifest .. ".nuspec", cache.NuGet)
+    CMake.DeleteFolder(out)
+end
+
+local function MakeNuGetBinaries(name, manifest, input)
+    if filesystem.Exists(cache.NuGet .. name) then
+        return
+    end
+
+    SevenZip.UnpackArchive(cache.CMake .. input, out)
+    CMake.Copy(nuget .. manifest .. ".nuspec", out)
+    CMake.Copy(resources .. "README.md", out)
+    CMake.Copy(resources .. "LICENSE.txt", out)
+    NuGet.Pack(out .. manifest .. ".nuspec", cache.NuGet)
+    CMake.DeleteFolder(out)
 end
 
 function recipe.MakeNuGet(component)
-    recipe.CreateFolders()
+    local input = ""
+    local output = ""
+    local runtime = ""
 
-    console.PrintColor("Making NuGet package ...", console.Colors.Default)
+    if component == "metapackage" then
+        output = package.NuGet()
+        MakeNuGetMetapackage(output, component)
+    elseif component == "binaries" then
+        output = package.NuGet("Binaries")
+        MakeNuGetMetapackage(output, component)
+    elseif component == "symbols" then
+        output = package.NuGet("Symbols")
+        MakeNuGetMetapackage(output, component)
+    elseif component == "sources" then
+        output = package.NuGet("Sources")
+        input = package.Source("zip")
+        MakeNuGetSources(output, component, input)
 
-    local sourceCache = filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
-    local binaryCache = filesystem.CurrentFolder .. "/cache/CMake/" .. recipe.Vendor .. "/"
-    local nugetCache = filesystem.CurrentFolder .. "/cache/NuGet/" .. recipe.Vendor .. "/"
+    elseif component == "binaries.win10.0.19041.0-x86" then
+        runtime = "win10.0.19041.0-x86"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "Release", "zip")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "binaries.win10.0.19041.0-x64" then
+        runtime = "win10.0.19041.0-x64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "Release", "zip")
+        MakeNuGetBinaries(output, component, input)
 
-    local files = filesystem.CurrentFolder .. "/pkg/" .. recipe.Vendor .. "/" .. recipe.Name .. "/" .. recipe.Version
+    elseif component == "symbols.win10.0.19041.0-x86" then
+        runtime = "win10.0.19041.0-x86"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "Release", "zip")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "symbols.win10.0.19041.0-x64" then
+        runtime = "win10.0.19041.0-x64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "Release", "zip")
+        MakeNuGetBinaries(output, component, input)
 
-    local temp = "tmp/"
-    local out = temp .. "/out/"
+    elseif component == "binaries.ubuntu.20.04-x86" then
+        runtime = "ubuntu.20.04-x86"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "binaries.ubuntu.20.04-x64" then
+        runtime = "ubuntu.20.04-x64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "binaries.ubuntu.20.04-arm64" then
+        runtime = "ubuntu.20.04-arm64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
 
-    local metapackage = recipe.Modification .. "." .. recipe.Name .. "." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local binaries = recipe.Modification .. "." .. recipe.Name .. ".Binaries." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbols = recipe.Modification .. "." .. recipe.Name .. ".Symbols." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local sources = recipe.Modification .. "." .. recipe.Name .. ".Sources." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
+    elseif component == "symbols.ubuntu.20.04-x86" then
+        runtime = "ubuntu.20.04-x86"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "symbols.ubuntu.20.04-x64" then
+        runtime = "ubuntu.20.04-x64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "symbols.ubuntu.20.04-arm64" then
+        runtime = "ubuntu.20.04-arm64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "Release", "tar")
+        MakeNuGetBinaries(output, component, input)
 
-    local runtimesWinX86 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.win10.0.19041.0-x86." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local runtimesWinX64 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.win10.0.19041.0-x64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbolsWinX86 = recipe.Modification .. "." .. recipe.Name .. ".Symbols.win10.0.19041.0-x86." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbolsWinX64 = recipe.Modification .. "." .. recipe.Name .. ".Symbols.win10.0.19041.0-x64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
+    elseif component == "binaries.osx.10.15-x64" then
+        runtime = "osx.10.15-x64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "binaries.osx.11.0-x64" then
+        runtime = "osx.11.0-x64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "binaries.osx.11.0-arm64" then
+        runtime = "osx.11.0-arm64"
+        output = package.NuGet("Binaries", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
 
-    local runtimesUbuntu2004X86 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.ubuntu.20.04-x86." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local runtimesUbuntu2004X64 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.ubuntu.20.04-x64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local runtimesUbuntu2004Arm64 = recipe.Modification .. "." .. recipe.Name .. ".Binaries.ubuntu.20.04-arm64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbolsUbuntu2004X86 = recipe.Modification .. "." .. recipe.Name .. ".Symbols.ubuntu.20.04-x86." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbolsUbuntu2004X64 = recipe.Modification .. "." .. recipe.Name .. ".Symbols.ubuntu.20.04-x64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-    local symbolsUbuntu2004Arm64 = recipe.Modification .. "." .. recipe.Name .. ".Symbols.ubuntu.20.04-arm64." .. recipe.Version .. "." .. recipe.Revision .. ".0-open.nupkg"
-
-    if component == "metapackage"
-    and not filesystem.Exists(nugetCache .. metapackage) then
-        cmake.Copy(files .. "/nuget/" .. "metapackage.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "metapackage.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries"
-    and not filesystem.Exists(nugetCache .. binaries) then
-        cmake.Copy(files .. "/nuget/" .. "binaries.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "binaries.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols"
-    and not filesystem.Exists(nugetCache .. symbols) then
-        cmake.Copy(files .. "/nuget/" .. "symbols.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "sources"
-    and not filesystem.Exists(nugetCache .. sources) then
-        local sourcePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. ".zip"
-        sevenZip.UnpackArchive(sourceCache .. sourcePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "sources.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Rename(out .. "README", out .. "README.orig")
-        cmake.Rename(out .. "COPYRIGHT", out .. "COPYRIGHT.orig")
-        nuget.Pack(out .. "sources.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.win-x86"
-    and not filesystem.Exists(nugetCache .. runtimesWinX86) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            triplet.RuntimeID .. ".Release.zip"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.win-x86.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "binaries.win-x86.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.win-x64"
-    and not filesystem.Exists(nugetCache .. runtimesWinX64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            triplet.RuntimeID .. ".Release.zip"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.win-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "binaries.win-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.win-x86"
-    and not filesystem.Exists(nugetCache .. symbolsWinX86) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            triplet.RuntimeID .. ".Release.zip"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.win-x86.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.win-x86.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.win-x64"
-    and not filesystem.Exists(nugetCache .. symbolsWinX64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            triplet.RuntimeID .. ".Release.zip"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.win-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.win-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.ubuntu.20.04-x86"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004X86) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-x86" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.ubuntu.20.04-x86.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.sh", out .. "lib")
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "binaries.ubuntu.20.04-x86.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.ubuntu.20.04-x64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004X64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-x64" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.ubuntu.20.04-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.sh", out .. "lib")
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "binaries.ubuntu.20.04-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.ubuntu.20.04-arm64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-arm64" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.ubuntu.20.04-arm64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.sh", out .. "lib")
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "binaries.ubuntu.20.04-arm64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.ubuntu.20.04-x86"
-    and not filesystem.Exists(nugetCache .. symbolsUbuntu2004X86) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-x86" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.ubuntu.20.04-x86.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "symbols.ubuntu.20.04-x86.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.ubuntu.20.04-x64"
-    and not filesystem.Exists(nugetCache .. symbolsUbuntu2004X64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-x64" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.ubuntu.20.04-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "symbols.ubuntu.20.04-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.ubuntu.20.04-arm64"
-    and not filesystem.Exists(nugetCache .. symbolsUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "ubuntu.20.04-arm64" .. ".Release.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.ubuntu.20.04-arm64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        filesystem.DeleteFile(out .. "lib/libluajit.so")
-        filesystem.DeleteFile(out .. "lib/libluajit.so.2")
-        nuget.Pack(out .. "symbols.ubuntu.20.04-arm64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.osx.10.15-x64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.10.15-x64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.osx.10.15-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.macos.sh", out .. "lib/symlinks.sh")
-        filesystem.DeleteFile(out .. "lib/libluajit.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.tbd")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.tbd")
-        nuget.Pack(out .. "binaries.osx.10.15-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.osx.11.0-x64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.11.0-x64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.osx.11.0-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.macos.sh", out .. "lib/symlinks.sh")
-        filesystem.DeleteFile(out .. "lib/libluajit.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.tbd")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.tbd")
-        nuget.Pack(out .. "binaries.osx.11.0-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "binaries.osx.11.0-arm64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.11.0-arm64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "binaries.osx.11.0-arm64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        cmake.Copy(files .. "/res/" .. "symlinks.macos.sh", out .. "lib/symlinks.sh")
-        filesystem.DeleteFile(out .. "lib/libluajit.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.dylib")
-        filesystem.DeleteFile(out .. "lib/libluajit.tbd")
-        filesystem.DeleteFile(out .. "lib/libluajit.2.tbd")
-        nuget.Pack(out .. "binaries.osx.11.0-arm64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.osx.10.15-x64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.10.15-x64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.osx.10.15-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.osx.10.15-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.osx.11.0-x64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.11.0-x64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.osx.11.0-x64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.osx.11.0-x64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
-    elseif component == "symbols.osx.11.0-arm64"
-    and not filesystem.Exists(nugetCache .. runtimesUbuntu2004Arm64) then
-        local cmakePackage =
-            recipe.Vendor .. "." .. recipe.Name .. "." ..
-            recipe.Modification .. "." .. recipe.Version .. "." ..
-            "osx.11.0-arm64" .. ".RelWithDebInfo.tar"
-        sevenZip.UnpackArchive(binaryCache .. cmakePackage, filesystem.CurrentFolder .. "/" .. out)
-        cmake.Copy(files .. "/nuget/" .. "symbols.osx.11.0-arm64.nuspec", out)
-        cmake.Copy(files .. "/res/" .. "README.md", out)
-        cmake.Copy(files .. "/res/" .. "LICENSE.txt", out)
-        nuget.Pack(out .. "symbols.osx.11.0-arm64.nuspec", nugetCache)
-        cmake.DeleteFolder(out)
+    elseif component == "symbols.osx.10.15-x64" then
+        runtime = "osx.10.15-x64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "symbols.osx.11.0-x64" then
+        runtime = "osx.11.0-x64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
+    elseif component == "symbols.osx.11.0-arm64" then
+        runtime = "osx.11.0-arm64"
+        output = package.NuGet("Symbols", runtime)
+        input = package.CMake(runtime, "RelWithDebInfo", "tar")
+        MakeNuGetBinaries(output, component, input)
     end
-
-    console.PrintColor("Making NuGet package done", console.Colors.Green)
 end
 
-if options.Target == "source" then
+if Options.Target == "source" then
     recipe.MakeSource()
-elseif options.Target == "cmake" then
-    recipe.MakeCMake()
-elseif options.Target == "nuget" then
-    recipe.MakeNuGet(options.TargetArgument)
+elseif Options.Target == "cmake" then
+    recipe.MakeCMake(Options.Argument)
+elseif Options.Target == "nuget" then
+    recipe.MakeNuGet(Options.Argument)
 end
 
 return recipe
