@@ -1,5 +1,5 @@
 # Set environment variables
-$env:PATH = ".\bin;$env:PATH"
+$env:PATH = "$pwd\bin;$env:PATH"
 $env:LUA_PATH = ".\share\lua\5.1\?.lua;.\share\lua\5.1\?\init.lua;.\?.lua;.\?\init.lua"
 $env:LUA_CPATH = ".\lib\lua\5.1\?.dll;.\?.dll"
 
