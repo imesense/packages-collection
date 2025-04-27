@@ -1,5 +1,5 @@
 local module = {
-    Name = "MacOS.Arm64.11.0"
+    Name = "MacOS.Arm64ToX64.10.15"
 }
 
 -- System
@@ -12,7 +12,7 @@ module.System = {
         Platform = "arm64"
     },
     Target = {
-        Platform = "arm64"
+        Platform = "x64"
     }
 }
 

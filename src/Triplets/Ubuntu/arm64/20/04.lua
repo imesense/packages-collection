@@ -1,31 +1,57 @@
 local module = {
-    Name = "Ubuntu.arm64.20.04"
+    Name = "Ubuntu.Arm64.20.04"
 }
 
-module.Commands = {
-    Git = "git",
-    SevenZip = "7za",
-
-    CMake = "cmake",
-    CTest = "ctest",
-    CPack = "cpack",
-
-    NuGet = "mono ./bin/nuget"
-}
-
+-- System
 module.System = {
+    Type = "Linux",
     Name = "Ubuntu",
-    Platform = "arm64",
-    Version = "20.04"
+    Version = "20.04",
+
+    Host = {
+        Platform = "arm64"
+    },
+    Target = {
+        Platform = "arm64"
+    }
 }
 
-module.Compiler = "gcc-10"
+-- Gcc
+module.Gcc = {
+    Command = "gcc-10"
+}
 
-module.RuntimeID =
-    "ubuntu." .. module.System.Version ..
-    "-" .. module.System.Platform
+-- Git
+module.Git = {
+    Command = "git"
+}
 
-module.CMakeGenerator =
-    "Ninja Multi-Config"
+-- CMake
+module.CMake = {
+    Command = "cmake",
+    Generator = "Ninja Multi-Config",
+    C = {
+        Compiler = module.Gcc.Command
+    }
+}
+-- CTest
+module.CTest = {
+    Command = "ctest"
+}
+-- CPack
+module.CPack = {
+    Command = "cpack"
+}
+
+-- 7-Zip
+module.SevenZip = {
+    Command = "7za"
+}
+
+-- NuGet
+module.NuGet = {
+    Command = "nuget",
+    RuntimeID = "ubuntu." .. module.System.Version .. "-" .. module.System.Target.Platform
+}
 
 return module

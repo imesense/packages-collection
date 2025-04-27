@@ -1,5 +1,5 @@
 local module = {
-    Name = "Windows.X64.10.0.19041"
+    Name = "Windows.X64ToX86.10.0.19041"
 }
 
 -- System
@@ -13,7 +13,7 @@ module.System = {
         Platform = "x64"
     },
     Target = {
-        Platform = "x64"
+        Platform = "x86"
     }
 }
 
@@ -25,7 +25,7 @@ module.VisualStudio = {
 -- Visual C++
 module.VisualCpp = {
     Version = "14.43",
-    Platform = "amd64"
+    Platform = "x86"
 }
 
 -- Git
@@ -38,7 +38,7 @@ module.CMake = {
     Command = "cmake.exe",
     Generator = {
         Name = "Visual Studio " .. module.VisualStudio.VersionMajor .. " " .. module.VisualStudio.Version,
-        Target = module.System.Target.Platform
+        Target = "Win32"
     }
 }
 -- CTest

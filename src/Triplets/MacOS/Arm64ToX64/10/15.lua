@@ -1,18 +1,18 @@
 local module = {
-    Name = "MacOS.Arm64.11.0"
+    Name = "MacOS.Arm64ToX64.10.15"
 }
 
 -- System
 module.System = {
     Type = "Darwin",
     Name = "MacOS",
-    Version = "11.0",
+    Version = "10.15",
 
     Host = {
         Platform = "arm64"
     },
     Target = {
-        Platform = "arm64"
+        Platform = "x64"
     }
 }
 
