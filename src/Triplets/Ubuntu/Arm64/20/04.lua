@@ -29,7 +29,9 @@ module.Git = {
 -- CMake
 module.CMake = {
     Command = "cmake",
-    Generator = "Ninja Multi-Config",
+    Generator = {
+        Name = "Ninja Multi-Config"
+    },
     C = {
         Compiler = module.Gcc.Command
     }

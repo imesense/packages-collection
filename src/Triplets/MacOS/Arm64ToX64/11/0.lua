@@ -24,7 +24,9 @@ module.Git = {
 -- CMake
 module.CMake = {
     Command = "cmake",
-    Generator = "Xcode"
+    Generator = {
+        Name = "Xcode"
+    }
 }
 -- CTest
 module.CTest = {
