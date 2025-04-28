@@ -179,7 +179,7 @@ local function MakeCMakeDarwin(name, config)
     end
 
     local format = "tar"
-    SevenZip.UnpackArchive(cache.Source .. package.Source(format) .. format, source)
+    SevenZip.UnpackArchive(cache.Source .. package.Source(format), source)
 
     local projectOptions = {
         ["LUAJIT_TARGET_ARCH"] = Triplet.System.Target.Platform,
