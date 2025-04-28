@@ -35,16 +35,28 @@ build = {
     modules = {
         ["Common.Console"] = "src\\Common\\Console.lua",
         ["Common.Filesystem"] = "src\\Common\\Filesystem.lua",
+        ["Common.Mappers"] = "src\\Common\\Mappers.lua",
         ["Common.Network"] = "src\\Common\\Network.lua",
         ["Common.Utilities"] = "src\\Common\\Utilities.lua",
 
+        ["Recipes.Actions"] = "src\\Recipes\\Actions.lua",
+
         ["Tools.CMake"] = "src\\Tools\\CMake.lua",
         ["Tools.Git"] = "src\\Tools\\Git.lua",
+        ["Tools.NuGet"] = "src\\Tools\\NuGet.lua",
+        ["Tools.Rosetta"] = "src\\Tools\\Rosetta.lua",
         ["Tools.SevenZip"] = "src\\Tools\\SevenZip.lua",
         ["Tools.VisualStudio"] = "src\\Tools\\VisualStudio.lua",
 
-        ["Triplets.Windows.X86.10.0.19041"] = "src\\Triplets\\Windows\\X86\\10\\0\\19041.lua",
         ["Triplets.Windows.X64.10.0.19041"] = "src\\Triplets\\Windows\\X64\\10\\0\\19041.lua",
-        ["Triplets.Ubuntu.X64.20.04"] = "src\\Triplets\\Ubuntu\\X64\\20\\04.lua"
+        ["Triplets.Windows.X64ToX86.10.0.19041"] = "src\\Triplets\\Windows\\X64ToX86\\10\\0\\19041.lua",
+
+        ["Triplets.Ubuntu.Arm64.20.04"] = "src\\Triplets\\Ubuntu\\Arm64\\20\\04.lua",
+        ["Triplets.Ubuntu.X64.20.04"] = "src\\Triplets\\Ubuntu\\X64\\20\\04.lua",
+        ["Triplets.Ubuntu.X64ToX86.20.04"] = "src\\Triplets\\Ubuntu\\X64ToX86\\20\\04.lua",
+
+        ["Triplets.MacOS.Arm64.11.0"] = "src\\Triplets\\MacOS\\Arm64\\11\\0.lua",
+        ["Triplets.MacOS.Arm64ToX64.10.15"] = "src\\Triplets\\MacOS\\Arm64ToX64\\10\\15.lua",
+        ["Triplets.MacOS.Arm64ToX64.11.0"] = "src\\Triplets\\MacOS\\Arm64ToX64\\11\\0.lua"
     }
 }
