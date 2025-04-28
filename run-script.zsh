@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # Set environment variables
-export PATH=./bin:$PATH
+export PATH=$(pwd)/bin:$PATH
 export LUA_PATH="./share/lua/5.1/?.lua;./share/lua/5.1/?/init.lua;./?.lua;./?/init.lua"
 export LUA_CPATH="./lib/lua/5.1/?.dylib;./?.dylib"
 
@@ -16,4 +16,4 @@ fi
 scriptToRun=$1
 
 # Run script
-./bin/lua "$scriptToRun" "${@:2}"
+lua "$scriptToRun" "${@:2}"
