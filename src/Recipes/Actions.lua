@@ -11,7 +11,8 @@ local function ParseArguments()
     local options = {
         Triplet = nil,
         Target = nil,
-        Argument = nil
+        Argument = nil,
+        Argument1 = nil
     }
 
     local scriptArguments = arg
@@ -24,6 +25,8 @@ local function ParseArguments()
                 options.Target = value
             elseif key == "argument" then
                 options.Argument = value
+            elseif key == "argument1" then
+                options.Argument1 = value
             else
                 io.stderr:write(console.Colors.Yellow .. "Warning: Unknown option \"--" .. key .. "\"\n" .. console.Colors.Default)
             end
@@ -36,6 +39,7 @@ local function ParseArguments()
         io.stderr:write(console.Colors.Red .. "Error: --triplet is required\n" .. console.Colors.Default)
         os.exit(1)
     end
+
     if not options.Target then
         io.stderr:write(console.Colors.Red .. "Error: --target is required\n" .. console.Colors.Default)
         os.exit(1)
@@ -62,6 +66,9 @@ local triplet = require("src.Triplets." .. options.Triplet)
 
 Options = options
 Triplet = triplet
+
+Filesystem = require("src.Common.Filesystem")
+Utilities = require("src.Common.Utilities")
 
 Git = require("src.Tools.Git")
 CMake = require("src.Tools.CMake")

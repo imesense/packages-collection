@@ -1,6 +1,4 @@
 -- Local imports
-local console = require("src.Common.Console")
-local filesystem = require("src.Common.Filesystem")
 local actions = require("src.Recipes.Actions")
 
 -- Recipe module
@@ -53,16 +51,16 @@ end
 actions.PrepareFolders(recipe.Vendor)
 
 local cache = {}
-cache.Source = filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
-cache.CMake = filesystem.CurrentFolder .. "/cache/CMake/" .. recipe.Vendor .. "/"
-cache.NuGet = filesystem.CurrentFolder .. "/cache/NuGet/" .. recipe.Vendor .. "/"
+cache.Source = Filesystem.CurrentFolder .. "/cache/Source/" .. recipe.Vendor .. "/"
+cache.CMake = Filesystem.CurrentFolder .. "/cache/CMake/" .. recipe.Vendor .. "/"
+cache.NuGet = Filesystem.CurrentFolder .. "/cache/NuGet/" .. recipe.Vendor .. "/"
 
-local files = filesystem.CurrentFolder .. "/pkg/" .. recipe.Vendor .. "/" .. recipe.Name .. "/" .. recipe.Version
+local files = Filesystem.CurrentFolder .. "/pkg/" .. recipe.Vendor .. "/" .. recipe.Name .. "/" .. recipe.Version
 local patches = files .. "/patch/"
 local nuget = files .. "/nuget/"
 local resources = files .. "/res/"
 
-local temp = filesystem.CurrentFolder .. "/tmp/"
+local temp = Filesystem.CurrentFolder .. "/tmp/"
 local repository = temp .. "luajit"
 
 local out = temp .. "out/"
@@ -71,7 +69,7 @@ local build = source .. "/build"
 local install = build .. "/install"
 
 local function MakeSourceOriginal(name, format)
-    if filesystem.Exists(cache.Source .. name) then
+    if Filesystem.Exists(cache.Source .. name) then
         return
     end
 
@@ -86,7 +84,7 @@ local function MakeSourceOriginal(name, format)
 end
 
 local function MakeSourcePatched(name, format)
-    if filesystem.Exists(cache.Source .. name) then
+    if Filesystem.Exists(cache.Source .. name) then
         return
     end
 
@@ -122,7 +120,7 @@ function recipe.MakeSource()
 end
 
 local function MakeCMakeWindows(name, config)
-    if filesystem.Exists(cache.CMake .. name) then
+    if Filesystem.Exists(cache.CMake .. name) then
         return
     end
 
@@ -150,7 +148,7 @@ local function MakeCMakeWindows(name, config)
 end
 
 local function MakeCMakeLinux(name, config)
-    if filesystem.Exists(cache.CMake .. name) then
+    if Filesystem.Exists(cache.CMake .. name) then
         return
     end
 
@@ -174,7 +172,7 @@ local function MakeCMakeLinux(name, config)
 end
 
 local function MakeCMakeDarwin(name, config)
-    if filesystem.Exists(cache.CMake .. name) then
+    if Filesystem.Exists(cache.CMake .. name) then
         return
     end
 
@@ -209,7 +207,7 @@ function recipe.MakeCMake(config)
 end
 
 local function MakeNuGetMetapackage(output, manifest)
-    if filesystem.Exists(cache.NuGet .. output) then
+    if Filesystem.Exists(cache.NuGet .. output) then
         return
     end
 
@@ -221,7 +219,7 @@ local function MakeNuGetMetapackage(output, manifest)
 end
 
 local function MakeNuGetSources(output, manifest, input)
-    if filesystem.Exists(cache.NuGet .. output) then
+    if Filesystem.Exists(cache.NuGet .. output) then
         return
     end
 
@@ -236,7 +234,7 @@ local function MakeNuGetSources(output, manifest, input)
 end
 
 local function MakeNuGetBinaries(name, manifest, input)
-    if filesystem.Exists(cache.NuGet .. name) then
+    if Filesystem.Exists(cache.NuGet .. name) then
         return
     end
 
@@ -248,110 +246,74 @@ local function MakeNuGetBinaries(name, manifest, input)
     CMake.DeleteFolder(out)
 end
 
-function recipe.MakeNuGet(component)
+function recipe.MakeNuGet(component, runtime)
     local input = ""
     local output = ""
-    local runtime = ""
+
+    local manifest = component
+    if runtime then
+        manifest = manifest .. "." .. runtime
+    end
 
     if component == "metapackage" then
         output = package.NuGet()
-        MakeNuGetMetapackage(output, component)
-    elseif component == "binaries" then
+        MakeNuGetMetapackage(output, manifest)
+    elseif component == "binaries" and not runtime then
         output = package.NuGet("Binaries")
-        MakeNuGetMetapackage(output, component)
-    elseif component == "symbols" then
+        MakeNuGetMetapackage(output, manifest)
+    elseif component == "symbols" and not runtime then
         output = package.NuGet("Symbols")
-        MakeNuGetMetapackage(output, component)
+        MakeNuGetMetapackage(output, manifest)
     elseif component == "sources" then
         output = package.NuGet("Sources")
         input = package.Source("zip")
-        MakeNuGetSources(output, component, input)
+        MakeNuGetSources(output, manifest, input)
+    elseif component == "binaries" and runtime then
+        output = package.NuGet("Binaries", runtime)
 
-    elseif component == "binaries.win10.0.19041.0-x86" then
-        runtime = "win10.0.19041.0-x86"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "Release", "zip")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "binaries.win10.0.19041.0-x64" then
-        runtime = "win10.0.19041.0-x64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "Release", "zip")
-        MakeNuGetBinaries(output, component, input)
+        local format = ""
+        if Utilities.Contains(runtime, "win") then
+            format = "zip"
+        elseif Utilities.Contains(runtime, "ubuntu") then
+            format = "tar"
+        elseif Utilities.Contains(runtime, "osx") then
+            format = "tar"
+        end
 
-    elseif component == "symbols.win10.0.19041.0-x86" then
-        runtime = "win10.0.19041.0-x86"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "Release", "zip")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "symbols.win10.0.19041.0-x64" then
-        runtime = "win10.0.19041.0-x64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "Release", "zip")
-        MakeNuGetBinaries(output, component, input)
+        local config = ""
+        if Utilities.Contains(runtime, "win") then
+            config = "Release"
+        elseif Utilities.Contains(runtime, "ubuntu") then
+            config = "Release"
+        elseif Utilities.Contains(runtime, "osx") then
+            config = "RelWithDebInfo"
+        end
 
-    elseif component == "binaries.ubuntu.20.04-x86" then
-        runtime = "ubuntu.20.04-x86"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "binaries.ubuntu.20.04-x64" then
-        runtime = "ubuntu.20.04-x64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "binaries.ubuntu.20.04-arm64" then
-        runtime = "ubuntu.20.04-arm64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
+        input = package.CMake(runtime, config, format)
+        MakeNuGetBinaries(output, manifest, input)
+    elseif component == "symbols" and runtime then
+        output = package.NuGet("Symbols", runtime)
 
-    elseif component == "symbols.ubuntu.20.04-x86" then
-        runtime = "ubuntu.20.04-x86"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "symbols.ubuntu.20.04-x64" then
-        runtime = "ubuntu.20.04-x64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "symbols.ubuntu.20.04-arm64" then
-        runtime = "ubuntu.20.04-arm64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "Release", "tar")
-        MakeNuGetBinaries(output, component, input)
+        local format = ""
+        if Utilities.Contains(runtime, "win") then
+            format = "zip"
+        elseif Utilities.Contains(runtime, "ubuntu") then
+            format = "tar"
+        elseif Utilities.Contains(runtime, "osx") then
+            format = "tar"
+        end
 
-    elseif component == "binaries.osx.10.15-x64" then
-        runtime = "osx.10.15-x64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "binaries.osx.11.0-x64" then
-        runtime = "osx.11.0-x64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "binaries.osx.11.0-arm64" then
-        runtime = "osx.11.0-arm64"
-        output = package.NuGet("Binaries", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
+        local config = ""
+        if Utilities.Contains(runtime, "win") then
+            config = "Release"
+        elseif Utilities.Contains(runtime, "ubuntu") then
+            config = "Release"
+        elseif Utilities.Contains(runtime, "osx") then
+            config = "RelWithDebInfo"
+        end
 
-    elseif component == "symbols.osx.10.15-x64" then
-        runtime = "osx.10.15-x64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "symbols.osx.11.0-x64" then
-        runtime = "osx.11.0-x64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
-    elseif component == "symbols.osx.11.0-arm64" then
-        runtime = "osx.11.0-arm64"
-        output = package.NuGet("Symbols", runtime)
-        input = package.CMake(runtime, "RelWithDebInfo", "tar")
-        MakeNuGetBinaries(output, component, input)
+        input = package.CMake(runtime, config, format)
+        MakeNuGetBinaries(output, manifest, input)
     end
 end
 
@@ -360,7 +322,7 @@ if Options.Target == "source" then
 elseif Options.Target == "cmake" then
     recipe.MakeCMake(Options.Argument)
 elseif Options.Target == "nuget" then
-    recipe.MakeNuGet(Options.Argument)
+    recipe.MakeNuGet(Options.Argument, Options.Argument1)
 end
 
 return recipe
