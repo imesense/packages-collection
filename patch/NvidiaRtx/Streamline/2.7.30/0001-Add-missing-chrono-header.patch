@@ -1,0 +1,24 @@
+From 5f799261646f2f168e80501c9b8dc7976fe7b06e Mon Sep 17 00:00:00 2001
+From: acidicMercury8 <acidicmercury8@outlook.com>
+Date: Mon, 5 May 2025 22:43:59 +0300
+Subject: [PATCH] Add missing chrono header
+
+---
+ source/core/sl.extra/extra.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/source/core/sl.extra/extra.h b/source/core/sl.extra/extra.h
+index b0bd5b8..b669dc0 100644
+--- a/source/core/sl.extra/extra.h
++++ b/source/core/sl.extra/extra.h
+@@ -38,6 +38,7 @@
+ #include <locale>
+ #include <iomanip>
+ #include <array>
++#include <chrono>
+ 
+ #ifdef SL_WINDOWS
+ #define SL_IGNOREWARNING_PUSH __pragma(warning(push))
+-- 
+2.47.1.windows.2
+

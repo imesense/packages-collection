@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>ImeSense.Streamline.Binaries.win10.0.19041.0-x64</id>
+        <version>2.7.30</version>
+        <title>Nvidia Rtx Streamline</title>
+        <authors>acidicMercury8</authors>
+        <owners>acidicMercury8,ImeSense</owners>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="file">LICENSE.txt</license>
+        <readme>README.md</readme>
+        <projectUrl>https://developer.nvidia.com/rtx/streamline</projectUrl>
+        <repository type="git" url="https://github.com/imesense/packages-collection.git" />
+        <copyright>&#169; 2022-2025 NVIDIA CORPORATION</copyright>
+        <tags>Native native nativepackage</tags>
+        <description>Streamline Integration Framework</description>
+
+        <releaseNotes>
+Repository: https://github.com/NVIDIA-RTX/Streamline.git
+Commit: 4bcd1fbe8d4f38b50ec86817f1f7cecc55db9779
+        </releaseNotes>
+    </metadata>
+
+    <files>
+        <file src="README.md" target="README.md" />
+        <file src="LICENSE.txt" target="LICENSE.txt" />
+
+        <file src="bin\*" target="bin\" />
+        <file src="lib\*" target="lib\" />
+        <file src="include\*" target="include\" />
+        <file src="share\**" target="share\" />
+    </files>
+</package>
