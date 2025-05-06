@@ -168,9 +168,11 @@ module.TreeFolders = {
     "cache",
     "cache/Https",
     "cache/Source",
+    "cache/Binary",
     "cache/CMake",
     "cache/NuGet",
     "bin",
+    "etc",
     "include",
     "lib",
     "share"

@@ -81,6 +81,20 @@ function module.InstallProject(build, prefix, config)
     return InvokeShell(command)
 end
 
+function module.MakeFolder(path)
+    local result = console.ExecuteCommand(
+        cmake ..
+        " -E" ..
+        " make_directory " ..
+        path
+    )
+    if not result then
+        console.PrintColor("Error: " .. result, console.Colors.Red)
+        return nil
+    end
+    return result
+end
+
 function module.DeleteFolder(path)
     local result = console.ExecuteCommand(
         cmake ..
