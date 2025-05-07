@@ -109,6 +109,8 @@ function recipe.Make()
     MakeSources(recipe.Artifacts.Sources, "sources")
 end
 
-recipe.Make()
+if Triplet.System.Name == "Windows" and Triplet.System.Version == "10.0.19041.0" then
+    recipe.Make()
+end
 
 return recipe

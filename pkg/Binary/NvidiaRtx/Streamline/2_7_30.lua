@@ -123,6 +123,8 @@ function recipe.Make()
     MakeProduction()
 end
 
-recipe.Make()
+if Triplet.System.Name == "Windows" and Triplet.System.Version == "10.0.19041.0" then
+    recipe.Make()
+end
 
 return recipe
